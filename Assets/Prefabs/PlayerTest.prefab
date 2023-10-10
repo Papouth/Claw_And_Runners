@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2460136525622932115}
   - component: {fileID: 5688346666847182345}
   - component: {fileID: 5177541451809686406}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117,7 +117,7 @@ GameObject:
   - component: {fileID: 2777411652688837700}
   - component: {fileID: 1029019486118094177}
   - component: {fileID: 3443730758003054046}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraControls
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 592432767215968080}
   - component: {fileID: 8719009358329372522}
   - component: {fileID: 6422879625364290055}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,7 +299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 707816820790280946}
   - component: {fileID: 6093302350106366242}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -347,7 +347,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7032150087245636144}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -381,7 +381,7 @@ GameObject:
   - component: {fileID: 1196846770909863210}
   - component: {fileID: 5221486442815047938}
   - component: {fileID: 8165443252986422081}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ModelRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -448,7 +448,7 @@ GameObject:
   - component: {fileID: 2064255171198425121}
   - component: {fileID: 7019339972323368736}
   - component: {fileID: 5406581931380467116}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -542,7 +542,9 @@ GameObject:
   - component: {fileID: 8933152907427837009}
   - component: {fileID: 4018883564241005411}
   - component: {fileID: 1749201461135329655}
-  m_Layer: 0
+  - component: {fileID: 1381432656844925703}
+  - component: {fileID: 8663752837500317318}
+  m_Layer: 6
   m_Name: PlayerTest
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -746,7 +748,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7080183927369269828}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87c46da40044ef1479508af95d03d7f5, type: 3}
   m_Name: 
@@ -879,6 +881,49 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1381432656844925703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7080183927369269828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f866cf3e115dab4eba8992376fb6a20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugSphere: {fileID: 6644187059430753261, guid: 43ffd89e85f75d049b5b926296e262ee, type: 3}
+  theJail: {fileID: 6760233929630411675, guid: 751687d562dadb74f9735fd73972047b, type: 3}
+  colliders: []
+  layerWall:
+    serializedVersion: 2
+    m_Bits: 8
+  edgePrefab: {fileID: 2851474979171228686, guid: d51d3f2bf8d32494980ae1afd9469776, type: 3}
+  debugSpheresList: []
+--- !u!114 &8663752837500317318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7080183927369269828}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6fa80c981c7f6c4e9d3b52ca3091f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugSphere: {fileID: 6644187059430753261, guid: 43ffd89e85f75d049b5b926296e262ee, type: 3}
+  debugTwo: {fileID: 6644187059430753261, guid: 90c9061e8b3fc604bba5679b1bfb2887, type: 3}
+  jailParent: {fileID: 6760233929630411675, guid: 751687d562dadb74f9735fd73972047b, type: 3}
+  numDebugSpheres: 200
+  distanceFromPlayer: 0.1
+  spheresRadius: 0.1
+  speed: 2
+  spheresList: []
+  layerWall:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &7123789382021432759
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,7 +935,7 @@ GameObject:
   - component: {fileID: 1338786842437010651}
   - component: {fileID: 5320200712117821608}
   - component: {fileID: 5360973376602815931}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CameraRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
