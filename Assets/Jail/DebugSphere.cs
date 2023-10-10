@@ -6,12 +6,19 @@ public class DebugSphere : MonoBehaviour
 {
     #region Variables
     private bool isValid;
+    private Rigidbody rb;
+    private MeshRenderer mr;
+    private SphereCollider sphereCollider;
     #endregion
 
 
     #region Built in Methods
     private void Start()
     {
+        sphereCollider = GetComponent<SphereCollider>();
+        mr = GetComponent<MeshRenderer>();
+        rb = GetComponent<Rigidbody>();
+
         Invoke("StopMotion", 2f);
     }
 
@@ -25,7 +32,10 @@ public class DebugSphere : MonoBehaviour
     #region Customs Methods
     private void StopMotion()
     {
-        isValid = true;    
+        isValid = true;
+        rb.isKinematic = true;
+        mr.enabled = false;
+        sphereCollider.enabled = false;
     }
 
     private void OnCollisionEnter(Collision collision)
