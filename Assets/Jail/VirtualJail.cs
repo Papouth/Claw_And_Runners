@@ -14,24 +14,18 @@ public class VirtualJail : MonoBehaviour
     [SerializeField] private float spheresRadius;
     private GameObject cloneJail;
     private GameObject cloneSphere;
-    [SerializeField] private float speed;
     [SerializeField] private List<GameObject> spheresList = new List<GameObject>();
-
-    private RaycastHit[] hits;
     [SerializeField] private LayerMask layerWall;
-    private bool isValid;
+    private bool prisonOn;
+    private LineRenderer lineRenderer;
     #endregion
+
+
 
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Mouse0)) CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius/2f), transform.position.z), distanceFromPlayer);
-
-
-        if (Input.GetKeyUp(KeyCode.Mouse1)) isValid = true;
-
-
-        //if (isValid) ValidateJail();
+        if (Input.GetKeyUp(KeyCode.Mouse0) && !prisonOn) CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius/2f), transform.position.z), distanceFromPlayer);
     }
 
     private void CreateDebugJail(int num, Vector3 point, float radius)
@@ -39,6 +33,10 @@ public class VirtualJail : MonoBehaviour
         if (cloneJail != null) Destroy(cloneJail);
 
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
+
+        lineRenderer = cloneJail.GetComponent<LineRenderer>();
+        lineRenderer.enabled = false;
+        lineRenderer.positionCount = numDebugSpheres;
 
         for (int i = 0; i < num; i++)
         {
@@ -57,7 +55,7 @@ public class VirtualJail : MonoBehaviour
             // On spawn les spheres
             cloneSphere = Instantiate(debugSphere, spawnPos, Quaternion.identity, cloneJail.transform);
 
-            cloneSphere.name = i.ToString();
+            //cloneSphere.name = i.ToString();
 
             spheresList.Add(cloneSphere);
 
@@ -66,34 +64,18 @@ public class VirtualJail : MonoBehaviour
             cloneSphere.transform.LookAt(point);
         }
 
-        Invoke("Unvalid", 2f);
+        Invoke("SetLineRenderer", 2f);
     }
 
-    private void ValidateJail()
+    private void SetLineRenderer()
     {
-        Invoke("Unvalid", 2f);
+        lineRenderer.enabled = true;
 
-
-        for (int i = 0; i < spheresList.Count; i++)
+        for (int a = 0; a < spheresList.Count; a++)
         {
-            spheresList[i].transform.Translate(-Vector3.forward * Time.deltaTime);
+            lineRenderer.SetPosition(a, spheresList[a].transform.position);
         }
-    }
 
-    private void Unvalid()
-    {
-        if (isValid)
-        {
-            isValid = false;
-
-            hits = Physics.SphereCastAll(transform.position, 2f, transform.position, 0f, layerWall);
-
-            foreach (RaycastHit hit in hits)
-            {
-                Debug.Log("hit");
-
-                Instantiate(debugTwo, hit.collider.bounds.ClosestPoint(transform.position), Quaternion.FromToRotation(hit.collider.bounds.ClosestPoint(transform.forward), hit.normal), cloneJail.transform);
-            }
-        }
+        prisonOn = true;   
     }
 }
