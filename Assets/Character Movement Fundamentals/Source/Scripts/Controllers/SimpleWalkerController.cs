@@ -8,6 +8,7 @@ namespace CMF
 	//This script is an example of a very simple walker controller that covers only the basics of character movement;
     public class SimpleWalkerController : Controller
     {
+        #region Variables
         private Mover mover;
         float currentVerticalSpeed = 0f;
         bool isGrounded;
@@ -20,8 +21,9 @@ namespace CMF
 		public Transform cameraTransform;
         CharacterInput characterInput;
         Transform tr;
+        #endregion
 
-        // Use this for initialization
+
         void Start()
         {
             tr = transform;
@@ -137,8 +139,5 @@ namespace CMF
         {
             return isGrounded;
         }
-
     }
-
 }
-

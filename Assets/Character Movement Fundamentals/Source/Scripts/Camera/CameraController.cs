@@ -44,9 +44,11 @@ namespace CMF
 		protected Transform tr;
 		protected Camera cam;
 		protected CameraInput cameraInput;
+		[SerializeField] private Transform playerModel;
 
-		//Setup references.
-		void Awake () {
+
+		void Awake () 
+		{
 			tr = transform;
 			cam = GetComponent<Camera>();
 			cameraInput = GetComponent<CameraInput>();
@@ -68,7 +70,6 @@ namespace CMF
 			Setup();
 		}
 
-		//This function is called right after Awake(); It can be overridden by inheriting scripts;
 		protected virtual void Setup()
 		{
 			
@@ -85,17 +86,18 @@ namespace CMF
 		}
 
 		//Get user input and handle camera rotation;
-		//This method can be overridden in classes derived from this base class to modify camera behaviour;
 		protected virtual void HandleCameraRotation()
 		{
-			if(cameraInput == null)
+			if (cameraInput == null)
 				return;
 
-			//Get input values;
-			float _inputHorizontal = cameraInput.GetHorizontalCameraInput();
-			float _inputVertical = cameraInput.GetVerticalCameraInput();
-		
-			RotateCamera(_inputHorizontal, _inputVertical);
+            //Get input values;
+
+            float _inputHorizontal = cameraInput.GetHorizontalCameraInput();
+            float _inputVertical = cameraInput.GetVerticalCameraInput();
+
+
+            RotateCamera(_inputHorizontal, _inputVertical);
 		}
 
 		//Rotate camera; 
@@ -127,17 +129,24 @@ namespace CMF
 		//Update camera rotation based on x and y angles;
 		protected void UpdateRotation()
 		{
-			tr.localRotation = Quaternion.Euler(new Vector3(0, currentYAngle, 0));
+			//tr.localRotation = Quaternion.Euler(new Vector3(0, currentYAngle, 0));
 
 			//Save 'facingDirection' and 'upwardsDirection' for later;
 			facingDirection = tr.forward;
 			upwardsDirection = tr.up;
 
 			tr.localRotation = Quaternion.Euler(new Vector3(currentXAngle, currentYAngle, 0));
-		}
 
-		//Set the camera's field-of-view (FOV);
-		public void SetFOV(float _fov)
+            // rotate player with camera
+            //playerModel.Rotate(Vector3.up * currentYAngle);
+
+			//playerModel.rotation = Quaternion.Euler(0f, tr.localRotation.y, 0f);
+            //playerModel.rotation = Quaternion.LookRotation(facingDirection, upwardsDirection);
+
+        }
+
+        //Set the camera's field-of-view (FOV);
+        public void SetFOV(float _fov)
 		{
 			if(cam)
 				cam.fieldOfView = _fov;	
@@ -243,7 +252,5 @@ namespace CMF
 		{
 			return upwardsDirection;
 		}
-		
-		
 	}
 }
