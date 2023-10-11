@@ -9,8 +9,9 @@ namespace CMF
 	//It also provides several getter methods for important information (whether the mover is grounded, the current surface normal [...]);
 	public class Mover : NetworkBehaviour {
 
-		//Collider variables;
-		[Header("Mover Options :")]
+        #region Variables
+        //Collider variables;
+        [Header("Mover Options :")]
 		[Range(0f, 1f)][SerializeField] float stepHeightRatio = 0.25f;
 		[Header("Collider Options :")]
 		[SerializeField] float colliderHeight = 2f;
@@ -54,7 +55,8 @@ namespace CMF
 		private SimpleWalkerController walkerController;
 		private CharacterKeyboardInput keyboardInput;
 		private Camera cameraPlayer;
-
+		private CameraController camControll;
+		#endregion
 
 		void Awake()
 		{
@@ -69,6 +71,7 @@ namespace CMF
 			keyboardInput = GetComponent<CharacterKeyboardInput>();
 
 			cameraPlayer = GetComponentInChildren<Camera>();
+			camControll = cameraPlayer.GetComponentInParent<CameraController>();
 		}
 
         public override void OnNetworkSpawn()
@@ -129,8 +132,8 @@ namespace CMF
 
         private void Update()
         {
-			transform.rotation = Quaternion.Euler(transform.rotation.x, cameraPlayer.transform.rotation.y, transform.rotation.z);
-        }
+			transform.rotation = Quaternion.Euler(transform.rotation.x, camControll.transform.localRotation.y, transform.rotation.z);
+		}
 
         //Draw debug information if debug mode is enabled;
         void LateUpdate()
@@ -400,6 +403,5 @@ namespace CMF
 		{
 			return sensor.GetCollider();
 		}
-		
 	}
 }

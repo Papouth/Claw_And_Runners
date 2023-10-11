@@ -542,7 +542,6 @@ GameObject:
   - component: {fileID: 8933152907427837009}
   - component: {fileID: 4018883564241005411}
   - component: {fileID: 1749201461135329655}
-  - component: {fileID: 1381432656844925703}
   - component: {fileID: 8663752837500317318}
   m_Layer: 6
   m_Name: PlayerTest
@@ -881,26 +880,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1381432656844925703
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7080183927369269828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f866cf3e115dab4eba8992376fb6a20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  debugSphere: {fileID: 6644187059430753261, guid: 43ffd89e85f75d049b5b926296e262ee, type: 3}
-  theJail: {fileID: 6760233929630411675, guid: 751687d562dadb74f9735fd73972047b, type: 3}
-  colliders: []
-  layerWall:
-    serializedVersion: 2
-    m_Bits: 8
-  edgePrefab: {fileID: 2851474979171228686, guid: d51d3f2bf8d32494980ae1afd9469776, type: 3}
-  debugSpheresList: []
 --- !u!114 &8663752837500317318
 MonoBehaviour:
   m_ObjectHideFlags: 0

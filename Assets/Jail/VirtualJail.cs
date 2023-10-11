@@ -25,7 +25,7 @@ public class VirtualJail : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Mouse0) && !prisonOn) CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius/2f), transform.position.z), distanceFromPlayer);
+        if (Input.GetKeyUp(KeyCode.Mouse0) && !prisonOn) CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius*2f), transform.position.z), distanceFromPlayer);
     }
 
     private void CreateDebugJail(int num, Vector3 point, float radius)
