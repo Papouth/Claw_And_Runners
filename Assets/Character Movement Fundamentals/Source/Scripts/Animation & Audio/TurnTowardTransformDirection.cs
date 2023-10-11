@@ -15,6 +15,7 @@ namespace CMF
 		void Start () {
 			tr = transform;
 			parentTransform = transform.parent;
+			targetTransform = GetComponent<Transform>();
 
 			if(targetTransform == null)
 				Debug.LogWarning("No target transform has been assigned to this script.", this);

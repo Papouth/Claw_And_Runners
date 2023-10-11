@@ -29,7 +29,8 @@ namespace CMF
 			Vector3 _upDirection = cameraController.GetUpDirection();
 
 			//Set rotation;
-			tr.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
+			//tr.rotation = Quaternion.LookRotation(_forwardDirection, _upDirection);
+			tr.rotation = Quaternion.Euler(_upDirection);
 		}
 	}
 }
