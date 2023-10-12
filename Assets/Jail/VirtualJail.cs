@@ -18,14 +18,18 @@ public class VirtualJail : MonoBehaviour
     [SerializeField] private LayerMask layerWall;
     private bool prisonOn;
     private LineRenderer lineRenderer;
+    private InputManager inputManager;
     #endregion
 
 
-
+    private void Start()
+    {
+        inputManager = GetComponent<InputManager>();
+    }
 
     private void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Mouse0) && !prisonOn) CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius*2f), transform.position.z), distanceFromPlayer);
+        if (inputManager.CanSelect && !prisonOn) CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius*2f), transform.position.z), distanceFromPlayer);
     }
 
     private void CreateDebugJail(int num, Vector3 point, float radius)

@@ -29,8 +29,8 @@ public class AudioSync : NetworkBehaviour
 
     private void VolumeModifier()
     {
-        if (Input.GetKeyDown(KeyCode.B)) AudioListener.volume -= 0.1f;
-        else if (Input.GetKeyDown(KeyCode.N)) AudioListener.volume += 0.1f;
+        //if (Input.GetKeyDown(KeyCode.B)) AudioListener.volume -= 0.1f;
+        //else if (Input.GetKeyDown(KeyCode.N)) AudioListener.volume += 0.1f;
     }
 
     /// <summary>
