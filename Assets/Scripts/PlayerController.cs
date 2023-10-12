@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Unity.Netcode;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : NetworkBehaviour
 {
     #region Variables
     private InputManager inputManager;
@@ -27,6 +28,14 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 velocity;
     private bool isGrounded;
+
+    private float oldForwardBackwardPosition;
+    private float oldLeftRightPosition;
+    private float oldUpDownPosition;
+
+    [SerializeField] private NetworkVariable<float> forwardBackPosition = new NetworkVariable<float>();
+    [SerializeField] private NetworkVariable<float> leftRightPosition = new NetworkVariable<float>();
+    [SerializeField] private NetworkVariable<float> upDownPosition = new NetworkVariable<float>();
     #endregion
 
 
@@ -40,14 +49,30 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner)
+        {
+            Destroy(inputManager);
+            cameraCam.GetComponent<Camera>().enabled = false;
+        }
+    }
+
     void Update()
     {
-        Move();
+        if (IsServer && !IsOwner) UpdateServer();
+
+        if (IsOwner) MoveClient();
     }
 
     private void LateUpdate()
     {
-        CamMovement();
+        if (IsOwner) CamMovement();
+    }
+
+    private void UpdateServer()
+    {
+        transform.position = new Vector3(transform.position.x + leftRightPosition.Value, transform.position.y + upDownPosition.Value, transform.position.z + forwardBackPosition.Value);
     }
     #endregion
 
@@ -67,8 +92,13 @@ public class PlayerController : MonoBehaviour
         transform.Rotate(Vector3.up, mouseX * mouseSensi * Time.deltaTime);
     }
 
-    private void Move()
+    private void MoveClient()
     {
+        // SHARING INFO
+        // float x -> left and right
+        // float z -> forward and backward
+        // velocity.y -> up and down
+
         // GROUN CHECK
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
@@ -91,10 +121,32 @@ public class PlayerController : MonoBehaviour
             inputManager.CanJump = false;
             velocity.y = Mathf.Sqrt(jump * -2f * gravity);
         }
+        else if (inputManager.CanJump && !isGrounded)
+        {
+            inputManager.CanJump = false;
+        }
 
         velocity.y += gravity * Time.deltaTime;
 
         controller.Move(velocity * Time.deltaTime);
+
+        if (oldForwardBackwardPosition != z || oldLeftRightPosition != x || oldUpDownPosition != velocity.y)
+        {
+            oldForwardBackwardPosition = z;
+            oldLeftRightPosition = x;
+            oldUpDownPosition = velocity.y;
+
+            // update the server
+            UpdateClientPositionServerRpc(z, x, velocity.y);
+        }
+    }
+
+    [ServerRpc]
+    public void UpdateClientPositionServerRpc(float forwardBackward, float leftRight, float upDown)
+    {
+        forwardBackPosition.Value = forwardBackward;
+        leftRightPosition.Value = leftRight;
+        upDownPosition.Value = upDown;
     }
     #endregion
 }
