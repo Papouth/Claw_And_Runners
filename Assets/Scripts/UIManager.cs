@@ -9,10 +9,11 @@ public class UIManager : MonoBehaviour
     #region Variables
     public static UIManager UIInstance;
 
-    [Tooltip("Les cases vides de base")][SerializeField] private Image[] casesImages = new Image[6];
+    [Tooltip("Les cases vides de base")] [SerializeField] private Image[] casesImages = new Image[6];
     [HideInInspector] public CaseInfo caseInfo;
     private Sprite baseSprite;
     private int N;
+    private int U;
     private int clicCount;
     private int prevType;
     private int prevN;
@@ -27,7 +28,7 @@ public class UIManager : MonoBehaviour
     private GameObject itemSelected;
     private Sprite itemSelectedSprite;
 
-    [Tooltip("Nom de la catégorie")][SerializeField] private List<string> typeNames;
+    [Tooltip("Nom de la catégorie")] [SerializeField] private List<string> typeNames;
     [SerializeField] private TextMeshProUGUI actualTypeName;
 
     [SerializeField] private Sprite[] sexeSprites = new Sprite[2]; // 0 = homme et 1 = femme // TYPE 0
@@ -51,7 +52,9 @@ public class UIManager : MonoBehaviour
 
     [Header("Validation Right Panel")]
     [SerializeField] private List<Image> selectedItemsPictures = new List<Image>(8); // Image.Color à mettre en valeur si n'est pas définitevement validé par le joueur
-    [Tooltip("Contient les accessoires sauvegardé du joueur")][SerializeField] private List<GameObject> savedSelection;
+    [Tooltip("Contient les accessoires sauvegardé du joueur")] [SerializeField] private List<GameObject> savedSelection;
+
+    private PlayerCustomInfo playerCustomInfo;
     #endregion
 
     #region Built In Methods
@@ -62,6 +65,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        playerCustomInfo = FindObjectOfType<PlayerCustomInfo>();
+
         baseSprite = casesImages[0].sprite;
 
         Init();
@@ -125,6 +130,7 @@ public class UIManager : MonoBehaviour
 
         actualTypeName.text = typeNames[typeNum];
 
+        clicCount = 0;
 
         // On affiche les items
         if (typeNum == 0)
@@ -258,6 +264,7 @@ public class UIManager : MonoBehaviour
 
         actualTypeName.text = typeNames[typeNum];
 
+        clicCount = 0;
 
         // On affiche les items
         if (typeNum == 0)
@@ -446,7 +453,7 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Affiche l'item sélectionné sur le personnage
+    /// Affiche l'item sélectionné sur le personnage et l'équipe
     /// </summary>
     public void ShowOnCharacterItem()
     {
@@ -459,18 +466,9 @@ public class UIManager : MonoBehaviour
         }
 
 
-        if (prevSel == null && clicCount == 1)
-        {
-            clicCount = 0;
-        }
-        else if (clicCount >= 2)
-        {
-            clicCount = 1;
-        }
-        else
-        {
-            clicCount++;
-        }
+        if (prevSel == null && clicCount == 1) clicCount = 0;
+        else if (clicCount >= 2) clicCount = 1;
+        else clicCount++;
 
 
         // L'objet est de la même catégorie que le précédent, provient de la même case et à été cliqué deux fois
@@ -520,8 +518,9 @@ public class UIManager : MonoBehaviour
             // Si le type et identique et qu'il y a un item de mis en cache
 
             if (itemSelected != null) itemSelected.SetActive(false);
-            if (savedSelection[typeNum] != null) savedSelection[typeNum].SetActive(false);
         }
+
+        if (savedSelection[typeNum] != null) savedSelection[typeNum].SetActive(false);
 
 
         if (typeNum == 0)
@@ -597,14 +596,6 @@ public class UIManager : MonoBehaviour
         prevN = N;
         prevSel = itemSelected;
     }
-
-    /// <summary>
-    /// Équiper un accessoire
-    /// </summary>
-    public void EquipItem()
-    {
-
-    }
     #endregion
 
 
@@ -614,7 +605,22 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void SaveSelection()
     {
+        // défaire les items save des les listes dans déséquiper 
 
+        for (int i = 0; i < savedSelection.Capacity; i++)
+        {
+            // Pour chaque case non null et encore en couleur (donc non validé)
+            if (savedSelection[i] != null && selectedItemsPictures[i].color == unValidateCol)
+            {
+                playerCustomInfo.itemsValidate[i] = savedSelection[i];
+                selectedItemsPictures[i].color = new Color(255, 255, 255, 255);
+            }
+            else if (savedSelection[i] == null && selectedItemsPictures[i].color == unValidateCol)
+            {
+                playerCustomInfo.itemsValidate[i] = null;
+                selectedItemsPictures[i].color = new Color(255, 255, 255, 255);
+            }
+        }
     }
 
     /// <summary>
@@ -622,7 +628,31 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void UnequipItem()
     {
+        U = caseInfo.caseId;
 
+        if (selectedItemsPictures[U] != null && savedSelection[U] != null)
+        {
+            if (playerCustomInfo.itemsValidate.Contains(savedSelection[U]))
+            {
+                var index = playerCustomInfo.itemsValidate.IndexOf(savedSelection[U]);
+
+                selectedItemsPictures[U].sprite = baseSprite;
+                selectedItemsPictures[U].color = unValidateCol;
+
+                savedSelection[U].SetActive(false);
+                savedSelection[U] = null;
+            }
+            else
+            {
+                //itemSelected
+                selectedItemsPictures[U].sprite = baseSprite;
+                selectedItemsPictures[U].color = new Color(255, 255, 255, 255);
+
+                //savedSelection
+                savedSelection[U].SetActive(false);
+                savedSelection[U] = null;
+            }
+        }
     }
     #endregion
     #endregion
