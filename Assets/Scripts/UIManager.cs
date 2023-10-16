@@ -9,16 +9,25 @@ public class UIManager : MonoBehaviour
     #region Variables
     public static UIManager UIInstance;
 
-    [Tooltip("Les cases vides de base")] [SerializeField] private Image[] casesImages = new Image[6];
+    [Tooltip("Les cases vides de base")][SerializeField] private Image[] casesImages = new Image[6];
+    [HideInInspector] public CaseInfo caseInfo;
     private Sprite baseSprite;
+    private int N;
+    private int clicCount;
+    private int prevType;
+    private int prevN;
+    private GameObject prevSel;
+    private Color unValidateCol = new Color(0, 255, 45, 255);
+
     [SerializeField] private GameObject scrollerType;
 
     [Header("Type Left Panel")]
     private int typeNum;
     private int actualIncrementation;
-    private int itemSelected;
+    private GameObject itemSelected;
+    private Sprite itemSelectedSprite;
 
-    [Tooltip("Nom de la catégorie")] [SerializeField] private List<string> typeNames;
+    [Tooltip("Nom de la catégorie")][SerializeField] private List<string> typeNames;
     [SerializeField] private TextMeshProUGUI actualTypeName;
 
     [SerializeField] private Sprite[] sexeSprites = new Sprite[2]; // 0 = homme et 1 = femme // TYPE 0
@@ -32,7 +41,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Real Items")]
     [SerializeField] private GameObject[] sexeCharacter;
-    [SerializeField] private Material[] skinColorMat; 
+    [SerializeField] private Material[] skinColorMat;
     [SerializeField] private GameObject[] legItems;
     [SerializeField] private GameObject[] bodyItems;
     [SerializeField] private GameObject[] beardItems;
@@ -42,7 +51,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Validation Right Panel")]
     [SerializeField] private List<Image> selectedItemsPictures = new List<Image>(8); // Image.Color à mettre en valeur si n'est pas définitevement validé par le joueur
-    [Tooltip("Contient les accessoires sauvegardé du joueur")] [SerializeField] private List<GameObject> savedSelection;
+    [Tooltip("Contient les accessoires sauvegardé du joueur")][SerializeField] private List<GameObject> savedSelection;
     #endregion
 
     #region Built In Methods
@@ -56,11 +65,6 @@ public class UIManager : MonoBehaviour
         baseSprite = casesImages[0].sprite;
 
         Init();
-    }
-
-    private void Update()
-    {
-        Debug.Log(actualIncrementation);
     }
     #endregion
 
@@ -123,7 +127,6 @@ public class UIManager : MonoBehaviour
 
 
         // On affiche les items
-        //casesImages[0]
         if (typeNum == 0)
         {
             ResetCase();
@@ -257,7 +260,6 @@ public class UIManager : MonoBehaviour
 
 
         // On affiche les items
-        //casesImages[0]
         if (typeNum == 0)
         {
             ResetCase();
@@ -388,7 +390,7 @@ public class UIManager : MonoBehaviour
                 casesImages[i].sprite = hairAndHatSprites[actualIncrementation + i];
             }
         }
-        else if (typeNum == 6 && actualIncrementation > 0) 
+        else if (typeNum == 6 && actualIncrementation > 0)
         {
             ResetCase();
 
@@ -411,24 +413,34 @@ public class UIManager : MonoBehaviour
 
         if (typeNum == 5)
         {
-            ResetCase();
+            var A = (int)(hairAndHatSprites.Length / 6); // permet d'éviter de scroller à l'infini
 
-            actualIncrementation += 6;
-
-            for (int i = 0; i < casesImages.Length && actualIncrementation + i < hairAndHatSprites.Length; i++)
+            if (actualIncrementation + A < hairAndHatSprites.Length)
             {
-                casesImages[i].sprite = hairAndHatSprites[actualIncrementation + i];
+                ResetCase();
+
+                actualIncrementation += 6;
+
+                for (int i = 0; i < casesImages.Length && actualIncrementation + i < hairAndHatSprites.Length; i++)
+                {
+                    casesImages[i].sprite = hairAndHatSprites[actualIncrementation + i];
+                }
             }
         }
         else if (typeNum == 6)
         {
-            ResetCase();
+            var A = (int)(maskSprites.Length / 6); // permet d'éviter de scroller à l'infini
 
-            actualIncrementation += 6;
-
-            for (int i = 0; i < casesImages.Length && actualIncrementation + i < maskSprites.Length; i++)
+            if (actualIncrementation + A < maskSprites.Length)
             {
-                casesImages[i].sprite = maskSprites[actualIncrementation + i];
+                ResetCase();
+
+                actualIncrementation += 6;
+
+                for (int i = 0; i < casesImages.Length && actualIncrementation + i < maskSprites.Length; i++)
+                {
+                    casesImages[i].sprite = maskSprites[actualIncrementation + i];
+                }
             }
         }
     }
@@ -438,7 +450,152 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowOnCharacterItem()
     {
-        // OnMouseOver
+        // N détermine de quelle case il s'agit
+        N = caseInfo.caseId;
+
+        if (actualIncrementation > N)
+        {
+            N += actualIncrementation;
+        }
+
+
+        if (prevSel == null && clicCount == 1)
+        {
+            clicCount = 0;
+        }
+        else if (clicCount >= 2)
+        {
+            clicCount = 1;
+        }
+        else
+        {
+            clicCount++;
+        }
+
+
+        // L'objet est de la même catégorie que le précédent, provient de la même case et à été cliqué deux fois
+        if (clicCount == 2 && prevSel != null && prevType == typeNum && prevN == N) // BUG A FIX ICI
+        {
+            // On sauvegarde le sprite et le gameobjet sélectionné
+
+            //itemSelected
+            selectedItemsPictures[typeNum].sprite = itemSelectedSprite;
+            selectedItemsPictures[typeNum].color = unValidateCol;
+
+            //savedSelection
+            savedSelection[typeNum] = itemSelected;
+            savedSelection[typeNum].SetActive(true);
+
+            clicCount = 0;
+        }
+        else
+        {
+            if (itemSelected != null)
+            {
+                itemSelected.SetActive(false);
+                itemSelected = null;
+            }
+            if (itemSelectedSprite != null) itemSelectedSprite = null;
+
+            // On affiche par défaut les skins validé
+            for (int i = 0; i < savedSelection.Capacity; i++)
+            {
+                if (savedSelection[i] != null) savedSelection[i].SetActive(true);
+            }
+        }
+
+
+        // Si le type précédent est identique, alors on retire l'accessoire sauvegarder pour ne pas en avoir deux d'affiché
+        if (typeNum == prevType && N != prevN)
+        {
+            if (savedSelection[typeNum] != null)
+            {
+                savedSelection[typeNum].SetActive(false);
+            }
+        }
+
+        // Ultime Verif
+        if (typeNum == prevType && prevSel != null)
+        {
+            // Si le type et identique et qu'il y a un item de mis en cache
+
+            if (itemSelected != null) itemSelected.SetActive(false);
+            if (savedSelection[typeNum] != null) savedSelection[typeNum].SetActive(false);
+        }
+
+
+        if (typeNum == 0)
+        {
+            // Pas intégré
+        }
+        else if (typeNum == 1)
+        {
+            // Pas intégré
+        }
+        else if (typeNum == 2)
+        {
+            // Pas intégré
+        }
+        else if (typeNum == 3)
+        {
+            //bodyItems;
+            if (N < bodyItems.Length)
+            {
+                itemSelected = bodyItems[N];
+
+                itemSelected.SetActive(true);
+                itemSelectedSprite = bodySprites[N];
+            }
+            else { itemSelected = null; }
+        }
+        else if (typeNum == 4)
+        {
+            //beardItems;
+            if (N < beardItems.Length)
+            {
+                itemSelected = beardItems[N];
+
+                itemSelected.SetActive(true);
+                itemSelectedSprite = beardSprites[N];
+            }
+        }
+        else if (typeNum == 5)
+        {
+            //hairAndHatItems;
+            if (N < hairAndHatItems.Length)
+            {
+                itemSelected = hairAndHatItems[N];
+
+                itemSelected.SetActive(true);
+                itemSelectedSprite = hairAndHatSprites[N];
+            }
+        }
+        else if (typeNum == 6)
+        {
+            //maskItems;
+            if (N < maskItems.Length)
+            {
+                itemSelected = maskItems[N];
+
+                itemSelected.SetActive(true);
+                itemSelectedSprite = maskSprites[N];
+            }
+        }
+        else if (typeNum == 7)
+        {
+            //utilityItems;
+            if (N < utilityItems.Length)
+            {
+                itemSelected = utilityItems[N];
+
+                itemSelected.SetActive(true);
+                itemSelectedSprite = utilitySprites[N];
+            }
+        }
+
+        prevType = typeNum;
+        prevN = N;
+        prevSel = itemSelected;
     }
 
     /// <summary>
