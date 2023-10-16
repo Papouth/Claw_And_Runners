@@ -766,6 +766,7 @@ GameObject:
   - component: {fileID: 276162942}
   - component: {fileID: 276162941}
   - component: {fileID: 276162940}
+  - component: {fileID: 276162943}
   m_Layer: 5
   m_Name: BTTN Case 3
   m_TagString: Untagged
@@ -835,7 +836,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 276162941}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 276162943}
+        m_TargetAssemblyTypeName: CaseInfo, Assembly-CSharp
+        m_MethodName: SetUIVariable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1448617737}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ShowOnCharacterItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &276162941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -874,6 +899,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276162938}
   m_CullTransparentMesh: 1
+--- !u!114 &276162943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276162938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4976eb3053fa270448274fde38022b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caseId: 2
+  UImanager: {fileID: 1448617737}
 --- !u!1 &285602342 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1763366611001454, guid: 4e45afc0577b26842ade918da7835882, type: 3}
@@ -2885,6 +2924,7 @@ GameObject:
   - component: {fileID: 849375743}
   - component: {fileID: 849375742}
   - component: {fileID: 849375741}
+  - component: {fileID: 849375744}
   m_Layer: 5
   m_Name: BTTN Case 5
   m_TagString: Untagged
@@ -2954,7 +2994,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 849375742}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 849375744}
+        m_TargetAssemblyTypeName: CaseInfo, Assembly-CSharp
+        m_MethodName: SetUIVariable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1448617737}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ShowOnCharacterItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &849375742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2993,6 +3057,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849375739}
   m_CullTransparentMesh: 1
+--- !u!114 &849375744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849375739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4976eb3053fa270448274fde38022b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caseId: 4
+  UImanager: {fileID: 1448617737}
 --- !u!1 &855129330
 GameObject:
   m_ObjectHideFlags: 0
@@ -3389,6 +3467,7 @@ GameObject:
   - component: {fileID: 981050454}
   - component: {fileID: 981050453}
   - component: {fileID: 981050452}
+  - component: {fileID: 981050455}
   m_Layer: 5
   m_Name: BTTN Case 4
   m_TagString: Untagged
@@ -3458,7 +3537,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 981050453}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 981050455}
+        m_TargetAssemblyTypeName: CaseInfo, Assembly-CSharp
+        m_MethodName: SetUIVariable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1448617737}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ShowOnCharacterItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &981050453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3497,6 +3600,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 981050450}
   m_CullTransparentMesh: 1
+--- !u!114 &981050455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981050450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4976eb3053fa270448274fde38022b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caseId: 3
+  UImanager: {fileID: 1448617737}
 --- !u!1 &1047138304 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1852784215551062, guid: dcae944209e7dc44780a76d028db8e91, type: 3}
@@ -4345,6 +4462,7 @@ GameObject:
   - component: {fileID: 1241856335}
   - component: {fileID: 1241856334}
   - component: {fileID: 1241856333}
+  - component: {fileID: 1241856336}
   m_Layer: 5
   m_Name: BTTN Case 2
   m_TagString: Untagged
@@ -4414,7 +4532,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1241856334}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1241856336}
+        m_TargetAssemblyTypeName: CaseInfo, Assembly-CSharp
+        m_MethodName: SetUIVariable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1448617737}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ShowOnCharacterItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1241856334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4453,6 +4595,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241856331}
   m_CullTransparentMesh: 1
+--- !u!114 &1241856336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1241856331}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4976eb3053fa270448274fde38022b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caseId: 1
+  UImanager: {fileID: 1448617737}
 --- !u!1001 &1304315427
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4727,6 +4883,7 @@ GameObject:
   - component: {fileID: 1422337803}
   - component: {fileID: 1422337802}
   - component: {fileID: 1422337801}
+  - component: {fileID: 1422337804}
   m_Layer: 5
   m_Name: BTTN Case 6
   m_TagString: Untagged
@@ -4796,7 +4953,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1422337802}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1422337804}
+        m_TargetAssemblyTypeName: CaseInfo, Assembly-CSharp
+        m_MethodName: SetUIVariable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1448617737}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ShowOnCharacterItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1422337802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4835,6 +5016,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1422337799}
   m_CullTransparentMesh: 1
+--- !u!114 &1422337804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1422337799}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4976eb3053fa270448274fde38022b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caseId: 5
+  UImanager: {fileID: 1448617737}
 --- !u!1 &1448617732
 GameObject:
   m_ObjectHideFlags: 0
@@ -4957,6 +5152,7 @@ MonoBehaviour:
   - {fileID: 981050453}
   - {fileID: 849375742}
   - {fileID: 1422337802}
+  caseInfo: {fileID: 0}
   scrollerType: {fileID: 336312620}
   typeNames:
   - Sexe
@@ -5025,7 +5221,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: c8fd3af8d0a3a3f458a5d69ee424898e, type: 3}
   - {fileID: 21300000, guid: 050da70cefa227743837f4d0d4c9e763, type: 3}
   - {fileID: 21300000, guid: 13a55060fc2fbd84a90a0328de524b50, type: 3}
-  sexeCharacter: []
+  sexeCharacter:
+  - {fileID: 0}
+  - {fileID: 0}
   skinColorMat: []
   legItems: []
   bodyItems:
@@ -6064,6 +6262,7 @@ GameObject:
   - component: {fileID: 1883755925}
   - component: {fileID: 1883755924}
   - component: {fileID: 1883755923}
+  - component: {fileID: 1883755926}
   m_Layer: 5
   m_Name: BTTN Case 1
   m_TagString: Untagged
@@ -6133,7 +6332,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1883755924}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1883755926}
+        m_TargetAssemblyTypeName: CaseInfo, Assembly-CSharp
+        m_MethodName: SetUIVariable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1448617737}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: ShowOnCharacterItem
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1883755924
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6172,6 +6395,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883755921}
   m_CullTransparentMesh: 1
+--- !u!114 &1883755926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883755921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4976eb3053fa270448274fde38022b86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  caseId: 0
+  UImanager: {fileID: 1448617737}
 --- !u!1001 &1897083574
 PrefabInstance:
   m_ObjectHideFlags: 0
