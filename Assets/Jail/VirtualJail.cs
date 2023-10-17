@@ -7,7 +7,6 @@ public class VirtualJail : MonoBehaviour
 {
     #region Vairables
     [SerializeField] private GameObject debugSphere;
-    [SerializeField] private GameObject debugTwo;
     [SerializeField] private GameObject jailParent;
     [SerializeField] private int numDebugSpheres;
     [SerializeField] private float distanceFromPlayer;
@@ -29,12 +28,17 @@ public class VirtualJail : MonoBehaviour
 
     private void Update()
     {
-        if (inputManager.CanSelect && !prisonOn) CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius*2f), transform.position.z), distanceFromPlayer);
+        if (inputManager.CanSelect && !prisonOn)
+        {
+            CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
+            prisonOn = true;
+            Debug.Log("passe");
+        }
     }
 
     private void CreateDebugJail(int num, Vector3 point, float radius)
     {
-        if (cloneJail != null) Destroy(cloneJail);
+        //if (cloneJail != null) Destroy(cloneJail);
 
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
 
@@ -80,6 +84,6 @@ public class VirtualJail : MonoBehaviour
             lineRenderer.SetPosition(a, spheresList[a].transform.position);
         }
 
-        prisonOn = true;   
+        //prisonOn = true;   
     }
 }
