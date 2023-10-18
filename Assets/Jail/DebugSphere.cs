@@ -9,6 +9,7 @@ public class DebugSphere : MonoBehaviour
     private Rigidbody rb;
     private MeshRenderer mr;
     private SphereCollider sphereCollider;
+    private float rad;
     #endregion
 
 
@@ -19,17 +20,30 @@ public class DebugSphere : MonoBehaviour
         mr = GetComponent<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
 
+        rad = sphereCollider.radius;
+
         Invoke("StopMotion", 2f);
     }
 
     private void Update()
     {
         if (!isValid) transform.Translate(-Vector3.forward * Time.deltaTime);
+
+        CheckGround();
     }
     #endregion
 
 
     #region Customs Methods
+    private void CheckGround()
+    {
+        if (!Physics.Raycast(transform.position, Vector3.down, rad * 2f) && !isValid)
+        {
+            Debug.Log("hors sol");
+            StopMotion();
+        }
+    }
+
     private void StopMotion()
     {
         isValid = true;
