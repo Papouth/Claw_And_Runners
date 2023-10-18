@@ -32,14 +32,11 @@ public class VirtualJail : MonoBehaviour
         {
             CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
             prisonOn = true;
-            Debug.Log("passe");
         }
     }
 
     private void CreateDebugJail(int num, Vector3 point, float radius)
     {
-        //if (cloneJail != null) Destroy(cloneJail);
-
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
 
         lineRenderer = cloneJail.GetComponent<LineRenderer>();
@@ -82,8 +79,36 @@ public class VirtualJail : MonoBehaviour
         for (int a = 0; a < spheresList.Count; a++)
         {
             lineRenderer.SetPosition(a, spheresList[a].transform.position);
+            Destroy(spheresList[a].GetComponent<SphereCollider>());
+
+            var bCol = spheresList[a].AddComponent<BoxCollider>();
+            bCol.transform.localScale = new Vector3(0.08f, 30, 0.08f);
+
+            bCol.transform.gameObject.layer = 13;
         }
 
-        //prisonOn = true;   
+        // Opti
+        lineRenderer.Simplify(0.01f);
+
+        CheckSurface();
+    }
+
+    private void CheckSurface()
+    {
+        var numS = (spheresList.Count / 4);
+        Debug.Log(spheresList.Count);
+        Debug.Log(numS);
+
+        float distance = Vector3.Distance(spheresList[0].transform.position, spheresList[numS * 2].transform.position);
+        float distance2 = Vector3.Distance(spheresList[numS].transform.position, spheresList[spheresList.Count-1].transform.position);
+
+        if (distance <= 0.8f || distance2 <= 0.8f)
+        {
+            Debug.Log("mur trop rapproché");
+
+            Destroy(cloneJail);
+
+            prisonOn = true;
+        }
     }
 }
