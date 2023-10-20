@@ -18,6 +18,7 @@ public class VirtualJail : MonoBehaviour
     private bool prisonOn;
     private LineRenderer lineRenderer;
     private InputManager inputManager;
+    private BoxCollider bCol;
     #endregion
 
 
@@ -30,6 +31,7 @@ public class VirtualJail : MonoBehaviour
     {
         if (inputManager.CanSelect && !prisonOn)
         {
+            inputManager.CanSelect = false;
             CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
             prisonOn = true;
         }
@@ -69,7 +71,7 @@ public class VirtualJail : MonoBehaviour
             cloneSphere.transform.LookAt(point);
         }
 
-        Invoke("SetLineRenderer", 2f);
+        Invoke("SetLineRenderer", 0.5f);
     }
 
     private void SetLineRenderer()
@@ -81,7 +83,7 @@ public class VirtualJail : MonoBehaviour
             lineRenderer.SetPosition(a, spheresList[a].transform.position);
             Destroy(spheresList[a].GetComponent<SphereCollider>());
 
-            var bCol = spheresList[a].AddComponent<BoxCollider>();
+            bCol = spheresList[a].AddComponent<BoxCollider>();
             bCol.transform.localScale = new Vector3(0.08f, 30, 0.08f);
 
             bCol.transform.gameObject.layer = 13;
@@ -96,19 +98,57 @@ public class VirtualJail : MonoBehaviour
     private void CheckSurface()
     {
         var numS = (spheresList.Count / 4);
-        Debug.Log(spheresList.Count);
-        Debug.Log(numS);
 
         float distance = Vector3.Distance(spheresList[0].transform.position, spheresList[numS * 2].transform.position);
-        float distance2 = Vector3.Distance(spheresList[numS].transform.position, spheresList[spheresList.Count-1].transform.position);
+        float distance2 = Vector3.Distance(spheresList[numS].transform.position, spheresList[spheresList.Count - 1].transform.position);
 
         if (distance <= 0.8f || distance2 <= 0.8f)
         {
             Debug.Log("mur trop rapproché");
 
+            spheresList.Clear();
             Destroy(cloneJail);
 
-            prisonOn = true;
+            // Possibilité de reposer une prison si la précédente n'est pas valide
+            prisonOn = false;
         }
+        else
+        {
+            // On rebouche les trous
+            for (int i = 0; i < spheresList.Count; i++)
+            {
+                if (i < spheresList.Count - 1)
+                {
+                    float dist = Vector3.Distance(spheresList[i].transform.position, spheresList[i + 1].transform.position);
+
+                    if (dist >= 0.5f)
+                    {
+                        // Le Vecteur Forward est dirigé vers la sphère suivante
+                        spheresList[i].transform.LookAt(spheresList[i + 1].transform);
+
+                        bCol = spheresList[i].GetComponent<BoxCollider>();
+                        bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
+                        bCol.center = new Vector3(0f, 0f, dist/2f);
+                    }
+                }
+                else if (i == spheresList.Count - 1)
+                {
+                    float dist = Vector3.Distance(spheresList[i].transform.position, spheresList[0].transform.position);
+
+                    if (dist >= 0.5f)
+                    {
+                        // Le Vecteur Forward est dirigé vers la sphère suivante
+                        spheresList[i].transform.LookAt(spheresList[0].transform);
+
+                        bCol = spheresList[i].GetComponent<BoxCollider>();
+                        bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
+                        bCol.center = new Vector3(0f, 0f, dist / 2f);
+                    }
+                }
+            }
+        }
+
+
+        // Ici après on fera le call du server RPC
     }
 }

@@ -10,24 +10,26 @@ public class DebugSphere : MonoBehaviour
     private MeshRenderer mr;
     private SphereCollider sphereCollider;
     private float rad;
+    private float speed;
     #endregion
 
 
     #region Built in Methods
     private void Start()
     {
+        speed = 4f;
         sphereCollider = GetComponent<SphereCollider>();
         mr = GetComponent<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
 
         rad = sphereCollider.radius;
 
-        Invoke("StopMotion", 2f);
+        Invoke("StopMotion", 2f/speed);
     }
 
     private void Update()
     {
-        if (!isValid) transform.Translate(-Vector3.forward * Time.deltaTime);
+        if (!isValid) transform.Translate(-Vector3.forward * Time.deltaTime * speed);
 
         CheckGround();
     }
