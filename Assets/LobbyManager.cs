@@ -20,6 +20,12 @@ public class LobbyManager : MonoBehaviour
     private string inputCode;
     private string playerName;
     [SerializeField] private TextMeshProUGUI IDText;
+    [Tooltip("Nom Temporaire")] [SerializeField] private TextMeshProUGUI namePlaceHolder;
+
+    [Header("UI Panels")]
+    [SerializeField] private GameObject lobbyMenu;
+    [SerializeField] private GameObject createLobbyMenu;
+    [SerializeField] private GameObject insideLobbyMenu;
     #endregion
 
     #region Built In Methods
@@ -36,8 +42,14 @@ public class LobbyManager : MonoBehaviour
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
         playerName = "FunkyPlayer" + Random.Range(10, 99);
+        namePlaceHolder.text = playerName;
 
         Debug.Log(playerName);
+
+
+        lobbyMenu.SetActive(true);
+        createLobbyMenu.SetActive(false);
+        insideLobbyMenu.SetActive(false);
     }
 
     private void Update()
@@ -50,6 +62,27 @@ public class LobbyManager : MonoBehaviour
 
 
     #region Customs Methods
+    public void PanelCreationLobby()
+    {
+        createLobbyMenu.SetActive(true);
+        lobbyMenu.SetActive(false);
+        insideLobbyMenu.SetActive(false);
+    }
+
+    public void PanelInsideLobby()
+    {
+        insideLobbyMenu.SetActive(true);
+        createLobbyMenu.SetActive(false);
+        lobbyMenu.SetActive(false);
+    }
+
+    public void PanelMenuLobby()
+    {
+        lobbyMenu.SetActive(true);
+        createLobbyMenu.SetActive(false);
+        insideLobbyMenu.SetActive(false);
+    }
+
     /// <summary>
     /// Permet au joueur de personnaliser son nom
     /// </summary>
@@ -96,10 +129,14 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Créer un lobby
+    /// </summary>
     public async void CreateLobby()
     {
         try
         {
+            // Permet de changer les options du lobby avant de le créer
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
                 IsPrivate = true,
@@ -129,6 +166,9 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Liste les lobbys existants
+    /// </summary>
     public async void ListLobbies()
     {
         try
@@ -148,6 +188,10 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Rejoindre un lobby existant via un code de lobby
+    /// </summary>
+    /// <param name="lobbyCode"></param>
     public async void JoinLobbyByCode(string lobbyCode)
     {
         try
@@ -171,6 +215,7 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    #region Debug Player
     private Player GetPlayer()
     {
         return new Player
@@ -209,6 +254,8 @@ public class LobbyManager : MonoBehaviour
             Debug.Log(e);
         }
     }
+    #endregion
+
 
     /// <summary>
     /// Permet de quitter le salon
@@ -225,5 +272,19 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Permet de supprimer le lobby
+    /// </summary>
+    public async void DeleteLobby()
+    {
+        try
+        {
+            await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+        }
+        catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
     #endregion
 }
