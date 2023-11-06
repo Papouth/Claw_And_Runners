@@ -11,6 +11,7 @@ public class LobbyManager : MonoBehaviour
 {
     #region Variables
     [SerializeField] private string lobbyName = "Default Lobby";
+    private string customLobbyName = "";
     [SerializeField] private int maxPlayers = 4;
 
     private float hearbeatTimer;
@@ -20,12 +21,17 @@ public class LobbyManager : MonoBehaviour
     private string inputCode;
     private string playerName;
     [SerializeField] private TextMeshProUGUI IDText;
-    [Tooltip("Nom Temporaire")] [SerializeField] private TextMeshProUGUI namePlaceHolder;
+    [Tooltip("Nom Temporaire Joueur")][SerializeField] private TextMeshProUGUI namePlaceHolder;
+    [Tooltip("Nom Temporaire Lobby")][SerializeField] private TextMeshProUGUI lobbyNamePlaceHolder;
+    [SerializeField] private TextMeshProUGUI lobbyNameText;
+    [SerializeField] private TextMeshProUGUI lobbyCodeDisplay;
 
     [Header("UI Panels")]
     [SerializeField] private GameObject lobbyMenu;
     [SerializeField] private GameObject createLobbyMenu;
     [SerializeField] private GameObject insideLobbyMenu;
+
+    [SerializeField] private List<string> lobbyNamesList = new List<string>();
     #endregion
 
     #region Built In Methods
@@ -35,7 +41,7 @@ public class LobbyManager : MonoBehaviour
 
         AuthenticationService.Instance.SignedIn += () =>
         {
-            //IDText.text = AuthenticationService.Instance.PlayerId.ToString();
+            IDText.text = AuthenticationService.Instance.PlayerId.ToString();
             Debug.Log("Signed in" + AuthenticationService.Instance.PlayerId);
         };
 
@@ -64,6 +70,7 @@ public class LobbyManager : MonoBehaviour
     #region Customs Methods
     public void PanelCreationLobby()
     {
+        SetLobbyNameDefault();
         createLobbyMenu.SetActive(true);
         lobbyMenu.SetActive(false);
         insideLobbyMenu.SetActive(false);
@@ -81,6 +88,25 @@ public class LobbyManager : MonoBehaviour
         lobbyMenu.SetActive(true);
         createLobbyMenu.SetActive(false);
         insideLobbyMenu.SetActive(false);
+    }
+
+    /// <summary>
+    /// Permet au joueur de changer le nom du lobby
+    /// </summary>
+    /// <param name="lobbyCustomName"></param>
+    public void ChooseLobbyName(string lobbyCustomName)
+    {
+        lobbyName = lobbyCustomName;
+    }
+
+    /// <summary>
+    /// Permet de set le nom du lobby
+    /// </summary>
+    public void SetLobbyNameDefault()
+    {
+        customLobbyName = lobbyNamesList[Random.Range(0, lobbyNamesList.Count)];
+        lobbyNamePlaceHolder.text = customLobbyName;
+        lobbyName = customLobbyName;
     }
 
     /// <summary>
@@ -139,7 +165,8 @@ public class LobbyManager : MonoBehaviour
             // Permet de changer les options du lobby avant de le créer
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
-                IsPrivate = true,
+                // Mettre en true pour rejoindre par code
+                IsPrivate = false,
 
                 Player = new Player
                 {
@@ -157,6 +184,7 @@ public class LobbyManager : MonoBehaviour
             PrintPlayers(hostLobby);
 
             IDText.text = joinedLobby.LobbyCode;
+            lobbyCodeDisplay.text =  joinedLobby.LobbyCode;
 
             Debug.Log("Created Lobby ! " + "Nom du Lobby : " + joinedLobby.Name + " | Nombre de Joueurs Max : " + joinedLobby.MaxPlayers + " | ID du Lobby : " + joinedLobby.Id + " | Code : " + joinedLobby.LobbyCode);
         }
