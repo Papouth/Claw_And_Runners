@@ -9,5 +9,6 @@ public class LobbyDisplayer : MonoBehaviour
     public TextMeshProUGUI maxNumPlayerInLobby;
     public TextMeshProUGUI activeLobbyName;
 
-
+    public string codeLobby;
+    public string idLobby;
 }
