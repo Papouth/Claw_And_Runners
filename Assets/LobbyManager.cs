@@ -6,6 +6,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Services.Lobbies.Models;
 using TMPro;
+using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
@@ -26,6 +27,10 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI lobbyNameText;
     [SerializeField] private TextMeshProUGUI lobbyCodeDisplay;
 
+    [Header("Lobby Parameters")]
+    private bool stateLobby;
+    [SerializeField] private TextMeshProUGUI lobbyStateText;
+
     [Header("UI Panels")]
     [SerializeField] private GameObject lobbyMenu;
     [SerializeField] private GameObject createLobbyMenu;
@@ -38,10 +43,17 @@ public class LobbyManager : MonoBehaviour
     private LobbyDisplayer lobbyDisplayer;
     private int countDisplayer;
     private List<GameObject> cloneDisplayerObj = new List<GameObject>();
+    private Button buttonLobbyDisplay;
 
     #endregion
 
     #region Built In Methods
+    private void Awake()
+    {
+        playerName = "FunkyPlayer" + Random.Range(10, 99);
+        namePlaceHolder.text = playerName;
+    }
+
     private async void Start()
     {
         await UnityServices.InitializeAsync();
@@ -49,16 +61,12 @@ public class LobbyManager : MonoBehaviour
         AuthenticationService.Instance.SignedIn += () =>
         {
             IDText.text = AuthenticationService.Instance.PlayerId.ToString();
-            Debug.Log("Signed in" + AuthenticationService.Instance.PlayerId);
+            //Debug.Log("Signed in" + AuthenticationService.Instance.PlayerId);
         };
 
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
-        playerName = "FunkyPlayer" + Random.Range(10, 99);
-        namePlaceHolder.text = playerName;
-
-        Debug.Log(playerName);
-
+        //Debug.Log(playerName);
 
         lobbyMenu.SetActive(true);
         createLobbyMenu.SetActive(false);
@@ -163,6 +171,23 @@ public class LobbyManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Mettre un lobby en public ou en privé
+    /// </summary>
+    public void ChangeLobbyState()
+    {
+        stateLobby = !stateLobby;
+        
+        if (stateLobby)
+        {
+            lobbyStateText.text = "PRIVATE";
+        }
+        else if (!stateLobby)
+        {
+            lobbyStateText.text = "PUBLIC";
+        }
+    }
+
+    /// <summary>
     /// Créer un lobby
     /// </summary>
     public async void CreateLobby()
@@ -172,8 +197,8 @@ public class LobbyManager : MonoBehaviour
             // Permet de changer les options du lobby avant de le créer
             CreateLobbyOptions createLobbyOptions = new CreateLobbyOptions
             {
-                // Mettre en true pour rejoindre par code
-                IsPrivate = false,
+                // Mettre en true pour rejoindre par code | false pour être en publique
+                IsPrivate = stateLobby,
 
                 Player = new Player
                 {
@@ -190,7 +215,6 @@ public class LobbyManager : MonoBehaviour
 
             PrintPlayers(hostLobby);
 
-            IDText.text = joinedLobby.LobbyCode;
             lobbyCodeDisplay.text = joinedLobby.LobbyCode;
 
             //Debug.Log("Created Lobby ! " + "Nom du Lobby : " + joinedLobby.Name + " | Nombre de Joueurs Max : " + joinedLobby.MaxPlayers + " | ID du Lobby : " + joinedLobby.Id + " | Code : " + joinedLobby.LobbyCode);
@@ -248,9 +272,39 @@ public class LobbyManager : MonoBehaviour
                 lobbyDisplayer.numPlayerInLobby.text = lobby.Players.Count.ToString();
                 lobbyDisplayer.maxNumPlayerInLobby.text = lobby.MaxPlayers.ToString();
                 lobbyDisplayer.activeLobbyName.text = lobby.Name.ToString();
+
+                buttonLobbyDisplay = clone.GetComponent<Button>();
+
+                lobbyDisplayer.idLobby = lobby.Id;
+                Debug.Log(lobby.Id);
+
+                buttonLobbyDisplay.onClick.AddListener(() => { JoinLobbyOnClick(lobby.Id); });
             }
         }
         catch (LobbyServiceException e)
+        {
+            Debug.Log(e);
+        }
+    }
+
+    public async void JoinLobbyOnClick(string id)
+    {
+        try 
+        {
+            JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
+            {
+                Player = GetPlayer()
+            };
+
+            Lobby joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(id, joinLobbyByCodeOptions);
+
+            Debug.Log("Joined Lobby with code " + lobbyDisplayer.idLobby);
+
+            PanelInsideLobby();
+
+            PrintPlayers(joinedLobby);
+        }
+        catch (LobbyServiceException e) 
         {
             Debug.Log(e);
         }
@@ -274,6 +328,8 @@ public class LobbyManager : MonoBehaviour
             Lobby joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(inputCode, joinLobbyByCodeOptions);
 
             Debug.Log("Joined Lobby with code " + inputCode);
+
+            PanelInsideLobby();
 
             PrintPlayers(joinedLobby);
         }
