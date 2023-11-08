@@ -31,7 +31,14 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private GameObject createLobbyMenu;
     [SerializeField] private GameObject insideLobbyMenu;
 
+    [Header("Lobby Listing")]
     [SerializeField] private List<string> lobbyNamesList = new List<string>();
+    [SerializeField] private GameObject bttnLobbyDisplayer;
+    [SerializeField] private Transform canvas;
+    private LobbyDisplayer lobbyDisplayer;
+    private int countDisplayer;
+    private List<GameObject> cloneDisplayerObj = new List<GameObject>();
+
     #endregion
 
     #region Built In Methods
@@ -184,9 +191,9 @@ public class LobbyManager : MonoBehaviour
             PrintPlayers(hostLobby);
 
             IDText.text = joinedLobby.LobbyCode;
-            lobbyCodeDisplay.text =  joinedLobby.LobbyCode;
+            lobbyCodeDisplay.text = joinedLobby.LobbyCode;
 
-            Debug.Log("Created Lobby ! " + "Nom du Lobby : " + joinedLobby.Name + " | Nombre de Joueurs Max : " + joinedLobby.MaxPlayers + " | ID du Lobby : " + joinedLobby.Id + " | Code : " + joinedLobby.LobbyCode);
+            //Debug.Log("Created Lobby ! " + "Nom du Lobby : " + joinedLobby.Name + " | Nombre de Joueurs Max : " + joinedLobby.MaxPlayers + " | ID du Lobby : " + joinedLobby.Id + " | Code : " + joinedLobby.LobbyCode);
         }
         catch (LobbyServiceException e)
         {
@@ -201,13 +208,46 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
+            foreach (var item in cloneDisplayerObj)
+            {
+                Destroy(item);
+            }
+            cloneDisplayerObj.Clear();
+
             QueryResponse queryResponse = await Lobbies.Instance.QueryLobbiesAsync();
 
-            Debug.Log("Lobbies found : " + queryResponse.Results.Count);
+            //Debug.Log("Lobbies found : " + queryResponse.Results.Count);
+
+            countDisplayer = -1;
 
             foreach (Lobby lobby in queryResponse.Results)
             {
-                Debug.Log(lobby.Name + " | " + lobby.MaxPlayers);
+                countDisplayer++;
+
+                //Debug.Log(lobby.Name + " | " + lobby.MaxPlayers);
+
+                var clone = Instantiate(bttnLobbyDisplayer, canvas);
+                cloneDisplayerObj.Add(clone);
+
+                clone.transform.position = new Vector3(clone.transform.position.x -550, clone.transform.position.y + 400, 0);
+
+                if (countDisplayer > 0)
+                {
+                    int multiplier = 0;
+
+                    for (int i = 1; i < queryResponse.Results.Count; i++)
+                    {
+                        multiplier++;
+                        
+                        clone.transform.position += new Vector3(0, - 100 * multiplier, 0);  
+                    }
+                }
+
+                lobbyDisplayer = clone.GetComponent<LobbyDisplayer>();
+
+                lobbyDisplayer.numPlayerInLobby.text = lobby.Players.Count.ToString();
+                lobbyDisplayer.maxNumPlayerInLobby.text = lobby.MaxPlayers.ToString();
+                lobbyDisplayer.activeLobbyName.text = lobby.Name.ToString();
             }
         }
         catch (LobbyServiceException e)
