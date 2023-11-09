@@ -30,6 +30,16 @@ public class LobbyManager : MonoBehaviour
     [Header("Lobby Parameters")]
     private bool stateLobby;
     [SerializeField] private TextMeshProUGUI lobbyStateText;
+    [SerializeField] private TextMeshProUGUI maxPlayersInLobbyText;
+    private int increm;
+    private int basePlayerNumber = 4;
+
+    [Header("Inside Lobby")]
+    [SerializeField] private TextMeshProUGUI insideLobbyName;
+    [SerializeField] private TextMeshProUGUI actualPlayersInsideLobby;
+    [SerializeField] private TextMeshProUGUI maxPlayersInsideLobby;
+    [SerializeField] private TextMeshProUGUI[] namesPlayersInsideLobby;
+    private int numP;
 
     [Header("UI Panels")]
     [SerializeField] private GameObject lobbyMenu;
@@ -52,6 +62,13 @@ public class LobbyManager : MonoBehaviour
     {
         playerName = "FunkyPlayer" + Random.Range(10, 99);
         namePlaceHolder.text = playerName;
+        increm = 0;
+        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
+
+        foreach (var item in namesPlayersInsideLobby)
+        {
+            item.text = "";
+        }
     }
 
     private async void Start()
@@ -130,8 +147,35 @@ public class LobbyManager : MonoBehaviour
     public void ChooseName(string customName)
     {
         playerName = customName;
-        UpdatePlayerName(customName);
     }
+
+    #region Set maximum players in lobby
+    // 4 to 8 players
+
+    public void AddMorePlayer()
+    {
+        basePlayerNumber = 4;
+        increm++;
+
+        if (increm > 4) increm = 4;
+
+        basePlayerNumber = basePlayerNumber + increm;
+        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
+        maxPlayers = basePlayerNumber;
+    }
+
+    public void AddLessPlayer()
+    {
+        basePlayerNumber = 4;
+        increm--;
+
+        if (increm < -4) increm = -4;
+
+        basePlayerNumber = basePlayerNumber + increm;
+        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
+        maxPlayers = basePlayerNumber;
+    }
+    #endregion
 
     /// <summary>
     /// Permet de laisser en vie le salon créé
@@ -158,6 +202,13 @@ public class LobbyManager : MonoBehaviour
     {
         if (joinedLobby != null)
         {
+            // Lobby Data
+            actualPlayersInsideLobby.text = joinedLobby.Players.Count.ToString();
+            maxPlayersInsideLobby.text = joinedLobby.MaxPlayers.ToString();
+            insideLobbyName.text = joinedLobby.Name;
+            lobbyCodeDisplay.text = joinedLobby.LobbyCode;
+
+
             lobbyUpdateTimer -= Time.deltaTime;
             if (lobbyUpdateTimer < 0f)
             {
@@ -166,6 +217,8 @@ public class LobbyManager : MonoBehaviour
 
                 Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
                 joinedLobby = lobby;
+
+                PrintPlayers(joinedLobby);
             }
         }
     }
@@ -218,6 +271,9 @@ public class LobbyManager : MonoBehaviour
             lobbyCodeDisplay.text = joinedLobby.LobbyCode;
 
             //Debug.Log("Created Lobby ! " + "Nom du Lobby : " + joinedLobby.Name + " | Nombre de Joueurs Max : " + joinedLobby.MaxPlayers + " | ID du Lobby : " + joinedLobby.Id + " | Code : " + joinedLobby.LobbyCode);
+
+            //insideLobbyName.text = joinedLobby.Name;
+            //maxPlayersInsideLobby.text = joinedLobby.MaxPlayers.ToString();
         }
         catch (LobbyServiceException e)
         {
@@ -250,7 +306,7 @@ public class LobbyManager : MonoBehaviour
 
                 //Debug.Log(lobby.Name + " | " + lobby.MaxPlayers);
 
-                var clone = Instantiate(bttnLobbyDisplayer, canvas);
+                var clone = Instantiate(bttnLobbyDisplayer, lobbyMenu.transform);
                 cloneDisplayerObj.Add(clone);
 
                 clone.transform.position = new Vector3(clone.transform.position.x -550, clone.transform.position.y + 400, 0);
@@ -358,29 +414,21 @@ public class LobbyManager : MonoBehaviour
     private void PrintPlayers(Lobby lobby)
     {
         Debug.Log("Players in Lobby : " + lobby.Name);
+        
+        for (int i = 0; i < namesPlayersInsideLobby.Length; i++)
+        {
+            namesPlayersInsideLobby[i].text = "";
+        }
 
         foreach (Player player in lobby.Players)
         {
+            namesPlayersInsideLobby[numP].text = player.Data["PlayerName"].Value.ToString();
+            numP++;
+
             Debug.Log(player.Id + " | " + player.Data["PlayerName"].Value);
         }
-    }
 
-    private async void UpdatePlayerName(string newPlayerName)
-    {
-        try
-        {
-            playerName = newPlayerName;
-            await LobbyService.Instance.UpdatePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId, new UpdatePlayerOptions
-            {
-                Data = new Dictionary<string, PlayerDataObject> {
-                    { "PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName) }
-                }
-            });
-        }
-        catch (LobbyServiceException e)
-        {
-            Debug.Log(e);
-        }
+        numP = 0;
     }
     #endregion
 
@@ -393,6 +441,10 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+
+            joinedLobby = null;
+
+            PanelMenuLobby();
         }
         catch (LobbyServiceException e)
         {
