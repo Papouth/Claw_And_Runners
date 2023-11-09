@@ -275,10 +275,7 @@ public class LobbyManager : MonoBehaviour
 
                 buttonLobbyDisplay = clone.GetComponent<Button>();
 
-                lobbyDisplayer.idLobby = lobby.Id;
-                Debug.Log(lobby.Id);
-
-                buttonLobbyDisplay.onClick.AddListener(() => { JoinLobbyOnClick(lobby.Id); });
+                buttonLobbyDisplay.onClick.AddListener(() => { JoinLobbyOnClick(lobby); });
             }
         }
         catch (LobbyServiceException e)
@@ -287,22 +284,29 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
-    public async void JoinLobbyOnClick(string id)
+    /// <summary>
+    /// Rejoindre un lobby publique via un boutton
+    /// </summary>
+    /// <param name="lobby"></param>
+    public async void JoinLobbyOnClick(Lobby lobby)
     {
         try 
         {
-            JoinLobbyByCodeOptions joinLobbyByCodeOptions = new JoinLobbyByCodeOptions
-            {
-                Player = GetPlayer()
-            };
+            Player player = GetPlayer();
 
-            Lobby joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(id, joinLobbyByCodeOptions);
-
-            Debug.Log("Joined Lobby with code " + lobbyDisplayer.idLobby);
+            joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions {
+                Player = player
+            });
 
             PanelInsideLobby();
 
             PrintPlayers(joinedLobby);
+
+            foreach (var item in cloneDisplayerObj)
+            {
+                Destroy(item);
+            }
+            cloneDisplayerObj.Clear();
         }
         catch (LobbyServiceException e) 
         {
