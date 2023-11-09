@@ -526,19 +526,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2498308690332622179}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1371334082497169666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -554,6 +542,8 @@ MonoBehaviour:
   numPlayerInLobby: {fileID: 3213680416811009470}
   maxNumPlayerInLobby: {fileID: 3073552852789846898}
   activeLobbyName: {fileID: 2350746064059214830}
+  codeLobby: 
+  idLobby: 
 --- !u!1 &6298582644594010323
 GameObject:
   m_ObjectHideFlags: 0
