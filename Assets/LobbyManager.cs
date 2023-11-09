@@ -55,6 +55,11 @@ public class LobbyManager : MonoBehaviour
     private List<GameObject> cloneDisplayerObj = new List<GameObject>();
     private Button buttonLobbyDisplay;
 
+    [Header("In Game")]
+    private bool gameStarted;
+    [SerializeField] private TextMeshProUGUI[] copsPlayerName;
+    [SerializeField] private TextMeshProUGUI[] runnersPlayerName;
+
     #endregion
 
     #region Built In Methods
@@ -203,11 +208,13 @@ public class LobbyManager : MonoBehaviour
         if (joinedLobby != null)
         {
             // Lobby Data
-            actualPlayersInsideLobby.text = joinedLobby.Players.Count.ToString();
-            maxPlayersInsideLobby.text = joinedLobby.MaxPlayers.ToString();
-            insideLobbyName.text = joinedLobby.Name;
-            lobbyCodeDisplay.text = joinedLobby.LobbyCode;
-
+            if (!gameStarted)
+            {
+                actualPlayersInsideLobby.text = joinedLobby.Players.Count.ToString();
+                maxPlayersInsideLobby.text = joinedLobby.MaxPlayers.ToString();
+                insideLobbyName.text = joinedLobby.Name;
+                lobbyCodeDisplay.text = joinedLobby.LobbyCode;
+            }
 
             lobbyUpdateTimer -= Time.deltaTime;
             if (lobbyUpdateTimer < 0f)
@@ -218,7 +225,7 @@ public class LobbyManager : MonoBehaviour
                 Lobby lobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
                 joinedLobby = lobby;
 
-                PrintPlayers(joinedLobby);
+                if (!gameStarted) PrintPlayers(joinedLobby);
             }
         }
     }
@@ -399,6 +406,22 @@ public class LobbyManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Rejoindre les policiers
+    /// </summary>
+    public void JoinCops()
+    {
+
+    }
+
+    /// <summary>
+    /// Rejoindre les courreurs
+    /// </summary>
+    public void JoinRunners()
+    {
+        
+    }
+
     #region Debug Player
     private Player GetPlayer()
     {
@@ -413,7 +436,7 @@ public class LobbyManager : MonoBehaviour
 
     private void PrintPlayers(Lobby lobby)
     {
-        Debug.Log("Players in Lobby : " + lobby.Name);
+        //Debug.Log("Players in Lobby : " + lobby.Name);
         
         for (int i = 0; i < namesPlayersInsideLobby.Length; i++)
         {
@@ -425,13 +448,12 @@ public class LobbyManager : MonoBehaviour
             namesPlayersInsideLobby[numP].text = player.Data["PlayerName"].Value.ToString();
             numP++;
 
-            Debug.Log(player.Id + " | " + player.Data["PlayerName"].Value);
+            //Debug.Log(player.Id + " | " + player.Data["PlayerName"].Value);
         }
 
         numP = 0;
     }
     #endregion
-
 
     /// <summary>
     /// Permet de quitter le salon
