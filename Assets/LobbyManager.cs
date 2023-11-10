@@ -60,15 +60,19 @@ public class LobbyManager : MonoBehaviour
 
     [Header("Team Selection")]
     private int copsLimit;
-    [SerializeField] private TextMeshProUGUI copsNumber;
-    [SerializeField] private TextMeshProUGUI copsMaxNumber;
-    [SerializeField] private List<TextMeshProUGUI> copsPlayerName = new List<TextMeshProUGUI>();
+    private int copsN;
+    [SerializeField] private TextMeshProUGUI copsNumberTxt;
+    [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
+    [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTxt;
 
     private int runnersLimit;
-    [SerializeField] private TextMeshProUGUI runnersNumber;
-    [SerializeField] private TextMeshProUGUI runnersMaxNumber;
-    [SerializeField] private List<TextMeshProUGUI> runnersPlayerName = new List<TextMeshProUGUI>();
+    private int runnersN;
+    [SerializeField] private TextMeshProUGUI runnersNumberTxt;
+    [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
+    [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTxt;
 
+    private bool alreadyCop;
+    private bool alreadyRunner;
 
     #endregion
 
@@ -256,7 +260,7 @@ public class LobbyManager : MonoBehaviour
     public void ChangeLobbyState()
     {
         stateLobby = !stateLobby;
-        
+
         if (stateLobby)
         {
             lobbyStateText.text = "PRIVATE";
@@ -300,6 +304,8 @@ public class LobbyManager : MonoBehaviour
             //Debug.Log("Created Lobby ! " + "Nom du Lobby : " + joinedLobby.Name + " | Nombre de Joueurs Max : " + joinedLobby.MaxPlayers + " | ID du Lobby : " + joinedLobby.Id + " | Code : " + joinedLobby.LobbyCode);
 
             Equilibrage();
+
+            InitTeamSelection();
         }
         catch (LobbyServiceException e)
         {
@@ -335,7 +341,7 @@ public class LobbyManager : MonoBehaviour
                 var clone = Instantiate(bttnLobbyDisplayer, lobbyMenu.transform);
                 cloneDisplayerObj.Add(clone);
 
-                clone.transform.position = new Vector3(clone.transform.position.x -550, clone.transform.position.y + 400, 0);
+                clone.transform.position = new Vector3(clone.transform.position.x - 550, clone.transform.position.y + 400, 0);
 
                 if (countDisplayer > 0)
                 {
@@ -344,8 +350,8 @@ public class LobbyManager : MonoBehaviour
                     for (int i = 1; i < queryResponse.Results.Count; i++)
                     {
                         multiplier++;
-                        
-                        clone.transform.position += new Vector3(0, - 100 * multiplier, 0);  
+
+                        clone.transform.position += new Vector3(0, -100 * multiplier, 0);
                     }
                 }
 
@@ -372,11 +378,12 @@ public class LobbyManager : MonoBehaviour
     /// <param name="lobby"></param>
     public async void JoinLobbyOnClick(Lobby lobby)
     {
-        try 
+        try
         {
             Player player = GetPlayer();
 
-            joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions {
+            joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions
+            {
                 Player = player
             });
 
@@ -389,8 +396,10 @@ public class LobbyManager : MonoBehaviour
                 Destroy(item);
             }
             cloneDisplayerObj.Clear();
+
+            InitTeamSelection();
         }
-        catch (LobbyServiceException e) 
+        catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
@@ -418,6 +427,8 @@ public class LobbyManager : MonoBehaviour
             PanelInsideLobby();
 
             PrintPlayers(joinedLobby);
+
+            InitTeamSelection();
         }
         catch (LobbyServiceException e)
         {
@@ -428,12 +439,62 @@ public class LobbyManager : MonoBehaviour
 
 
     #region Team Selection
+    private void InitTeamSelection()
+    {
+        for (int i = 0; i < copsPlayerNameTxt.Capacity; i++)
+        {
+            copsPlayerNameTxt[i].text = "";
+        }
+
+        for (int i = 0; i < runnersPlayerNameTxt.Capacity; i++)
+        {
+            runnersPlayerNameTxt[i].text = "";
+        }
+    }
+
     /// <summary>
     /// Rejoindre les policiers
     /// </summary>
     public void JoinCops()
     {
+        for (int i = 0;i < copsPlayerNameTxt.Capacity;i++)
+        {
+            if (copsPlayerNameTxt[i].text.Contains(playerName))
+            {
+                alreadyCop = true;
+            }
+        }
 
+        // S'il y a de la place et que je ne suis pas encore dans cette équipe
+        if (copsN < copsLimit && !alreadyCop)
+        {
+            copsPlayerNameTxt[copsN].text = playerName.ToString();
+            copsN++;
+            copsNumberTxt.text = copsN.ToString();
+        }
+
+        // Si je suis déjà dans l'équipe des courreurs et qu'il y a de la place chez les policiers
+        if (alreadyRunner && copsN < copsLimit)
+        {
+            Debug.Log("passe cop");
+            // On ajoute notre nom à la liste des policiers
+            copsPlayerNameTxt[copsN].text = playerName.ToString();
+            copsN++;
+
+            // On retire de la liste des courreurs notre nom
+            runnersPlayerNameTxt.Remove(copsPlayerNameTxt[copsN]);
+            alreadyRunner = false;
+
+            TextMeshProUGUI text = copsPlayerNameTxt[copsN];
+            int result = runnersPlayerNameTxt.FindIndex(text => text);
+            //Debug.Log(result);
+            runnersPlayerNameTxt[result].text = "";
+
+            runnersN--;
+
+            runnersNumberTxt.text = runnersN.ToString();
+            copsNumberTxt.text = copsN.ToString();
+        }
     }
 
     /// <summary>
@@ -441,7 +502,45 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void JoinRunners()
     {
-        
+        for (int i = 0; i < runnersPlayerNameTxt.Capacity; i++)
+        {
+            if (runnersPlayerNameTxt[i].text.Contains(playerName))
+            {
+                alreadyRunner = true;
+            }
+        }
+
+        // S'il y a de la place et que je ne suis pas encore dans cette équipe
+        if (runnersN < runnersLimit && !alreadyRunner)
+        {
+            runnersPlayerNameTxt[runnersN].text = playerName.ToString();
+            runnersN++;
+            runnersNumberTxt.text = runnersN.ToString();
+        }
+
+        // Si je suis déjà dans l'équipe des policiers et qu'il y a de la place chez les courreurs
+        if (alreadyCop && runnersN < runnersLimit)
+        {
+            Debug.Log("passe runner");
+
+            // On ajoute notre nom à la liste des courreurs
+            runnersPlayerNameTxt[runnersN].text = playerName.ToString();
+            runnersN++;
+
+            // On retire de la liste des policiers notre nom
+            copsPlayerNameTxt.Remove(runnersPlayerNameTxt[runnersN]);
+            alreadyCop = false;
+
+            TextMeshProUGUI text = runnersPlayerNameTxt[runnersN];
+            int result = copsPlayerNameTxt.FindIndex(text => text);
+            //Debug.Log(result);
+            copsPlayerNameTxt[result].text = "";
+
+            copsN--;
+
+            copsNumberTxt.text = copsN.ToString();
+            runnersNumberTxt.text = runnersN.ToString();
+        }
     }
 
     private void Equilibrage()
@@ -475,8 +574,8 @@ public class LobbyManager : MonoBehaviour
                 break;
         }
 
-        copsMaxNumber.text = copsLimit.ToString();
-        runnersMaxNumber.text = runnersLimit.ToString();
+        copsMaxNumberTxt.text = copsLimit.ToString();
+        runnersMaxNumberTxt.text = runnersLimit.ToString();
     }
     #endregion
 
@@ -496,7 +595,7 @@ public class LobbyManager : MonoBehaviour
     private void PrintPlayers(Lobby lobby)
     {
         //Debug.Log("Players in Lobby : " + lobby.Name);
-        
+
         for (int i = 0; i < namesPlayersInsideLobby.Length; i++)
         {
             namesPlayersInsideLobby[i].text = "";
