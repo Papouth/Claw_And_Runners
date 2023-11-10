@@ -57,8 +57,18 @@ public class LobbyManager : MonoBehaviour
 
     [Header("In Game")]
     private bool gameStarted;
-    [SerializeField] private TextMeshProUGUI[] copsPlayerName;
-    [SerializeField] private TextMeshProUGUI[] runnersPlayerName;
+
+    [Header("Team Selection")]
+    private int copsLimit;
+    [SerializeField] private TextMeshProUGUI copsNumber;
+    [SerializeField] private TextMeshProUGUI copsMaxNumber;
+    [SerializeField] private List<TextMeshProUGUI> copsPlayerName = new List<TextMeshProUGUI>();
+
+    private int runnersLimit;
+    [SerializeField] private TextMeshProUGUI runnersNumber;
+    [SerializeField] private TextMeshProUGUI runnersMaxNumber;
+    [SerializeField] private List<TextMeshProUGUI> runnersPlayerName = new List<TextMeshProUGUI>();
+
 
     #endregion
 
@@ -105,6 +115,8 @@ public class LobbyManager : MonoBehaviour
 
 
     #region Customs Methods
+
+    #region Panels
     public void PanelCreationLobby()
     {
         SetLobbyNameDefault();
@@ -126,7 +138,10 @@ public class LobbyManager : MonoBehaviour
         createLobbyMenu.SetActive(false);
         insideLobbyMenu.SetActive(false);
     }
+    #endregion
 
+
+    #region Names Changing
     /// <summary>
     /// Permet au joueur de changer le nom du lobby
     /// </summary>
@@ -153,34 +168,8 @@ public class LobbyManager : MonoBehaviour
     {
         playerName = customName;
     }
-
-    #region Set maximum players in lobby
-    // 4 to 8 players
-
-    public void AddMorePlayer()
-    {
-        basePlayerNumber = 4;
-        increm++;
-
-        if (increm > 4) increm = 4;
-
-        basePlayerNumber = basePlayerNumber + increm;
-        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
-        maxPlayers = basePlayerNumber;
-    }
-
-    public void AddLessPlayer()
-    {
-        basePlayerNumber = 4;
-        increm--;
-
-        if (increm < -4) increm = -4;
-
-        basePlayerNumber = basePlayerNumber + increm;
-        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
-        maxPlayers = basePlayerNumber;
-    }
     #endregion
+
 
     /// <summary>
     /// Permet de laisser en vie le salon créé
@@ -229,6 +218,37 @@ public class LobbyManager : MonoBehaviour
             }
         }
     }
+
+
+    #region Lobby Creation & Joining
+
+    #region Set maximum players in lobby
+    // 4 to 8 players
+
+    public void AddMorePlayer()
+    {
+        basePlayerNumber = 4;
+        increm++;
+
+        if (increm > 4) increm = 4;
+
+        basePlayerNumber = basePlayerNumber + increm;
+        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
+        maxPlayers = basePlayerNumber;
+    }
+
+    public void AddLessPlayer()
+    {
+        basePlayerNumber = 4;
+        increm--;
+
+        if (increm < -4) increm = -4;
+
+        basePlayerNumber = basePlayerNumber + increm;
+        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
+        maxPlayers = basePlayerNumber;
+    }
+    #endregion
 
     /// <summary>
     /// Mettre un lobby en public ou en privé
@@ -279,8 +299,7 @@ public class LobbyManager : MonoBehaviour
 
             //Debug.Log("Created Lobby ! " + "Nom du Lobby : " + joinedLobby.Name + " | Nombre de Joueurs Max : " + joinedLobby.MaxPlayers + " | ID du Lobby : " + joinedLobby.Id + " | Code : " + joinedLobby.LobbyCode);
 
-            //insideLobbyName.text = joinedLobby.Name;
-            //maxPlayersInsideLobby.text = joinedLobby.MaxPlayers.ToString();
+            Equilibrage();
         }
         catch (LobbyServiceException e)
         {
@@ -405,7 +424,10 @@ public class LobbyManager : MonoBehaviour
             Debug.Log(e);
         }
     }
+    #endregion
 
+
+    #region Team Selection
     /// <summary>
     /// Rejoindre les policiers
     /// </summary>
@@ -421,6 +443,43 @@ public class LobbyManager : MonoBehaviour
     {
         
     }
+
+    private void Equilibrage()
+    {
+        switch (maxPlayers)
+        {
+            case 8:
+                Debug.Log("Il y a 2 Cops | 6 Runners");
+                copsLimit = 2;
+                runnersLimit = 6;
+                break;
+            case 7:
+                Debug.Log("Il y a 2 Cops | 5 Runners");
+                copsLimit = 2;
+                runnersLimit = 5;
+                break;
+            case 6:
+                Debug.Log("Il y a 2 Cops | 4 Runners");
+                copsLimit = 2;
+                runnersLimit = 4;
+                break;
+            case 5:
+                Debug.Log("Il y a 1 Cops | 4 Runners");
+                copsLimit = 1;
+                runnersLimit = 4;
+                break;
+            case 4:
+                Debug.Log("Il y a 1 Cops | 3 Runners");
+                copsLimit = 1;
+                runnersLimit = 3;
+                break;
+        }
+
+        copsMaxNumber.text = copsLimit.ToString();
+        runnersMaxNumber.text = runnersLimit.ToString();
+    }
+    #endregion
+
 
     #region Debug Player
     private Player GetPlayer()
