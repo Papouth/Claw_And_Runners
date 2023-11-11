@@ -63,13 +63,15 @@ public class LobbyManager : MonoBehaviour
     private int copsN;
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
-    [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTxt;
+    [HideInInspector] [SerializeField] private List<string> copsPlayerNameTxt;
+    [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTMPro;
 
     private int runnersLimit;
     private int runnersN;
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
-    [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTxt;
+    [HideInInspector] [SerializeField] private List<string> runnersPlayerNameTxt;
+    [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTMPro;
 
     private bool alreadyCop;
     private bool alreadyRunner;
@@ -441,14 +443,16 @@ public class LobbyManager : MonoBehaviour
     #region Team Selection
     private void InitTeamSelection()
     {
-        for (int i = 0; i < copsPlayerNameTxt.Capacity; i++)
+        for (int i = 0; i < copsPlayerNameTMPro.Capacity; i++)
         {
-            copsPlayerNameTxt[i].text = "";
+            copsPlayerNameTMPro[i].text = "";
+            copsPlayerNameTxt.Add(i.ToString());
         }
 
-        for (int i = 0; i < runnersPlayerNameTxt.Capacity; i++)
+        for (int i = 0; i < runnersPlayerNameTMPro.Capacity; i++)
         {
-            runnersPlayerNameTxt[i].text = "";
+            runnersPlayerNameTMPro[i].text = "";
+            runnersPlayerNameTxt.Add(i.ToString());
         }
     }
 
@@ -457,41 +461,46 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void JoinCops()
     {
-        for (int i = 0;i < copsPlayerNameTxt.Capacity;i++)
+        for (int i = 0; i < copsPlayerNameTxt.Count; i++)
         {
-            if (copsPlayerNameTxt[i].text.Contains(playerName))
+            if (copsPlayerNameTxt[i].Contains(playerName))
             {
                 alreadyCop = true;
             }
         }
 
         // S'il y a de la place et que je ne suis pas encore dans cette équipe
-        if (copsN < copsLimit && !alreadyCop)
+        if (copsN < copsLimit && !alreadyCop && !alreadyRunner)
         {
-            copsPlayerNameTxt[copsN].text = playerName.ToString();
+            copsPlayerNameTxt[copsN] = playerName;
+            copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
+
             copsN++;
             copsNumberTxt.text = copsN.ToString();
+
+            alreadyCop = true;
         }
 
         // Si je suis déjà dans l'équipe des courreurs et qu'il y a de la place chez les policiers
-        if (alreadyRunner && copsN < copsLimit)
+        if (alreadyRunner && copsN < copsLimit && !alreadyCop)
         {
-            Debug.Log("passe cop");
+            alreadyRunner = false;
+            alreadyCop = true;
+
             // On ajoute notre nom à la liste des policiers
-            copsPlayerNameTxt[copsN].text = playerName.ToString();
+            copsPlayerNameTxt[copsN] = playerName;
+            copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
+
             copsN++;
 
             // On retire de la liste des courreurs notre nom
-            runnersPlayerNameTxt.Remove(copsPlayerNameTxt[copsN]);
-            alreadyRunner = false;
-
-            TextMeshProUGUI text = copsPlayerNameTxt[copsN];
-            int result = runnersPlayerNameTxt.FindIndex(text => text);
-            //Debug.Log(result);
-            runnersPlayerNameTxt[result].text = "";
+            int index = runnersPlayerNameTxt.IndexOf(playerName);
+            runnersPlayerNameTxt[index] = "";
+            runnersPlayerNameTMPro[index].text = "";
 
             runnersN--;
 
+            // Nombre de policier et de courreur
             runnersNumberTxt.text = runnersN.ToString();
             copsNumberTxt.text = copsN.ToString();
         }
@@ -502,42 +511,46 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void JoinRunners()
     {
-        for (int i = 0; i < runnersPlayerNameTxt.Capacity; i++)
+        for (int i = 0; i < runnersPlayerNameTxt.Count; i++)
         {
-            if (runnersPlayerNameTxt[i].text.Contains(playerName))
+            if (runnersPlayerNameTxt[i].Contains(playerName))
             {
                 alreadyRunner = true;
             }
         }
 
         // S'il y a de la place et que je ne suis pas encore dans cette équipe
-        if (runnersN < runnersLimit && !alreadyRunner)
+        if (runnersN < runnersLimit && !alreadyRunner && !alreadyCop)
         {
-            runnersPlayerNameTxt[runnersN].text = playerName.ToString();
+            runnersPlayerNameTxt[runnersN] = playerName;
+            runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
+
             runnersN++;
             runnersNumberTxt.text = runnersN.ToString();
+
+            alreadyRunner = true;
         }
 
         // Si je suis déjà dans l'équipe des policiers et qu'il y a de la place chez les courreurs
-        if (alreadyCop && runnersN < runnersLimit)
+        if (alreadyCop && runnersN < runnersLimit && !alreadyRunner)
         {
-            Debug.Log("passe runner");
+            alreadyCop = false;
+            alreadyRunner = true;
 
             // On ajoute notre nom à la liste des courreurs
-            runnersPlayerNameTxt[runnersN].text = playerName.ToString();
+            runnersPlayerNameTxt[runnersN] = playerName;
+            runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
+
             runnersN++;
 
             // On retire de la liste des policiers notre nom
-            copsPlayerNameTxt.Remove(runnersPlayerNameTxt[runnersN]);
-            alreadyCop = false;
-
-            TextMeshProUGUI text = runnersPlayerNameTxt[runnersN];
-            int result = copsPlayerNameTxt.FindIndex(text => text);
-            //Debug.Log(result);
-            copsPlayerNameTxt[result].text = "";
+            int index = copsPlayerNameTxt.IndexOf(playerName);
+            copsPlayerNameTxt[index] = "";
+            copsPlayerNameTMPro[index].text = "";
 
             copsN--;
 
+            // Nombre de policier et de courreur
             copsNumberTxt.text = copsN.ToString();
             runnersNumberTxt.text = runnersN.ToString();
         }
@@ -620,6 +633,32 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
+            for (int i = 0; i < runnersPlayerNameTxt.Count; i++)
+            {
+                if (runnersPlayerNameTxt[i].Contains(playerName))
+                {
+                    runnersN--;
+                    runnersNumberTxt.text = runnersN.ToString();
+                }
+            }
+
+            alreadyRunner = false;
+            runnersPlayerNameTxt[runnersN] = "";
+            runnersPlayerNameTMPro[runnersN].text = "";
+
+            for (int i = 0; i < copsPlayerNameTxt.Count; i++)
+            {
+                if (copsPlayerNameTxt[i].Contains(playerName))
+                {
+                    copsN--;
+                    copsNumberTxt.text = copsN.ToString();
+                }
+            }
+
+            alreadyCop = false;
+            copsPlayerNameTxt[copsN] = "";
+            copsPlayerNameTMPro[copsN].text = "";
+
             await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
 
             joinedLobby = null;
