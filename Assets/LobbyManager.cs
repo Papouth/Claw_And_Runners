@@ -63,19 +63,18 @@ public class LobbyManager : MonoBehaviour
     private int copsN;
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
-    [HideInInspector] [SerializeField] private List<string> copsPlayerNameTxt;
+    [HideInInspector][SerializeField] private List<string> copsPlayerNameTxt;
     [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTMPro;
 
     private int runnersLimit;
     private int runnersN;
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
-    [HideInInspector] [SerializeField] private List<string> runnersPlayerNameTxt;
+    [HideInInspector][SerializeField] private List<string> runnersPlayerNameTxt;
     [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTMPro;
 
     private bool alreadyCop;
     private bool alreadyRunner;
-
     #endregion
 
     #region Built In Methods
@@ -209,6 +208,15 @@ public class LobbyManager : MonoBehaviour
                 maxPlayersInsideLobby.text = joinedLobby.MaxPlayers.ToString();
                 insideLobbyName.text = joinedLobby.Name;
                 lobbyCodeDisplay.text = joinedLobby.LobbyCode;
+
+
+
+                foreach (var player in joinedLobby.Players)
+                {
+
+                    //copsNumberTxt.text = copsN.ToString();
+                    //runnersNumberTxt.text = runnersN.ToString();
+                }
             }
 
             lobbyUpdateTimer -= Time.deltaTime;
@@ -592,6 +600,10 @@ public class LobbyManager : MonoBehaviour
     }
     #endregion
 
+    public void ReadyToStart()
+    {
+        
+    }
 
     #region Debug Player
     private Player GetPlayer()
@@ -617,9 +629,10 @@ public class LobbyManager : MonoBehaviour
         foreach (Player player in lobby.Players)
         {
             namesPlayersInsideLobby[numP].text = player.Data["PlayerName"].Value.ToString();
-            numP++;
 
             //Debug.Log(player.Id + " | " + player.Data["PlayerName"].Value);
+
+            numP++;
         }
 
         numP = 0;
