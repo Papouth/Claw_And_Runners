@@ -13,7 +13,7 @@ public class LobbyManager : MonoBehaviour
     #region Variables
     [SerializeField] private string lobbyName = "Default Lobby";
     private string customLobbyName = "";
-    [SerializeField] private int maxPlayers = 4;
+    public int maxPlayers = 4;
 
     private float hearbeatTimer;
     private float lobbyUpdateTimer;
@@ -75,11 +75,15 @@ public class LobbyManager : MonoBehaviour
 
     private bool alreadyCop;
     private bool alreadyRunner;
+
+    [SerializeField] private GameObject startBttn;
+    [SerializeField] private GameObject camUIMenu;
     #endregion
 
     #region Built In Methods
     private void Awake()
     {
+        startBttn.SetActive(false);
         playerName = "FunkyPlayer" + Random.Range(10, 99);
         namePlaceHolder.text = playerName;
         increm = 0;
@@ -135,6 +139,7 @@ public class LobbyManager : MonoBehaviour
         insideLobbyMenu.SetActive(true);
         createLobbyMenu.SetActive(false);
         lobbyMenu.SetActive(false);
+        startBttn.SetActive(false);
     }
 
     public void PanelMenuLobby()
@@ -209,13 +214,16 @@ public class LobbyManager : MonoBehaviour
                 insideLobbyName.text = joinedLobby.Name;
                 lobbyCodeDisplay.text = joinedLobby.LobbyCode;
 
+                //foreach (var player in joinedLobby.Players)
+                //{
+                //
+                //    //copsNumberTxt.text = copsN.ToString();
+                //    //runnersNumberTxt.text = runnersN.ToString();
+                //}
 
-
-                foreach (var player in joinedLobby.Players)
+                if (joinedLobby.Players.Count == maxPlayers)
                 {
-
-                    //copsNumberTxt.text = copsN.ToString();
-                    //runnersNumberTxt.text = runnersN.ToString();
+                    UnlockStartButton();
                 }
             }
 
@@ -229,6 +237,19 @@ public class LobbyManager : MonoBehaviour
                 joinedLobby = lobby;
 
                 if (!gameStarted) PrintPlayers(joinedLobby);
+
+                if (joinedLobby.Data["KEY_START_GAME"].Value != "0")
+                {
+                    // Start Game
+                    if (!IsLobbyHost())
+                    {
+                        // Lobby Host already joined Relay
+                        RelayManager.Instance.JoinRelay(joinedLobby.Data["KEY_START_GAME"].Value);
+                    }
+
+                    joinedLobby = null;
+                    hostLobby = null;
+                }
             }
         }
     }
@@ -300,6 +321,10 @@ public class LobbyManager : MonoBehaviour
                     {
                         {"PlayerName", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member, playerName) }
                     }
+                },
+
+                Data = new Dictionary<string, DataObject> {
+                    {"KEY_START_GAME", new DataObject(DataObject.VisibilityOptions.Member, "0")}
                 }
             };
 
@@ -600,9 +625,12 @@ public class LobbyManager : MonoBehaviour
     }
     #endregion
 
-    public void ReadyToStart()
+    private void UnlockStartButton()
     {
-        
+        if (IsLobbyHost())
+        {
+            startBttn.SetActive(true);
+        }
     }
 
     #region Debug Player
@@ -692,11 +720,82 @@ public class LobbyManager : MonoBehaviour
         try
         {
             await LobbyService.Instance.DeleteLobbyAsync(joinedLobby.Id);
+
+            joinedLobby = null;
+            hostLobby = null;
         }
         catch (LobbyServiceException e)
         {
             Debug.Log(e);
         }
     }
+
+    public bool IsLobbyHost()
+    {
+        return joinedLobby != null && joinedLobby.HostId == AuthenticationService.Instance.PlayerId;
+    }
+
+    private bool IsPlayerInLobby()
+    {
+        if (joinedLobby != null && joinedLobby.Players != null)
+        {
+            foreach (Player player in joinedLobby.Players)
+            {
+                if (player.Id == AuthenticationService.Instance.PlayerId)
+                {
+                    // Le joueur ce trouve dans le lobby
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public async void StartGame()
+    {
+        if (IsLobbyHost())
+        {
+            try
+            {
+                Debug.Log("StartGame");
+
+                string relayCode = await RelayManager.Instance.CreateRelay();
+
+                Lobby lobby = await Lobbies.Instance.UpdateLobbyAsync(joinedLobby.Id, new UpdateLobbyOptions
+                {
+                    Data = new Dictionary<string, DataObject> {
+                        {"KEY_START_GAME", new DataObject(DataObject.VisibilityOptions.Member, relayCode) }
+                    }
+                });
+
+                GameOnStarted();
+
+                joinedLobby = lobby;
+
+                gameStarted = true;
+            }
+            catch (LobbyServiceException e)
+            {
+                Debug.Log(e);
+            }
+        }
+        else
+        {
+            GameOnStarted();
+        }
+
+
+    }
+
+    private void GameOnStarted()
+    {
+        // On désactive l'UI
+        lobbyMenu.SetActive(false);
+        createLobbyMenu.SetActive(false);
+        insideLobbyMenu.SetActive(false);
+
+        camUIMenu.SetActive(false);
+    }
+
     #endregion
 }
