@@ -283,6 +283,12 @@ public class LobbyManager : MonoBehaviour
         maxPlayersInLobbyText.text = basePlayerNumber.ToString();
         maxPlayers = basePlayerNumber;
     }
+
+    public void SpecialTestPlayer()
+    {
+        maxPlayersInLobbyText.text = "2";
+        maxPlayers = 2;
+    }
     #endregion
 
     /// <summary>
@@ -618,6 +624,11 @@ public class LobbyManager : MonoBehaviour
                 copsLimit = 1;
                 runnersLimit = 3;
                 break;
+            case 2:
+                Debug.Log("Test 1 joueur de chaque");
+                copsLimit = 1;
+                runnersLimit = 1;
+                break;
         }
 
         copsMaxNumberTxt.text = copsLimit.ToString();
@@ -779,12 +790,6 @@ public class LobbyManager : MonoBehaviour
                 Debug.Log(e);
             }
         }
-        else
-        {
-            GameOnStarted();
-        }
-
-
     }
 
     private void GameOnStarted()
