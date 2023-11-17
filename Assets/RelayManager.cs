@@ -13,18 +13,12 @@ using UnityEngine;
 public class RelayManager : MonoBehaviour
 {
     #region Variables
-    [SerializeField] private LobbyManager LM;
     public static RelayManager Instance { get; private set; }
     #endregion
 
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
-        LM = GetComponent<LobbyManager>();
     }
 
     public async Task<string> CreateRelay()

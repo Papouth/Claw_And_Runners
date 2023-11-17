@@ -56,7 +56,7 @@ public class LobbyManager : MonoBehaviour
     private Button buttonLobbyDisplay;
 
     [Header("In Game")]
-    private bool gameStarted;
+    [HideInInspector] public bool gameStarted;
 
     [Header("Team Selection")]
     private int copsLimit;
@@ -779,8 +779,6 @@ public class LobbyManager : MonoBehaviour
                     }
                 });
 
-                GameOnStarted();
-
                 joinedLobby = lobby;
 
                 gameStarted = true;
@@ -791,16 +789,5 @@ public class LobbyManager : MonoBehaviour
             }
         }
     }
-
-    private void GameOnStarted()
-    {
-        // On désactive l'UI
-        lobbyMenu.SetActive(false);
-        createLobbyMenu.SetActive(false);
-        insideLobbyMenu.SetActive(false);
-
-        camUIMenu.SetActive(false);
-    }
-
     #endregion
 }

@@ -36,12 +36,18 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private NetworkVariable<float> forwardBackPosition = new NetworkVariable<float>();
     [SerializeField] private NetworkVariable<float> leftRightPosition = new NetworkVariable<float>();
     [SerializeField] private NetworkVariable<float> upDownPosition = new NetworkVariable<float>();
+
+    private UIManager canvas;
     #endregion
 
 
     #region Built In Methods
     private void Start()
     {
+        // Canvas Settings
+        canvas = FindObjectOfType<UIManager>();
+        canvas.PanelOffOnStart();
+
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
 
