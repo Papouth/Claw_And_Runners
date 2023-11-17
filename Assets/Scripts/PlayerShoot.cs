@@ -9,13 +9,13 @@ public class PlayerShoot : NetworkBehaviour
     [SerializeField] private GameObject[] bullet;
     private int bulletTeam;
     private GameObject cloneBullet;
-    private PlayerHealth playerHealth;
+    private PlayerTeam playerHealth;
     private AudioSync audioSync;
 
 
     private void Awake()
     {
-        playerHealth = GetComponent<PlayerHealth>();
+        playerHealth = GetComponent<PlayerTeam>();
         audioSync = GetComponent<AudioSync>();
     }
 
