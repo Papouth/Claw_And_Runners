@@ -31,17 +31,17 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Player")) 
         {
-            if (team != other.GetComponent<PlayerHealth>().team)
+            if (team != other.GetComponent<PlayerTeam>().team)
             {
                 Debug.Log("Le joueur est un ennemi !");
 
                 // On inflige les dégâts
-                other.GetComponent<PlayerHealth>().playerLife.Value -= damage;
-                Debug.Log(other.gameObject.name + " à désormais " + other.GetComponent<PlayerHealth>().playerLife.Value + " HP !");
+                other.GetComponent<PlayerTeam>().playerLife.Value -= damage;
+                Debug.Log(other.gameObject.name + " à désormais " + other.GetComponent<PlayerTeam>().playerLife.Value + " HP !");
 
                 Destroy(gameObject);
             }
-            if (team == other.GetComponent<PlayerHealth>().team)
+            if (team == other.GetComponent<PlayerTeam>().team)
             {
                 Debug.Log("Attention, tu tir sur tes amis !");
 

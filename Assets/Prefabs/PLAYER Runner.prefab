@@ -727,10 +727,10 @@ GameObject:
   - component: {fileID: 4810945831852701589}
   - component: {fileID: 1166194459218872807}
   - component: {fileID: -473927921773900791}
-  - component: {fileID: 8711861615756736431}
   - component: {fileID: 5228050125313347408}
   - component: {fileID: 5367549546280008564}
   - component: {fileID: 7301803508076425204}
+  - component: {fileID: 7665227427411497221}
   m_Layer: 6
   m_Name: PLAYER Runner
   m_TagString: Player
@@ -941,21 +941,6 @@ MonoBehaviour:
   bullet:
   - {fileID: 5073644242750450350, guid: f0116c43583e44840bd0c92b326ab2b2, type: 3}
   - {fileID: 5073644242750450350, guid: 97d387bf83349334d90549a5bb73b319, type: 3}
---- !u!114 &8711861615756736431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560986031654225528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74ec318062c139b4793f1353f29301a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerLife:
-    m_InternalValue: 0
-  team: 
 --- !u!114 &5228050125313347408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1086,6 +1071,21 @@ MonoBehaviour:
   layerWall:
     serializedVersion: 2
     m_Bits: 8
+--- !u!114 &7665227427411497221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3560986031654225528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6b334b2a03051740b7deb101349c359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerLife:
+    m_InternalValue: 0
+  team: 
 --- !u!1 &3592100253145614398
 GameObject:
   m_ObjectHideFlags: 0
