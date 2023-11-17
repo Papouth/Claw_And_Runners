@@ -42,9 +42,8 @@ public class TeamSelection : MonoBehaviour
     private bool alreadyCop;
     private bool alreadyRunner;
 
-
-    private bool displayUI;
     [SerializeField] private LobbyManager LM;
+    public bool createLobby;
     #endregion
 
 
@@ -56,33 +55,36 @@ public class TeamSelection : MonoBehaviour
     //  
     //  }
 
-    #region Built Int Methods
-    private void Awake()
+    #region Built In Methods
+    private void Start()
     {
+        LM = FindObjectOfType<LobbyManager>();
+
         UITeamSelection.SetActive(false);
-        LM = GetComponent<LobbyManager>();
+
+        InitTeamSelection();
     }
 
     private void Update()
     {
-        ShowHideUI();
+        if (createLobby)
+        {
+            createLobby = false;
+            Equilibrage();
+        }
     }
+
     #endregion
 
     #region Customs Methods
-    private void ShowHideUI()
+    public void ShowHideUI()
     {
-        if (!displayUI)
-        {
-            displayUI = true;
-
-            UITeamSelection.SetActive(true);
-        }
+        UITeamSelection.SetActive(true);
     }
 
 
     #region Team Selection
-    private void InitTeamSelection()
+    public void InitTeamSelection()
     {
         for (int i = 0; i < copsPlayerNameTMPro.Capacity; i++)
         {
@@ -197,7 +199,7 @@ public class TeamSelection : MonoBehaviour
         }
     }
 
-    private void Equilibrage()
+    public void Equilibrage()
     {
         switch (LM.maxPlayers)
         {

@@ -9,6 +9,7 @@ public class PlayerTeam : NetworkBehaviour
     [SerializeField] public string team;
 
     private NetworkParameter NP;
+    private TeamSelection teamSelection;
 
 
     private void Awake()
@@ -19,6 +20,10 @@ public class PlayerTeam : NetworkBehaviour
     // Quand mon joueur apparait
     public override void OnNetworkSpawn()
     {
+        teamSelection = FindObjectOfType<TeamSelection>();
+
+        teamSelection.ShowHideUI();
+
         // On affiche l'UI de team selection avec les paramètres déterminé par le nombre de joueurs via le lobbymanager
         NP.clientCount++;
 

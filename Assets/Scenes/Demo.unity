@@ -4783,7 +4783,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1428043915}
   - {fileID: 1894861620}
   - {fileID: 709216764}
   - {fileID: 1689696850}
@@ -5682,8 +5681,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 709216763}
-        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 1689696852}
+        m_TargetAssemblyTypeName: TeamSelection, Assembly-CSharp
         m_MethodName: JoinCops
         m_Mode: 1
         m_Arguments:
@@ -6990,6 +6989,7 @@ MonoBehaviour:
   - {fileID: 863593804}
   startBttn: {fileID: 799489272}
   camUIMenu: {fileID: 752517035}
+  teamSelection: {fileID: 1689696852}
 --- !u!4 &709216764
 Transform:
   m_ObjectHideFlags: 0
@@ -14115,7 +14115,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 496073327}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1429660807
 GameObject:
@@ -15300,8 +15300,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 709216763}
-        m_TargetAssemblyTypeName: LobbyManager, Assembly-CSharp
+      - m_Target: {fileID: 1689696852}
+        m_TargetAssemblyTypeName: TeamSelection, Assembly-CSharp
         m_MethodName: JoinRunners
         m_Mode: 1
         m_Arguments:
@@ -49291,5 +49291,6 @@ SceneRoots:
   - {fileID: 1505551525}
   - {fileID: 1072734623}
   - {fileID: 8418511718748767006}
+  - {fileID: 1428043915}
   - {fileID: 496073327}
   - {fileID: 1901072946}
