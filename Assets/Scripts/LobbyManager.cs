@@ -385,7 +385,7 @@ public class LobbyManager : MonoBehaviour
                 var clone = Instantiate(bttnLobbyDisplayer, lobbyMenu.transform);
                 cloneDisplayerObj.Add(clone);
 
-                clone.transform.position = new Vector3(clone.transform.position.x - 550, clone.transform.position.y + 400, 0);
+                clone.transform.position = new Vector3(clone.transform.position.x - 300, clone.transform.position.y + 300, 0); // -550 & 400
 
                 if (countDisplayer > 0)
                 {
@@ -395,7 +395,7 @@ public class LobbyManager : MonoBehaviour
                     {
                         multiplier++;
 
-                        clone.transform.position += new Vector3(0, -100 * multiplier, 0);
+                        clone.transform.position += new Vector3(0, -110 * multiplier, 0);
                     }
                 }
 
