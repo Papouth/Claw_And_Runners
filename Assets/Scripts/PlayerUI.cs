@@ -16,10 +16,10 @@ public class PlayerUI : NetworkBehaviour
 
         TS.Equilibrage();
 
-        //if (IsHost)
-        //{
-        //    UpdateTeamUIServerRpc(TS.copsLimit, TS.runnersLimit);
-        //}
+        if (IsOwner)
+        {
+            UpdateTeamUIServerRpc(TS.copsLimit, TS.runnersLimit);
+        }
     }
 
     [ServerRpc]
