@@ -730,7 +730,7 @@ GameObject:
   - component: {fileID: 5228050125313347408}
   - component: {fileID: 5367549546280008564}
   - component: {fileID: 7301803508076425204}
-  - component: {fileID: 7665227427411497221}
+  - component: {fileID: -7282930216823847445}
   m_Layer: 6
   m_Name: PLAYER Runner
   m_TagString: Player
@@ -1071,7 +1071,7 @@ MonoBehaviour:
   layerWall:
     serializedVersion: 2
     m_Bits: 8
---- !u!114 &7665227427411497221
+--- !u!114 &-7282930216823847445
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1080,12 +1080,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 3560986031654225528}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6b334b2a03051740b7deb101349c359, type: 3}
+  m_Script: {fileID: 11500000, guid: 3afb15765d877f942839b51f58bb0e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLife:
-    m_InternalValue: 0
-  team: 
 --- !u!1 &3592100253145614398
 GameObject:
   m_ObjectHideFlags: 0

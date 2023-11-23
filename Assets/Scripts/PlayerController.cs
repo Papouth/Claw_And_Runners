@@ -38,6 +38,7 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private NetworkVariable<float> upDownPosition = new NetworkVariable<float>();
 
     private UIManager canvas;
+    private TeamSelection teamSelection;
     #endregion
 
 
@@ -50,9 +51,6 @@ public class PlayerController : NetworkBehaviour
 
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
-
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public override void OnNetworkSpawn()
@@ -61,6 +59,10 @@ public class PlayerController : NetworkBehaviour
         {
             Destroy(inputManager);
             cameraCam.GetComponent<Camera>().enabled = false;
+
+            teamSelection = FindObjectOfType<TeamSelection>();
+
+            teamSelection.ShowHideUI();
         }
     }
 

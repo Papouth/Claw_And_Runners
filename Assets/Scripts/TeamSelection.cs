@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
@@ -25,14 +24,14 @@ public class TeamSelection : MonoBehaviour
 
 
     [Header("Team Selection")]
-    private int copsLimit;
+    [HideInInspector] public int copsLimit;
     private int copsN;
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
     [HideInInspector][SerializeField] private List<string> copsPlayerNameTxt;
     [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTMPro;
 
-    private int runnersLimit;
+    [HideInInspector] public int runnersLimit;
     private int runnersN;
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
@@ -43,17 +42,11 @@ public class TeamSelection : MonoBehaviour
     private bool alreadyRunner;
 
     [SerializeField] private LobbyManager LM;
-    public bool createLobby;
+    [HideInInspector] public bool createLobby;
+    private bool gameFullyStarted;
+    private bool cursorState;
     #endregion
 
-
-    //  // Quand mon joueur apparait
-    //  public override void OnNetworkSpawn()
-    //  {
-    //      // On affiche l'UI de team selection avec les paramètres déterminé par le nombre de joueurs via le lobbymanager
-    //  
-    //  
-    //  }
 
     #region Built In Methods
     private void Start()
@@ -62,7 +55,7 @@ public class TeamSelection : MonoBehaviour
 
         UITeamSelection.SetActive(false);
 
-        InitTeamSelection();
+        //InitTeamSelection();
     }
 
     private void Update()
@@ -70,18 +63,34 @@ public class TeamSelection : MonoBehaviour
         if (createLobby)
         {
             createLobby = false;
-            Equilibrage();
         }
+
+        CursorModification();
     }
 
     #endregion
 
     #region Customs Methods
+    private void CursorModification()
+    {
+        if (gameFullyStarted && !cursorState)
+        {
+            cursorState = true;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+
+        if (createLobby && !cursorState)
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
+        }
+    }
+
     public void ShowHideUI()
     {
         UITeamSelection.SetActive(true);
     }
-
 
     #region Team Selection
     public void InitTeamSelection()
@@ -238,9 +247,40 @@ public class TeamSelection : MonoBehaviour
         copsMaxNumberTxt.text = copsLimit.ToString();
         runnersMaxNumberTxt.text = runnersLimit.ToString();
     }
+
+
+    #region MAJUI
+    public void UIMAJMaxPlayers()
+    {
+        // Limite de joueurs dans chaque équipe
+        copsMaxNumberTxt.text = copsLimit.ToString();
+        runnersMaxNumberTxt.text = runnersLimit.ToString();
+    }
+    public void UIMAJPlayerNumber()
+    {
+        // Nombre de joueur dans chaque équipe
+        copsNumberTxt.text = copsN.ToString();
+        runnersNumberTxt.text = runnersN.ToString();
+    }
+
+    public void UIMAJRunnersName()
+    {
+        // Runners Name Update
+        runnersPlayerNameTxt[runnersN] = LM.playerName;
+        runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
+    }
+
+    public void UIMAJCopsName()
+    {
+        // Cops Name Update
+        copsPlayerNameTxt[copsN] = LM.playerName;
+        copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
+    }
     #endregion
 
+    #endregion
 
+    // Si fonctionne mettre aussi en server rpc
     /// <summary>
     /// Permet de quitter le salon
     /// </summary>
