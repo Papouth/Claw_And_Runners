@@ -4,19 +4,21 @@ using UnityEngine;
 using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
+using Unity.Netcode;
+using Unity.Collections.LowLevel.Unsafe;
 
-public class TeamSelection : MonoBehaviour
+public class TeamSelection : NetworkBehaviour
 {
     #region Variables
     [SerializeField] private GameObject UITeamSelection;
 
     // // Team Selection Max Player Number
-    // public NetworkVariable<int> copsLimit = new NetworkVariable<int>();
-    // public NetworkVariable<int> runnersLimit = new NetworkVariable<int>();
+    public NetworkVariable<int> copsLimit = new NetworkVariable<int>();
+    public NetworkVariable<int> runnersLimit = new NetworkVariable<int>();
     // 
-    // // Team Selection Actual Player Number
-    // public NetworkVariable<int> copsN = new NetworkVariable<int>();
-    // public NetworkVariable<int> runnersN = new NetworkVariable<int>();
+    // Team Selection Actual Player Number
+    public NetworkVariable<int> copsN = new NetworkVariable<int>();
+    public NetworkVariable<int> runnersN = new NetworkVariable<int>();
     // 
     // // Noms des joueurs de chaque équipe
     // public string[] copsPlayerNameTxt;
@@ -24,15 +26,15 @@ public class TeamSelection : MonoBehaviour
 
 
     [Header("Team Selection")]
-    [HideInInspector] public int copsLimit;
-    private int copsN;
+    //[HideInInspector] public int copsLimit;
+    //private int copsN;
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
     [HideInInspector][SerializeField] private List<string> copsPlayerNameTxt;
     [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTMPro;
 
-    [HideInInspector] public int runnersLimit;
-    private int runnersN;
+    //[HideInInspector] public int runnersLimit;
+    //private int runnersN;
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
     [HideInInspector][SerializeField] private List<string> runnersPlayerNameTxt;
@@ -55,22 +57,105 @@ public class TeamSelection : MonoBehaviour
 
         UITeamSelection.SetActive(false);
 
-        //InitTeamSelection();
+        InitTeamSelection();
     }
 
     private void Update()
     {
-        if (createLobby)
-        {
-            createLobby = false;
-        }
+        //if (createLobby)
+        //{
+        //    createLobby = false;
+        //}
 
         CursorModification();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer)
+        {
+            copsN.Value = 0;
+            runnersN.Value = 0;
+            Debug.Log("SetValue ici");
+        }
+
+        copsN.OnValueChanged += OncopsNChanged;
+        runnersN.OnValueChanged += OnrunnersNChanged;
+        Debug.Log("passe");
+        copsLimit.OnValueChanged += OncopsLimitChanged;
+        runnersLimit.OnValueChanged += OnrunnersLimitChanged;
+    }
     #endregion
 
+
     #region Customs Methods
+    #region Netcode Cops
+    private void OncopsNChanged(int previous, int current)
+    {
+        Debug.Log("Changement de variable copsN, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+    }
+
+    private void OncopsLimitChanged(int previous, int current)
+    {
+        Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+    }
+
+    [ServerRpc]
+    public void MorecopsNValueServerRpc()
+    {
+        copsN.Value++;
+        Debug.Log("+ de flic");
+    }
+
+    [ServerRpc]
+    public void LesscopsNValueServerRpc()
+    {
+        copsN.Value--;
+        Debug.Log("- de flic");
+    }
+
+    [ServerRpc]
+    public void copsLimitValueServerRpc(int newValue)
+    {
+        copsLimit.Value = newValue;
+        Debug.Log("nouvelle limite de flic");
+    }
+    #endregion
+
+    #region Netcode Runners
+    private void OnrunnersNChanged(int previous, int current)
+    {
+        Debug.Log("Changement de variable runnersN, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+    }
+
+    private void OnrunnersLimitChanged(int previous, int current)
+    {
+        Debug.Log("Changement de variable runnersLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+    }
+
+    [ServerRpc]
+    public void MorerunnersNValueServerRpc()
+    {
+        runnersN.Value++;
+        Debug.Log("+ de runners");
+    }
+
+    //(RequireOwnership = false)
+    [ServerRpc]
+    public void LessrunnersNValueServerRpc()
+    {
+        runnersN.Value--;
+        Debug.Log("- de runners");
+    }
+
+    [ServerRpc]
+    public void runnersLimitValueServerRpc(int newValue)
+    {
+        runnersLimit.Value = newValue;
+        Debug.Log("nouvelle limite de runner");
+    }
+    #endregion
+
     private void CursorModification()
     {
         if (gameFullyStarted && !cursorState)
@@ -122,39 +207,39 @@ public class TeamSelection : MonoBehaviour
         }
 
         // S'il y a de la place et que je ne suis pas encore dans cette équipe
-        if (copsN < copsLimit && !alreadyCop && !alreadyRunner)
+        if (copsN.Value < copsLimit.Value && !alreadyCop && !alreadyRunner)
         {
-            copsPlayerNameTxt[copsN] = LM.playerName;
-            copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
+            copsPlayerNameTxt[copsN.Value] = LM.playerName;
+            copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
-            copsN++;
-            copsNumberTxt.text = copsN.ToString();
+            MorecopsNValueServerRpc();
+            copsNumberTxt.text = copsN.Value.ToString();
 
             alreadyCop = true;
         }
 
         // Si je suis déjà dans l'équipe des courreurs et qu'il y a de la place chez les policiers
-        if (alreadyRunner && copsN < copsLimit && !alreadyCop)
+        if (alreadyRunner && copsN.Value < copsLimit.Value && !alreadyCop)
         {
             alreadyRunner = false;
             alreadyCop = true;
 
             // On ajoute notre nom à la liste des policiers
-            copsPlayerNameTxt[copsN] = LM.playerName;
-            copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
+            copsPlayerNameTxt[copsN.Value] = LM.playerName;
+            copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
-            copsN++;
+            MorecopsNValueServerRpc();
 
             // On retire de la liste des courreurs notre nom
             int index = runnersPlayerNameTxt.IndexOf(LM.playerName);
             runnersPlayerNameTxt[index] = "";
             runnersPlayerNameTMPro[index].text = "";
 
-            runnersN--;
+            LessrunnersNValueServerRpc();
 
             // Nombre de policier et de courreur
-            runnersNumberTxt.text = runnersN.ToString();
-            copsNumberTxt.text = copsN.ToString();
+            runnersNumberTxt.text = runnersN.Value.ToString();
+            copsNumberTxt.text = copsN.Value.ToString();
         }
     }
 
@@ -172,39 +257,39 @@ public class TeamSelection : MonoBehaviour
         }
 
         // S'il y a de la place et que je ne suis pas encore dans cette équipe
-        if (runnersN < runnersLimit && !alreadyRunner && !alreadyCop)
+        if (runnersN.Value < runnersLimit.Value && !alreadyRunner && !alreadyCop)
         {
-            runnersPlayerNameTxt[runnersN] = LM.playerName;
-            runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
+            runnersPlayerNameTxt[runnersN.Value] = LM.playerName;
+            runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
 
-            runnersN++;
-            runnersNumberTxt.text = runnersN.ToString();
+            MorerunnersNValueServerRpc();
+            runnersNumberTxt.text = runnersN.Value.ToString();
 
             alreadyRunner = true;
         }
 
         // Si je suis déjà dans l'équipe des policiers et qu'il y a de la place chez les courreurs
-        if (alreadyCop && runnersN < runnersLimit && !alreadyRunner)
+        if (alreadyCop && runnersN.Value < runnersLimit.Value && !alreadyRunner)
         {
             alreadyCop = false;
             alreadyRunner = true;
 
             // On ajoute notre nom à la liste des courreurs
-            runnersPlayerNameTxt[runnersN] = LM.playerName;
-            runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
+            runnersPlayerNameTxt[runnersN.Value] = LM.playerName;
+            runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
 
-            runnersN++;
+            MorerunnersNValueServerRpc();
 
             // On retire de la liste des policiers notre nom
             int index = copsPlayerNameTxt.IndexOf(LM.playerName);
             copsPlayerNameTxt[index] = "";
             copsPlayerNameTMPro[index].text = "";
 
-            copsN--;
+            LesscopsNValueServerRpc();
 
             // Nombre de policier et de courreur
-            copsNumberTxt.text = copsN.ToString();
-            runnersNumberTxt.text = runnersN.ToString();
+            copsNumberTxt.text = copsN.Value.ToString();
+            runnersNumberTxt.text = runnersN.Value.ToString();
         }
     }
 
@@ -214,68 +299,68 @@ public class TeamSelection : MonoBehaviour
         {
             case 8:
                 Debug.Log("Il y a 2 Cops | 6 Runners");
-                copsLimit = 2;
-                runnersLimit = 6;
+                copsLimitValueServerRpc(2);
+                runnersLimitValueServerRpc(6);
                 break;
             case 7:
                 Debug.Log("Il y a 2 Cops | 5 Runners");
-                copsLimit = 2;
-                runnersLimit = 5;
+                copsLimitValueServerRpc(2);
+                runnersLimitValueServerRpc(5);
                 break;
             case 6:
                 Debug.Log("Il y a 2 Cops | 4 Runners");
-                copsLimit = 2;
-                runnersLimit = 4;
+                copsLimitValueServerRpc(2);
+                runnersLimitValueServerRpc(4);
                 break;
             case 5:
                 Debug.Log("Il y a 1 Cops | 4 Runners");
-                copsLimit = 1;
-                runnersLimit = 4;
+                copsLimitValueServerRpc(1);
+                runnersLimitValueServerRpc(4);
                 break;
             case 4:
                 Debug.Log("Il y a 1 Cops | 3 Runners");
-                copsLimit = 1;
-                runnersLimit = 3;
+                copsLimitValueServerRpc(1);
+                runnersLimitValueServerRpc(3);
                 break;
             case 2:
                 Debug.Log("Test 1 joueur de chaque");
-                copsLimit = 1;
-                runnersLimit = 1;
+                copsLimitValueServerRpc(1);
+                runnersLimitValueServerRpc(1);
                 break;
         }
 
-        copsMaxNumberTxt.text = copsLimit.ToString();
-        runnersMaxNumberTxt.text = runnersLimit.ToString();
+        copsMaxNumberTxt.text = copsLimit.Value.ToString();
+        runnersMaxNumberTxt.text = runnersLimit.Value.ToString();
     }
 
 
     #region MAJUI
-    public void UIMAJMaxPlayers()
-    {
-        // Limite de joueurs dans chaque équipe
-        copsMaxNumberTxt.text = copsLimit.ToString();
-        runnersMaxNumberTxt.text = runnersLimit.ToString();
-    }
-    public void UIMAJPlayerNumber()
-    {
-        // Nombre de joueur dans chaque équipe
-        copsNumberTxt.text = copsN.ToString();
-        runnersNumberTxt.text = runnersN.ToString();
-    }
+    //public void UIMAJMaxPlayers()
+    //{
+    //    // Limite de joueurs dans chaque équipe
+    //    copsMaxNumberTxt.text = copsLimit.ToString();
+    //    runnersMaxNumberTxt.text = runnersLimit.ToString();
+    //}
+    //public void UIMAJPlayerNumber()
+    //{
+    //    // Nombre de joueur dans chaque équipe
+    //    copsNumberTxt.text = copsN.ToString();
+    //    runnersNumberTxt.text = runnersN.ToString();
+    //}
 
-    public void UIMAJRunnersName()
-    {
-        // Runners Name Update
-        runnersPlayerNameTxt[runnersN] = LM.playerName;
-        runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
-    }
-
-    public void UIMAJCopsName()
-    {
-        // Cops Name Update
-        copsPlayerNameTxt[copsN] = LM.playerName;
-        copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
-    }
+    //public void UIMAJRunnersName()
+    //{
+    //    // Runners Name Update
+    //    runnersPlayerNameTxt[runnersN] = LM.playerName;
+    //    runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
+    //}
+    //
+    //public void UIMAJCopsName()
+    //{
+    //    // Cops Name Update
+    //    copsPlayerNameTxt[copsN] = LM.playerName;
+    //    copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
+    //}
     #endregion
 
     #endregion
@@ -292,27 +377,27 @@ public class TeamSelection : MonoBehaviour
             {
                 if (runnersPlayerNameTxt[i].Contains(LM.playerName))
                 {
-                    runnersN--;
-                    runnersNumberTxt.text = runnersN.ToString();
+                    LessrunnersNValueServerRpc();
+                    runnersNumberTxt.text = runnersN.Value.ToString();
                 }
             }
 
             alreadyRunner = false;
-            runnersPlayerNameTxt[runnersN] = "";
-            runnersPlayerNameTMPro[runnersN].text = "";
+            runnersPlayerNameTxt[runnersN.Value] = "";
+            runnersPlayerNameTMPro[runnersN.Value].text = "";
 
             for (int i = 0; i < copsPlayerNameTxt.Count; i++)
             {
                 if (copsPlayerNameTxt[i].Contains(LM.playerName))
                 {
-                    copsN--;
-                    copsNumberTxt.text = copsN.ToString();
+                    LesscopsNValueServerRpc();
+                    copsNumberTxt.text = copsN.Value.ToString();
                 }
             }
 
             alreadyCop = false;
-            copsPlayerNameTxt[copsN] = "";
-            copsPlayerNameTMPro[copsN].text = "";
+            copsPlayerNameTxt[copsN.Value] = "";
+            copsPlayerNameTMPro[copsN.Value].text = "";
 
             await LobbyService.Instance.RemovePlayerAsync(LM.joinedLobby.Id, AuthenticationService.Instance.PlayerId);
 
