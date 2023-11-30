@@ -5,7 +5,7 @@ using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Netcode;
-using Unity.Collections.LowLevel.Unsafe;
+
 
 public class TeamSelection : NetworkBehaviour
 {
@@ -26,14 +26,12 @@ public class TeamSelection : NetworkBehaviour
 
 
     [Header("Team Selection")]
-    //[HideInInspector] public int copsLimit;
     //private int copsN;
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
     [HideInInspector][SerializeField] private List<string> copsPlayerNameTxt;
     [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTMPro;
 
-    //[HideInInspector] public int runnersLimit;
     //private int runnersN;
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
@@ -62,11 +60,6 @@ public class TeamSelection : NetworkBehaviour
 
     private void Update()
     {
-        //if (createLobby)
-        //{
-        //    createLobby = false;
-        //}
-
         CursorModification();
     }
 
@@ -81,7 +74,9 @@ public class TeamSelection : NetworkBehaviour
 
         copsN.OnValueChanged += OncopsNChanged;
         runnersN.OnValueChanged += OnrunnersNChanged;
+
         Debug.Log("passe");
+
         copsLimit.OnValueChanged += OncopsLimitChanged;
         runnersLimit.OnValueChanged += OnrunnersLimitChanged;
     }
@@ -92,67 +87,88 @@ public class TeamSelection : NetworkBehaviour
     #region Netcode Cops
     private void OncopsNChanged(int previous, int current)
     {
-        Debug.Log("Changement de variable copsN, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+        //Debug.Log("Changement de variable copsN, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
     }
 
     private void OncopsLimitChanged(int previous, int current)
     {
-        Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+        //Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void MorecopsNValueServerRpc()
     {
         copsN.Value++;
+
         Debug.Log("+ de flic");
+
+        UpdateCopsNValue();
     }
 
-    [ServerRpc]
+    public void UpdateCopsNValue()
+    {
+        copsNumberTxt.text = copsN.Value.ToString();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
     public void LesscopsNValueServerRpc()
     {
         copsN.Value--;
+
         Debug.Log("- de flic");
+
+        UpdateCopsNValue();
     }
 
     [ServerRpc]
     public void copsLimitValueServerRpc(int newValue)
     {
         copsLimit.Value = newValue;
-        Debug.Log("nouvelle limite de flic");
+        //Debug.Log("nouvelle limite de flic");
     }
     #endregion
 
     #region Netcode Runners
     private void OnrunnersNChanged(int previous, int current)
     {
-        Debug.Log("Changement de variable runnersN, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+        //Debug.Log("Changement de variable runnersN, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
     }
 
     private void OnrunnersLimitChanged(int previous, int current)
     {
-        Debug.Log("Changement de variable runnersLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+        //Debug.Log("Changement de variable runnersLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)] 
     public void MorerunnersNValueServerRpc()
     {
         runnersN.Value++;
-        Debug.Log("+ de runners");
+
+        //Debug.Log("+ de runners");
+
+        UpdateRunnersNValue();
     }
 
-    //(RequireOwnership = false)
-    [ServerRpc]
+    public void UpdateRunnersNValue()
+    {
+        runnersNumberTxt.text = runnersN.Value.ToString();
+    }
+
+    [ServerRpc(RequireOwnership = false)] 
     public void LessrunnersNValueServerRpc()
     {
         runnersN.Value--;
-        Debug.Log("- de runners");
+
+        //Debug.Log("- de runners");
+
+        UpdateRunnersNValue();
     }
 
     [ServerRpc]
     public void runnersLimitValueServerRpc(int newValue)
     {
         runnersLimit.Value = newValue;
-        Debug.Log("nouvelle limite de runner");
+        //Debug.Log("nouvelle limite de runner");
     }
     #endregion
 
@@ -332,36 +348,6 @@ public class TeamSelection : NetworkBehaviour
         copsMaxNumberTxt.text = copsLimit.Value.ToString();
         runnersMaxNumberTxt.text = runnersLimit.Value.ToString();
     }
-
-
-    #region MAJUI
-    //public void UIMAJMaxPlayers()
-    //{
-    //    // Limite de joueurs dans chaque équipe
-    //    copsMaxNumberTxt.text = copsLimit.ToString();
-    //    runnersMaxNumberTxt.text = runnersLimit.ToString();
-    //}
-    //public void UIMAJPlayerNumber()
-    //{
-    //    // Nombre de joueur dans chaque équipe
-    //    copsNumberTxt.text = copsN.ToString();
-    //    runnersNumberTxt.text = runnersN.ToString();
-    //}
-
-    //public void UIMAJRunnersName()
-    //{
-    //    // Runners Name Update
-    //    runnersPlayerNameTxt[runnersN] = LM.playerName;
-    //    runnersPlayerNameTMPro[runnersN].text = runnersPlayerNameTxt[runnersN];
-    //}
-    //
-    //public void UIMAJCopsName()
-    //{
-    //    // Cops Name Update
-    //    copsPlayerNameTxt[copsN] = LM.playerName;
-    //    copsPlayerNameTMPro[copsN].text = copsPlayerNameTxt[copsN];
-    //}
-    #endregion
 
     #endregion
 
