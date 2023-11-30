@@ -8,10 +8,13 @@ public class PlayerUI : NetworkBehaviour
 {
     private TeamSelection TS;
     private bool equilibrageOn;
-
+    private int prevCops;
+    private int prevRunners;
 
     private void Start()
     {
+        prevCops = 0;
+        prevRunners = 0; 
         TS = FindObjectOfType<TeamSelection>();
     }
 
@@ -26,8 +29,17 @@ public class PlayerUI : NetworkBehaviour
 
         if (IsOwner)
         {
-            TS.UpdateRunnersNValue();
-            TS.UpdateCopsNValue();
+            if (TS.copsN.Value != prevCops)
+            {
+                TS.UpdateCopsNValue();
+                prevCops = TS.copsN.Value;
+            }
+
+            if (TS.runnersN.Value != prevRunners)
+            {
+                TS.UpdateRunnersNValue();
+                prevRunners = TS.runnersN.Value;
+            }
 
             //TS.UIMAJCopsName();
             //TS.UIMAJRunnersName();
