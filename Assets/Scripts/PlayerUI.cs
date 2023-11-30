@@ -6,33 +6,31 @@ using Unity.Netcode;
 
 public class PlayerUI : NetworkBehaviour
 {
-   private TeamSelection TS;
-   
-   private void Start()
-   {
-       TS = FindObjectOfType<TeamSelection>();
-   
-   
-       //if (IsOwner)
-       //{
-       //     TS.Equilibrage();
-       //}
-   }
+    private TeamSelection TS;
+    private bool equilibrageOn;
+
+
+    private void Start()
+    {
+        TS = FindObjectOfType<TeamSelection>();
+    }
 
     private void Update()
     {
-        if (IsOwner)
+        if (IsOwner && !equilibrageOn)
         {
+            equilibrageOn = true;
+
             TS.Equilibrage();
         }
+
+        if (IsOwner)
+        {
+            TS.UpdateRunnersNValue();
+            TS.UpdateCopsNValue();
+
+            //TS.UIMAJCopsName();
+            //TS.UIMAJRunnersName();
+        }
     }
-
-    //ServerRpc]
-    //rivate void UpdateTeamUIServerRpc(int copsLimit, int runnersLimit)
-    //
-    //   TS.copsLimit = copsLimit;
-    //   TS.runnersLimit = runnersLimit;
-    //
-    //   TS.UIMAJMaxPlayers();
-
 }
