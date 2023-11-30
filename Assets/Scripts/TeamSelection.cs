@@ -5,6 +5,7 @@ using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Netcode;
+using System;
 
 
 public class TeamSelection : NetworkBehaviour
@@ -12,30 +13,30 @@ public class TeamSelection : NetworkBehaviour
     #region Variables
     [SerializeField] private GameObject UITeamSelection;
 
-    // // Team Selection Max Player Number
+    // Team Selection Max Player Number
     public NetworkVariable<int> copsLimit = new NetworkVariable<int>();
     public NetworkVariable<int> runnersLimit = new NetworkVariable<int>();
-    // 
+    
     // Team Selection Actual Player Number
     public NetworkVariable<int> copsN = new NetworkVariable<int>();
     public NetworkVariable<int> runnersN = new NetworkVariable<int>();
-    // 
-    // // Noms des joueurs de chaque équipe
-    // public string[] copsPlayerNameTxt;
-    // public string[] runnersPlayerNameTxt;
+    
+    // Noms des joueurs de chaque équipe
+    public List<string> copsPlayerNameTxt;
+    public List<string> runnersPlayerNameTxt;
 
 
     [Header("Team Selection")]
     //private int copsN;
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
-    [HideInInspector][SerializeField] private List<string> copsPlayerNameTxt;
+    //[HideInInspector][SerializeField] private List<string> copsPlayerNameTxt;
     [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTMPro;
 
     //private int runnersN;
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
-    [HideInInspector][SerializeField] private List<string> runnersPlayerNameTxt;
+    //[HideInInspector][SerializeField] private List<string> runnersPlayerNameTxt;
     [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTMPro;
 
     private bool alreadyCop;
@@ -110,6 +111,19 @@ public class TeamSelection : NetworkBehaviour
         copsNumberTxt.text = copsN.Value.ToString();
     }
 
+    public void UpdateMoreCopsName()
+    {
+        copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
+    }
+
+    public void UpdateLessCopsName()
+    {
+        // On retire de la liste des policiers notre nom
+        int index = copsPlayerNameTxt.IndexOf(LM.playerName);
+        copsPlayerNameTxt[index] = "";
+        copsPlayerNameTMPro[index].text = "";
+    }
+
     [ServerRpc(RequireOwnership = false)]
     public void LesscopsNValueServerRpc()
     {
@@ -152,6 +166,19 @@ public class TeamSelection : NetworkBehaviour
     public void UpdateRunnersNValue()
     {
         runnersNumberTxt.text = runnersN.Value.ToString();
+    }
+
+    public void UpdateMoreRunnersName()
+    {
+        runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
+    }
+
+    public void UpdateLessRunnersName()
+    {
+        // On retire de la liste des courreurs notre nom
+        int index = runnersPlayerNameTxt.IndexOf(LM.playerName);
+        runnersPlayerNameTxt[index] = "";
+        runnersPlayerNameTMPro[index].text = "";
     }
 
     [ServerRpc(RequireOwnership = false)] 
