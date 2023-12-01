@@ -31,15 +31,19 @@ public class PlayerUI : NetworkBehaviour
         {
             if (TS.copsN.Value != prevCops)
             {
-                Debug.Log("client update cops");
                 TS.UpdateCopsNValue();
+
+                TS.UpdateSelectionNames();
+
                 prevCops = TS.copsN.Value;
             }
 
             if (TS.runnersN.Value != prevRunners)
             {
-                Debug.Log("client update runners");
                 TS.UpdateRunnersNValue();
+
+                TS.UpdateSelectionNames();
+
                 prevRunners = TS.runnersN.Value;
             }
         }

@@ -113,10 +113,11 @@ public class TeamSelection : NetworkBehaviour
         copsNumberTxt.text = copsN.Value.ToString();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void PlayerNameCopsServerRpc(FixedString32Bytes playerNameCops)
     {
         copsNamesList.Add(playerNameCops);
+        //Debug.Log("cops noms : " + copsNamesList[0]);
     }
 
     public void PlayerNameCops(string name)
@@ -124,11 +125,12 @@ public class TeamSelection : NetworkBehaviour
         PlayerNameCopsServerRpc(new FixedString32Bytes(name));
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void RemovePlayerNameCopsServerRpc(FixedString32Bytes playerNameCops)
     {
         int index = copsNamesList.IndexOf(playerNameCops);
         copsNamesList[index] = "";
+        //Debug.Log("cops noms : " + copsNamesList[0]);
     }
 
     public void RemovePlayerNameCops(string name)
@@ -175,10 +177,11 @@ public class TeamSelection : NetworkBehaviour
         UpdateRunnersNValue();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void PlayerNameRunnersServerRpc(FixedString32Bytes playerNameRunners)
     {
         runnersNamesList.Add(playerNameRunners);
+        //Debug.Log("runners noms : " + runnersNamesList[0]);
     }
 
     public void PlayerNameRunners(string name)
@@ -186,16 +189,31 @@ public class TeamSelection : NetworkBehaviour
         PlayerNameRunnersServerRpc(new FixedString32Bytes(name));
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void RemovePlayerNameRunnersServerRpc(FixedString32Bytes playerNameRunners)
     {
         int index = runnersNamesList.IndexOf(playerNameRunners);
         runnersNamesList[index] = "";
+        //Debug.Log("runners noms : " + runnersNamesList[0]);
     }
 
     public void RemovePlayerNameRunners(string name)
     {
         RemovePlayerNameRunnersServerRpc(new FixedString32Bytes(name));
+    }
+
+    public void UpdateSelectionNames()
+    {
+        // Cops Team Update
+        for (int i = 0; i < copsNamesList.Count; i++)
+        {
+            copsPlayerNameTMPro[i].text = copsNamesList[i].ToString();
+        }
+
+        for (int i = 0; i < runnersNamesList.Count; i++)
+        {
+            runnersPlayerNameTMPro[i].text = runnersNamesList[i].ToString();
+        }
     }
 
     public void UpdateRunnersNValue()
@@ -412,7 +430,7 @@ public class TeamSelection : NetworkBehaviour
 
     #endregion
 
-    // Si fonctionne mettre aussi en server rpc
+
     /// <summary>
     /// Permet de quitter le salon
     /// </summary>
