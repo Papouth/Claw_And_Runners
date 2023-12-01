@@ -27,16 +27,14 @@ public class TeamSelection : NetworkBehaviour
 
 
     [Header("Team Selection")]
-    //private int copsN;
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
-    //[HideInInspector][SerializeField] private List<string> copsPlayerNameTxt;
+
     [SerializeField] private List<TextMeshProUGUI> copsPlayerNameTMPro;
 
-    //private int runnersN;
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
-    //[HideInInspector][SerializeField] private List<string> runnersPlayerNameTxt;
+
     [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTMPro;
 
     private bool alreadyCop;
