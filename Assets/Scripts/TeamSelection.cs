@@ -6,6 +6,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Netcode;
 using System;
+using Unity.Collections;
 
 
 public class TeamSelection : NetworkBehaviour
@@ -24,6 +25,9 @@ public class TeamSelection : NetworkBehaviour
     // Noms des joueurs de chaque équipe
     public List<string> copsPlayerNameTxt;
     public List<string> runnersPlayerNameTxt;
+
+    public NetworkList<FixedString32Bytes> runnersNamesList = new NetworkList<FixedString32Bytes>();
+    public NetworkList<FixedString32Bytes> copsNamesList = new NetworkList<FixedString32Bytes>();
 
 
     [Header("Team Selection")]
@@ -99,7 +103,7 @@ public class TeamSelection : NetworkBehaviour
     {
         copsN.Value++;
 
-        Debug.Log("+ de flic");
+        //Debug.Log("+ de flic");
 
         UpdateCopsNValue();
     }
@@ -109,17 +113,27 @@ public class TeamSelection : NetworkBehaviour
         copsNumberTxt.text = copsN.Value.ToString();
     }
 
-    public void UpdateMoreCopsName()
+    [ServerRpc]
+    public void PlayerNameCopsServerRpc(FixedString32Bytes playerNameCops)
     {
-        copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
+        copsNamesList.Add(playerNameCops);
     }
 
-    public void UpdateLessCopsName()
+    public void PlayerNameCops(string name)
     {
-        // On retire de la liste des policiers notre nom
-        int index = copsPlayerNameTxt.IndexOf(LM.playerName);
-        copsPlayerNameTxt[index] = "";
-        copsPlayerNameTMPro[index].text = "";
+        PlayerNameCopsServerRpc(new FixedString32Bytes(name));
+    }
+
+    [ServerRpc]
+    public void RemovePlayerNameCopsServerRpc(FixedString32Bytes playerNameCops)
+    {
+        int index = copsNamesList.IndexOf(playerNameCops);
+        copsNamesList[index] = "";
+    }
+
+    public void RemovePlayerNameCops(string name)
+    {
+        RemovePlayerNameCopsServerRpc(new FixedString32Bytes(name));
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -127,7 +141,7 @@ public class TeamSelection : NetworkBehaviour
     {
         copsN.Value--;
 
-        Debug.Log("- de flic");
+        //Debug.Log("- de flic");
 
         UpdateCopsNValue();
     }
@@ -161,22 +175,32 @@ public class TeamSelection : NetworkBehaviour
         UpdateRunnersNValue();
     }
 
+    [ServerRpc]
+    public void PlayerNameRunnersServerRpc(FixedString32Bytes playerNameRunners)
+    {
+        runnersNamesList.Add(playerNameRunners);
+    }
+
+    public void PlayerNameRunners(string name)
+    {
+        PlayerNameRunnersServerRpc(new FixedString32Bytes(name));
+    }
+
+    [ServerRpc]
+    public void RemovePlayerNameRunnersServerRpc(FixedString32Bytes playerNameRunners)
+    {
+        int index = runnersNamesList.IndexOf(playerNameRunners);
+        runnersNamesList[index] = "";
+    }
+
+    public void RemovePlayerNameRunners(string name)
+    {
+        RemovePlayerNameRunnersServerRpc(new FixedString32Bytes(name));
+    }
+
     public void UpdateRunnersNValue()
     {
         runnersNumberTxt.text = runnersN.Value.ToString();
-    }
-
-    public void UpdateMoreRunnersName()
-    {
-        runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
-    }
-
-    public void UpdateLessRunnersName()
-    {
-        // On retire de la liste des courreurs notre nom
-        int index = runnersPlayerNameTxt.IndexOf(LM.playerName);
-        runnersPlayerNameTxt[index] = "";
-        runnersPlayerNameTMPro[index].text = "";
     }
 
     [ServerRpc(RequireOwnership = false)] 
@@ -253,6 +277,8 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTxt[copsN.Value] = LM.playerName;
             copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
+            PlayerNameCops(LM.playerName);
+
             MorecopsNValueServerRpc();
             copsNumberTxt.text = copsN.Value.ToString();
 
@@ -269,12 +295,16 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTxt[copsN.Value] = LM.playerName;
             copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
+            PlayerNameCops(LM.playerName);
+
             MorecopsNValueServerRpc();
 
             // On retire de la liste des courreurs notre nom
             int index = runnersPlayerNameTxt.IndexOf(LM.playerName);
             runnersPlayerNameTxt[index] = "";
             runnersPlayerNameTMPro[index].text = "";
+
+            RemovePlayerNameRunners(LM.playerName);
 
             LessrunnersNValueServerRpc();
 
@@ -303,6 +333,8 @@ public class TeamSelection : NetworkBehaviour
             runnersPlayerNameTxt[runnersN.Value] = LM.playerName;
             runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
 
+            PlayerNameRunners(LM.playerName);
+
             MorerunnersNValueServerRpc();
             runnersNumberTxt.text = runnersN.Value.ToString();
 
@@ -319,6 +351,8 @@ public class TeamSelection : NetworkBehaviour
             runnersPlayerNameTxt[runnersN.Value] = LM.playerName;
             runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
 
+            PlayerNameRunners(LM.playerName);
+
             MorerunnersNValueServerRpc();
 
             // On retire de la liste des policiers notre nom
@@ -327,6 +361,8 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTMPro[index].text = "";
 
             LesscopsNValueServerRpc();
+
+            RemovePlayerNameCops(LM.playerName);
 
             // Nombre de policier et de courreur
             copsNumberTxt.text = copsN.Value.ToString();
@@ -388,6 +424,7 @@ public class TeamSelection : NetworkBehaviour
             {
                 if (runnersPlayerNameTxt[i].Contains(LM.playerName))
                 {
+                    RemovePlayerNameRunners(LM.playerName);
                     LessrunnersNValueServerRpc();
                     runnersNumberTxt.text = runnersN.Value.ToString();
                 }
@@ -401,6 +438,7 @@ public class TeamSelection : NetworkBehaviour
             {
                 if (copsPlayerNameTxt[i].Contains(LM.playerName))
                 {
+                    RemovePlayerNameCops(LM.playerName);
                     LesscopsNValueServerRpc();
                     copsNumberTxt.text = copsN.Value.ToString();
                 }
