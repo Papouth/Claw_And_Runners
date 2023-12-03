@@ -5,7 +5,6 @@ using TMPro;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Netcode;
-using System;
 using Unity.Collections;
 
 
@@ -26,9 +25,8 @@ public class TeamSelection : NetworkBehaviour
     public List<string> copsPlayerNameTxt;
     public List<string> runnersPlayerNameTxt;
 
-    public NetworkList<FixedString32Bytes> runnersNamesList = new NetworkList<FixedString32Bytes>();
-    public NetworkList<FixedString32Bytes> copsNamesList = new NetworkList<FixedString32Bytes>();
-
+    public NetworkList<FixedString32Bytes> runnersNamesList;
+    public NetworkList<FixedString32Bytes> copsNamesList;
 
     [Header("Team Selection")]
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
@@ -48,22 +46,36 @@ public class TeamSelection : NetworkBehaviour
     [HideInInspector] public bool createLobby;
     private bool gameFullyStarted;
     private bool cursorState;
+
+    [Header("Timer")]
+    [SerializeField] private GameObject panelTimer;
+    [SerializeField] private TextMeshProUGUI timer;
+    private float timerToBegin = 5f;
+    public bool readySelection;
+    private bool showTimer;
     #endregion
 
 
     #region Built In Methods
+    private void Awake()
+    {
+        runnersNamesList = new NetworkList<FixedString32Bytes>();
+        copsNamesList = new NetworkList<FixedString32Bytes>();
+    }
+
     private void Start()
     {
         LM = FindObjectOfType<LobbyManager>();
 
         UITeamSelection.SetActive(false);
-
-        InitTeamSelection();
+        panelTimer.SetActive(false);
     }
 
     private void Update()
     {
         CursorModification();
+
+        TimerToBegin();
     }
 
     public override void OnNetworkSpawn()
@@ -72,21 +84,48 @@ public class TeamSelection : NetworkBehaviour
         {
             copsN.Value = 0;
             runnersN.Value = 0;
-            Debug.Log("SetValue ici");
         }
 
         copsN.OnValueChanged += OncopsNChanged;
         runnersN.OnValueChanged += OnrunnersNChanged;
 
-        Debug.Log("passe");
-
         copsLimit.OnValueChanged += OncopsLimitChanged;
         runnersLimit.OnValueChanged += OnrunnersLimitChanged;
+
+        InitTeamSelection();
     }
     #endregion
 
 
     #region Customs Methods
+
+    /// <summary>
+    /// Permet de lancer la partie après le choix des équipes
+    /// </summary>
+    private void TimerToBegin()
+    {
+        // Si la sélection d'équipe n'est pas encore faite et qu'il y a autant de policiers que la limite ainsi qu'autant de courreurs que la limite alors on lance la partie
+        if (!readySelection && copsN.Value == copsLimit.Value && runnersN.Value == runnersLimit.Value && showTimer)
+        {
+            panelTimer.SetActive(true);
+
+            timerToBegin -= Time.deltaTime;
+            timer.text = timerToBegin.ToString("0");
+            if (timerToBegin <= 0f)
+            {
+                readySelection = true;
+
+
+                // Sauvegarde ici des infos des joueurs qui sont dans chaque équipe
+
+
+
+                // On retire l'UI de sélection d'équipe
+                UITeamSelection.SetActive(false);
+            }
+        }
+    }
+
     #region Netcode Cops
     private void OncopsNChanged(int previous, int current)
     {
@@ -243,6 +282,7 @@ public class TeamSelection : NetworkBehaviour
     {
         if (gameFullyStarted && !cursorState)
         {
+            //Debug.Log("game started true");
             cursorState = true;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
@@ -250,6 +290,7 @@ public class TeamSelection : NetworkBehaviour
 
         if (createLobby && !cursorState)
         {
+            //Debug.Log("lobby creation");
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.Confined;
         }
@@ -426,6 +467,8 @@ public class TeamSelection : NetworkBehaviour
 
         copsMaxNumberTxt.text = copsLimit.Value.ToString();
         runnersMaxNumberTxt.text = runnersLimit.Value.ToString();
+
+        showTimer = true;
     }
 
     #endregion

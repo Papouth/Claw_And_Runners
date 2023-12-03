@@ -15,6 +15,11 @@ public class PlayerUI : NetworkBehaviour
     {
         prevCops = 0;
         prevRunners = 0; 
+        //TS = FindObjectOfType<TeamSelection>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
         TS = FindObjectOfType<TeamSelection>();
     }
 
