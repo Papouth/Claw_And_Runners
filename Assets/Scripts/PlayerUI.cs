@@ -15,7 +15,6 @@ public class PlayerUI : NetworkBehaviour
     {
         prevCops = 0;
         prevRunners = 0; 
-        //TS = FindObjectOfType<TeamSelection>();
     }
 
     public override void OnNetworkSpawn()
@@ -50,6 +49,13 @@ public class PlayerUI : NetworkBehaviour
                 TS.UpdateSelectionNames();
 
                 prevRunners = TS.runnersN.Value;
+            }
+
+            if (TS.requireNameUpdate)
+            {
+                TS.requireNameUpdate = false;
+
+                TS.UpdateSelectionNames();
             }
         }
     }
