@@ -47,6 +47,8 @@ public class TeamSelection : NetworkBehaviour
     private bool gameFullyStarted;
     private bool cursorState;
 
+    [HideInInspector] public bool requireNameUpdate;
+
     [Header("Timer")]
     [SerializeField] private GameObject panelTimer;
     [SerializeField] private TextMeshProUGUI timer;
@@ -169,7 +171,11 @@ public class TeamSelection : NetworkBehaviour
     {
         int index = copsNamesList.IndexOf(playerNameCops);
         copsNamesList[index] = "";
-        //Debug.Log("cops noms : " + copsNamesList[0]);
+
+        copsPlayerNameTMPro[index].text = copsNamesList[index].ToString();
+        copsNamesList.RemoveAt(index);
+
+        requireNameUpdate = true;
     }
 
     public void RemovePlayerNameCops(string name)
@@ -233,7 +239,11 @@ public class TeamSelection : NetworkBehaviour
     {
         int index = runnersNamesList.IndexOf(playerNameRunners);
         runnersNamesList[index] = "";
-        //Debug.Log("runners noms : " + runnersNamesList[0]);
+
+        runnersPlayerNameTMPro[index].text = runnersNamesList[index].ToString();
+        runnersNamesList.RemoveAt(index);
+
+        requireNameUpdate = true;
     }
 
     public void RemovePlayerNameRunners(string name)
@@ -249,9 +259,19 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTMPro[i].text = copsNamesList[i].ToString();
         }
 
+        if (copsNamesList.Count == 0)
+        {
+            copsPlayerNameTMPro[0].text = "";
+        }
+
         for (int i = 0; i < runnersNamesList.Count; i++)
         {
             runnersPlayerNameTMPro[i].text = runnersNamesList[i].ToString();
+        }
+
+        if (runnersNamesList.Count == 0)
+        {
+            runnersPlayerNameTMPro[0].text = "";
         }
     }
 
