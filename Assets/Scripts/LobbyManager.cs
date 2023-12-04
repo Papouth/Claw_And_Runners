@@ -29,10 +29,13 @@ public class LobbyManager : MonoBehaviour
 
     [Header("Lobby Parameters")]
     private bool stateLobby;
-    [SerializeField] private TextMeshProUGUI lobbyStateText;
-    [SerializeField] private TextMeshProUGUI maxPlayersInLobbyText;
-    private int increm;
-    private int basePlayerNumber = 4;
+    [SerializeField] private Image[] cadenas;
+    [SerializeField] private Sprite[] cadenasBase;
+    [SerializeField] private Sprite[] cadenasColor;
+
+    [SerializeField] private Image[] imageNumber;
+    [SerializeField] private Sprite[] spritesNumber;
+    [SerializeField] private Sprite[] spritesNumberColor;
 
     [Header("Inside Lobby")]
     [SerializeField] private TextMeshProUGUI insideLobbyName;
@@ -69,8 +72,6 @@ public class LobbyManager : MonoBehaviour
         startBttn.SetActive(false);
         playerName = "FunkyPlayer" + Random.Range(10, 99);
         namePlaceHolder.text = playerName;
-        increm = 0;
-        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
 
         foreach (var item in namesPlayersInsideLobby)
         {
@@ -245,33 +246,109 @@ public class LobbyManager : MonoBehaviour
     #region Set maximum players in lobby
     // 4 to 8 players
 
-    public void AddMorePlayer()
+    // Arrow To increase and decrease
+
+    //public void AddMorePlayer()
+    //{
+    //    basePlayerNumber = 4;
+    //    increm++;
+    //
+    //    if (increm > 4) increm = 4;
+    //
+    //    basePlayerNumber = basePlayerNumber + increm;
+    //    maxPlayersInLobbyText.text = basePlayerNumber.ToString();
+    //    maxPlayers = basePlayerNumber;
+    //}
+    //
+    //public void AddLessPlayer()
+    //{
+    //    basePlayerNumber = 4;
+    //    increm--;
+    //
+    //    if (increm < -4) increm = -4;
+    //
+    //    basePlayerNumber = basePlayerNumber + increm;
+    //    maxPlayersInLobbyText.text = basePlayerNumber.ToString();
+    //    maxPlayers = basePlayerNumber;
+    //}
+
+    public void FourPlayer()
     {
-        basePlayerNumber = 4;
-        increm++;
+        maxPlayers = 4;
 
-        if (increm > 4) increm = 4;
+        // On set la couleur
+        imageNumber[0].sprite = spritesNumberColor[0];
 
-        basePlayerNumber = basePlayerNumber + increm;
-        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
-        maxPlayers = basePlayerNumber;
+        // On retire les autres couleurs
+        for (int i = 1; i < imageNumber.Length; i++)
+        {
+            imageNumber[i].sprite = spritesNumber[i];
+        }
     }
 
-    public void AddLessPlayer()
+    public void FivePlayer()
     {
-        basePlayerNumber = 4;
-        increm--;
+        maxPlayers = 5;
 
-        if (increm < -4) increm = -4;
+        // On set la couleur
+        imageNumber[1].sprite = spritesNumberColor[1];
 
-        basePlayerNumber = basePlayerNumber + increm;
-        maxPlayersInLobbyText.text = basePlayerNumber.ToString();
-        maxPlayers = basePlayerNumber;
+        // On retire les autres couleurs
+        imageNumber[0].sprite = spritesNumber[0];
+
+        for (int i = 2; i < imageNumber.Length; i++)
+        {
+            imageNumber[i].sprite = spritesNumber[i];
+        }
+    }
+
+    public void SixPlayer()
+    {
+        maxPlayers = 6;
+
+        // On set la couleur
+        imageNumber[2].sprite = spritesNumberColor[2];
+
+        // On retire les autres couleurs
+        imageNumber[0].sprite = spritesNumber[0];
+        imageNumber[1].sprite = spritesNumber[1];
+
+        for (int i = 3; i < imageNumber.Length; i++)
+        {
+            imageNumber[i].sprite = spritesNumber[i];
+        }
+    }
+
+    public void SevenPlayer()
+    {
+        maxPlayers = 7;
+
+        // On set la couleur
+        imageNumber[3].sprite = spritesNumberColor[3];
+
+        // On retire les autres couleurs
+        imageNumber[0].sprite = spritesNumber[0];
+        imageNumber[1].sprite = spritesNumber[1];
+        imageNumber[2].sprite = spritesNumber[2];
+        imageNumber[4].sprite = spritesNumber[4];
+    }
+
+    public void EightPlayer()
+    {
+        maxPlayers = 8;
+
+        // On retire les autres couleurs
+        for (int i = 0; i < imageNumber.Length; i++)
+        {
+            imageNumber[i].sprite = spritesNumber[i];
+        }
+
+        // On set la couleur
+        imageNumber[4].sprite = spritesNumberColor[4];
     }
 
     public void SpecialTestPlayer()
     {
-        maxPlayersInLobbyText.text = "2";
         maxPlayers = 2;
     }
     #endregion
@@ -279,18 +356,46 @@ public class LobbyManager : MonoBehaviour
     /// <summary>
     /// Mettre un lobby en public ou en privé
     /// </summary>
-    public void ChangeLobbyState()
-    {
-        stateLobby = !stateLobby;
+    //public void ChangeLobbyState()
+    //{
+    //    stateLobby = !stateLobby;
+    //
+    //    if (stateLobby)
+    //    {
+    //        lobbyStateText.text = "PRIVATE";
+    //    }
+    //    else if (!stateLobby)
+    //    {
+    //        lobbyStateText.text = "PUBLIC";
+    //    }
+    //}
 
-        if (stateLobby)
-        {
-            lobbyStateText.text = "PRIVATE";
-        }
-        else if (!stateLobby)
-        {
-            lobbyStateText.text = "PUBLIC";
-        }
+    /// <summary>
+    /// Rendre le lobby public
+    /// </summary>
+    public void SetPublicLobby()
+    {
+        stateLobby = false;
+
+        // Set color
+        cadenas[0].sprite = cadenasColor[0];
+
+        // Reset other base color
+        cadenas[1].sprite = cadenasBase[1];
+    }
+
+    /// <summary>
+    /// Rendre le lobby privé
+    /// </summary>
+    public void SetPrivateLobby()
+    {
+        stateLobby = true;
+
+        // Set color
+        cadenas[1].sprite = cadenasColor[1];
+
+        // Reset other base color
+        cadenas[0].sprite = cadenasBase[0];
     }
 
     /// <summary>
