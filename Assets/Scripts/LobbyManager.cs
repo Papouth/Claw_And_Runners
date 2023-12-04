@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class LobbyManager : MonoBehaviour
 {
     #region Variables
-    [SerializeField] private string lobbyName = "Default Lobby";
+    public string lobbyName = "Default Lobby";
     private string customLobbyName = "";
     public int maxPlayers = 4;
 
@@ -197,6 +197,8 @@ public class LobbyManager : MonoBehaviour
             {
                 actualPlayersInsideLobby.text = joinedLobby.Players.Count.ToString();
                 maxPlayersInsideLobby.text = joinedLobby.MaxPlayers.ToString();
+
+
                 insideLobbyName.text = joinedLobby.Name;
                 lobbyCodeDisplay.text = joinedLobby.LobbyCode;
 
@@ -350,6 +352,7 @@ public class LobbyManager : MonoBehaviour
     public void SpecialTestPlayer()
     {
         maxPlayers = 2;
+        Debug.Log(maxPlayers + " est le nombre de joueurs maximum");
     }
     #endregion
 
@@ -425,6 +428,8 @@ public class LobbyManager : MonoBehaviour
             };
 
             joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
+
+            Debug.Log("changement du nombre max de joueur lors de la création du lobby");
 
             hostLobby = joinedLobby;
 
@@ -586,21 +591,21 @@ public class LobbyManager : MonoBehaviour
     private void PrintPlayers(Lobby lobby)
     {
         //Debug.Log("Players in Lobby : " + lobby.Name);
-
+    
         for (int i = 0; i < namesPlayersInsideLobby.Length; i++)
         {
             namesPlayersInsideLobby[i].text = "";
         }
-
+    
         foreach (Player player in lobby.Players)
         {
             namesPlayersInsideLobby[numP].text = player.Data["PlayerName"].Value.ToString();
-
+    
             //Debug.Log(player.Id + " | " + player.Data["PlayerName"].Value);
-
+    
             numP++;
         }
-
+    
         numP = 0;
     }
     #endregion

@@ -16,7 +16,7 @@ public class TeamSelection : NetworkBehaviour
     // Team Selection Max Player Number
     public NetworkVariable<int> copsLimit = new NetworkVariable<int>();
     public NetworkVariable<int> runnersLimit = new NetworkVariable<int>();
-    
+
     // Team Selection Actual Player Number
     public NetworkVariable<int> copsN = new NetworkVariable<int>();
     public NetworkVariable<int> runnersN = new NetworkVariable<int>();
@@ -28,6 +28,8 @@ public class TeamSelection : NetworkBehaviour
     public NetworkList<FixedString32Bytes> runnersNamesList;
     public NetworkList<FixedString32Bytes> copsNamesList;
 
+    public NetworkVariable<FixedString32Bytes> parcNameTxt;
+
     [Header("Team Selection")]
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
     [SerializeField] private TextMeshProUGUI copsMaxNumberTxt;
@@ -37,7 +39,11 @@ public class TeamSelection : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI runnersNumberTxt;
     [SerializeField] private TextMeshProUGUI runnersMaxNumberTxt;
 
+    [SerializeField] private List<GameObject> copsFondText;
+    [SerializeField] private List<GameObject> runnersFondText;
+
     [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTMPro;
+    [SerializeField] private TextMeshProUGUI parcName;
 
     private bool alreadyCop;
     private bool alreadyRunner;
@@ -71,6 +77,17 @@ public class TeamSelection : NetworkBehaviour
 
         UITeamSelection.SetActive(false);
         panelTimer.SetActive(false);
+
+
+        for (int i = 0; i < copsFondText.Count; i++)
+        {
+            copsFondText[i].SetActive(false);
+        }
+
+        for (int i = 0; i < runnersFondText.Count; i++)
+        {
+            runnersFondText[i].SetActive(false);
+        }
     }
 
     private void Update()
@@ -109,6 +126,7 @@ public class TeamSelection : NetworkBehaviour
         // Si la sélection d'équipe n'est pas encore faite et qu'il y a autant de policiers que la limite ainsi qu'autant de courreurs que la limite alors on lance la partie
         if (!readySelection && copsN.Value == copsLimit.Value && runnersN.Value == runnersLimit.Value && showTimer)
         {
+            Debug.Log("timer start");
             panelTimer.SetActive(true);
 
             timerToBegin -= Time.deltaTime;
@@ -487,6 +505,16 @@ public class TeamSelection : NetworkBehaviour
 
         copsMaxNumberTxt.text = copsLimit.Value.ToString();
         runnersMaxNumberTxt.text = runnersLimit.Value.ToString();
+
+        for (int i = 0; i < copsLimit.Value; i++)
+        {
+            copsFondText[i].SetActive(true);
+        }
+
+        for (int i = 0; i < runnersLimit.Value; i++)
+        {
+            runnersFondText[i].SetActive(true);
+        }
 
         showTimer = true;
     }
