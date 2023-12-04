@@ -11,6 +11,7 @@ public class PlayerUI : NetworkBehaviour
     private int prevCops;
     private int prevRunners;
 
+
     private void Start()
     {
         prevCops = 0;
@@ -33,6 +34,7 @@ public class PlayerUI : NetworkBehaviour
 
         if (IsOwner)
         {
+
             if (TS.copsN.Value != prevCops)
             {
                 TS.UpdateCopsNValue();
