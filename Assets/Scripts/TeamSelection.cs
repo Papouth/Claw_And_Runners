@@ -14,12 +14,12 @@ public class TeamSelection : NetworkBehaviour
     [SerializeField] private GameObject UITeamSelection;
 
     // Team Selection Max Player Number
-    public NetworkVariable<int> copsLimit = new NetworkVariable<int>();
-    public NetworkVariable<int> runnersLimit = new NetworkVariable<int>();
+    public NetworkVariable<int> copsLimit;
+    public NetworkVariable<int> runnersLimit;
 
     // Team Selection Actual Player Number
-    public NetworkVariable<int> copsN = new NetworkVariable<int>();
-    public NetworkVariable<int> runnersN = new NetworkVariable<int>();
+    public NetworkVariable<int> copsN;
+    public NetworkVariable<int> runnersN;
 
     // Noms des joueurs de chaque équipe
     public List<string> copsPlayerNameTxt;
@@ -27,8 +27,6 @@ public class TeamSelection : NetworkBehaviour
 
     public NetworkList<FixedString32Bytes> runnersNamesList;
     public NetworkList<FixedString32Bytes> copsNamesList;
-
-    public NetworkVariable<FixedString32Bytes> parcNameTxt;
 
     [Header("Team Selection")]
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
@@ -43,7 +41,7 @@ public class TeamSelection : NetworkBehaviour
     [SerializeField] private List<GameObject> runnersFondText;
 
     [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTMPro;
-    [SerializeField] private TextMeshProUGUI parcName;
+    public TextMeshProUGUI parcName;
 
     private bool alreadyCop;
     private bool alreadyRunner;
@@ -61,12 +59,22 @@ public class TeamSelection : NetworkBehaviour
     private float timerToBegin = 5f;
     public bool readySelection;
     private bool showTimer;
+
+    public bool nameIsSetup;
+    private bool tagSetup;
+    private SessionManager SM;
     #endregion
 
 
     #region Built In Methods
     private void Awake()
     {
+        copsLimit = new NetworkVariable<int>();
+        runnersLimit = new NetworkVariable<int>();
+
+        copsN = new NetworkVariable<int>();
+        runnersN = new NetworkVariable<int>();
+
         runnersNamesList = new NetworkList<FixedString32Bytes>();
         copsNamesList = new NetworkList<FixedString32Bytes>();
     }
@@ -74,6 +82,7 @@ public class TeamSelection : NetworkBehaviour
     private void Start()
     {
         LM = FindObjectOfType<LobbyManager>();
+        SM = gameObject.GetComponent<SessionManager>();
 
         UITeamSelection.SetActive(false);
         panelTimer.SetActive(false);
@@ -95,6 +104,13 @@ public class TeamSelection : NetworkBehaviour
         CursorModification();
 
         TimerToBegin();
+
+        if (nameIsSetup && !tagSetup)
+        {
+            tagSetup = true;
+            // ICI ON FAIT APPARAITRE CHAQUE JOUEUR A LA POSITION DE DEPART + ATTRIBUTION DES SETTINGS
+            SM.AttributionTag();
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -111,8 +127,6 @@ public class TeamSelection : NetworkBehaviour
         copsLimit.OnValueChanged += OncopsLimitChanged;
         runnersLimit.OnValueChanged += OnrunnersLimitChanged;
 
-        parcName.text = LM.lobbyName;
-
         InitTeamSelection();
     }
     #endregion
@@ -128,7 +142,7 @@ public class TeamSelection : NetworkBehaviour
         // Si la sélection d'équipe n'est pas encore faite et qu'il y a autant de policiers que la limite ainsi qu'autant de courreurs que la limite alors on lance la partie
         if (!readySelection && copsN.Value == copsLimit.Value && runnersN.Value == runnersLimit.Value && showTimer)
         {
-            Debug.Log("timer start");
+            //Debug.Log("timer start");
             panelTimer.SetActive(true);
 
             timerToBegin -= Time.deltaTime;
@@ -137,29 +151,14 @@ public class TeamSelection : NetworkBehaviour
             {
                 readySelection = true;
 
-                //foreach (var item in runnersNamesList)
-                //{
-                //   FindObjectOfType<PlayerUI>().NetworkObjectId
-                //}
+                
+
 
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
             }
         }
     }
-
-    // Nom Du Parc
-    [ServerRpc(RequireOwnership = false)]
-    public void ParcNameServerRpc(FixedString32Bytes parcLobbyName)
-    {
-        parcName.text = parcLobbyName.ToString();
-    }
-
-    public void ParcName(string name)
-    {
-        ParcNameServerRpc(new FixedString32Bytes(name));
-    }
-
 
     #region Netcode Cops
     private void OncopsNChanged(int previous, int current)

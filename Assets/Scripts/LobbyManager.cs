@@ -96,8 +96,6 @@ public class LobbyManager : MonoBehaviour
         lobbyMenu.SetActive(true);
         createLobbyMenu.SetActive(false);
         insideLobbyMenu.SetActive(false);
-
-        teamSelection = FindObjectOfType<TeamSelection>();
     }
 
     private void Update()
@@ -200,6 +198,7 @@ public class LobbyManager : MonoBehaviour
 
 
                 insideLobbyName.text = joinedLobby.Name;
+                teamSelection.parcName.text = insideLobbyName.text;
                 lobbyCodeDisplay.text = joinedLobby.LobbyCode;
 
                 //foreach (var player in joinedLobby.Players)
