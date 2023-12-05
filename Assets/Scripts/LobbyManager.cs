@@ -13,7 +13,7 @@ public class LobbyManager : MonoBehaviour
     #region Variables
     public string lobbyName = "Default Lobby";
     private string customLobbyName = "";
-    public int maxPlayers = 4;
+    public int maxPlayers;
 
     private float hearbeatTimer;
     private float lobbyUpdateTimer;

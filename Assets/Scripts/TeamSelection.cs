@@ -20,7 +20,7 @@ public class TeamSelection : NetworkBehaviour
     // Team Selection Actual Player Number
     public NetworkVariable<int> copsN = new NetworkVariable<int>();
     public NetworkVariable<int> runnersN = new NetworkVariable<int>();
-    
+
     // Noms des joueurs de chaque équipe
     public List<string> copsPlayerNameTxt;
     public List<string> runnersPlayerNameTxt;
@@ -111,6 +111,8 @@ public class TeamSelection : NetworkBehaviour
         copsLimit.OnValueChanged += OncopsLimitChanged;
         runnersLimit.OnValueChanged += OnrunnersLimitChanged;
 
+        parcName.text = LM.lobbyName;
+
         InitTeamSelection();
     }
     #endregion
@@ -145,6 +147,19 @@ public class TeamSelection : NetworkBehaviour
             }
         }
     }
+
+    // Nom Du Parc
+    [ServerRpc(RequireOwnership = false)]
+    public void ParcNameServerRpc(FixedString32Bytes parcLobbyName)
+    {
+        parcName.text = parcLobbyName.ToString();
+    }
+
+    public void ParcName(string name)
+    {
+        ParcNameServerRpc(new FixedString32Bytes(name));
+    }
+
 
     #region Netcode Cops
     private void OncopsNChanged(int previous, int current)
@@ -230,7 +245,7 @@ public class TeamSelection : NetworkBehaviour
         //Debug.Log("Changement de variable runnersLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
     }
 
-    [ServerRpc(RequireOwnership = false)] 
+    [ServerRpc(RequireOwnership = false)]
     public void MorerunnersNValueServerRpc()
     {
         runnersN.Value++;
@@ -298,7 +313,7 @@ public class TeamSelection : NetworkBehaviour
         runnersNumberTxt.text = runnersN.Value.ToString();
     }
 
-    [ServerRpc(RequireOwnership = false)] 
+    [ServerRpc(RequireOwnership = false)]
     public void LessrunnersNValueServerRpc()
     {
         runnersN.Value--;
