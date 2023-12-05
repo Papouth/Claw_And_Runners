@@ -6,10 +6,16 @@ using Unity.Netcode;
 
 public class PlayerUI : NetworkBehaviour
 {
+    #region Variables
     private TeamSelection TS;
+    private LobbyManager LM;
     private bool equilibrageOn;
     private int prevCops;
     private int prevRunners;
+    public bool isCops;
+    public string playerName;
+    private bool nameIsSetup;
+    #endregion
 
 
     private void Start()
@@ -21,6 +27,8 @@ public class PlayerUI : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         TS = FindObjectOfType<TeamSelection>();
+
+        LM = FindObjectOfType<LobbyManager>();
     }
 
     private void Update()
@@ -58,6 +66,14 @@ public class PlayerUI : NetworkBehaviour
                 TS.requireNameUpdate = false;
 
                 TS.UpdateSelectionNames();
+            }
+
+            if (TS.readySelection && !nameIsSetup)
+            {
+                nameIsSetup = true;
+                playerName = LM.playerName;
+                Debug.Log("Mon nom est : " + playerName);
+                //if ()
             }
         }
     }
