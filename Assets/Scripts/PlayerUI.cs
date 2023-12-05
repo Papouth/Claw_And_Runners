@@ -38,10 +38,12 @@ public class PlayerUI : NetworkBehaviour
             equilibrageOn = true;
 
             TS.Equilibrage();
+
         }
 
         if (IsOwner)
         {
+            TS.ParcName(LM.lobbyName);
 
             if (TS.copsN.Value != prevCops)
             {
@@ -73,7 +75,6 @@ public class PlayerUI : NetworkBehaviour
                 nameIsSetup = true;
                 playerName = LM.playerName;
                 Debug.Log("Mon nom est : " + playerName);
-                //if ()
             }
         }
     }
