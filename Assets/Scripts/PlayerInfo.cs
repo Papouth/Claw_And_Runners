@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 
 
-public class PlayerUI : NetworkBehaviour
+public class PlayerInfo : NetworkBehaviour
 {
     #region Variables
     private TeamSelection TS;
@@ -12,9 +12,8 @@ public class PlayerUI : NetworkBehaviour
     private bool equilibrageOn;
     private int prevCops;
     private int prevRunners;
-    public bool isCops;
+    [Tooltip("true = chasseur | false = runner")] public bool isCops;
     public string playerName;
-    private bool nameIsSetup;
     #endregion
 
 
@@ -27,8 +26,6 @@ public class PlayerUI : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         TS = FindObjectOfType<TeamSelection>();
-
-        LM = FindObjectOfType<LobbyManager>();
     }
 
     private void Update()
@@ -39,12 +36,13 @@ public class PlayerUI : NetworkBehaviour
 
             TS.Equilibrage();
 
+            LM = FindObjectOfType<LobbyManager>();
+
+            TS.parcName.text = LM.joinedLobby.Name;
         }
 
         if (IsOwner)
         {
-            TS.ParcName(LM.lobbyName);
-
             if (TS.copsN.Value != prevCops)
             {
                 TS.UpdateCopsNValue();
@@ -70,9 +68,9 @@ public class PlayerUI : NetworkBehaviour
                 TS.UpdateSelectionNames();
             }
 
-            if (TS.readySelection && !nameIsSetup)
+            if (TS.readySelection && !TS.nameIsSetup)
             {
-                nameIsSetup = true;
+                TS.nameIsSetup = true;
                 playerName = LM.playerName;
                 Debug.Log("Mon nom est : " + playerName);
             }
