@@ -135,10 +135,10 @@ public class TeamSelection : NetworkBehaviour
             {
                 readySelection = true;
 
-
-                // Sauvegarde ici des infos des joueurs qui sont dans chaque équipe
-
-
+                //foreach (var item in runnersNamesList)
+                //{
+                //   FindObjectOfType<PlayerUI>().NetworkObjectId
+                //}
 
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
