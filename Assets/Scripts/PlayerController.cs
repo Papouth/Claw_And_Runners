@@ -39,6 +39,8 @@ public class PlayerController : NetworkBehaviour
 
     private UIManager canvas;
     private TeamSelection teamSelection;
+
+    [SerializeField] private bool MathisDoitAnimer;
     #endregion
 
 
@@ -51,6 +53,11 @@ public class PlayerController : NetworkBehaviour
 
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
+    }
+
+    public void MathisAnim()
+    {
+        MathisDoitAnimer = true;
     }
 
     public override void OnNetworkSpawn()
@@ -71,11 +78,15 @@ public class PlayerController : NetworkBehaviour
         if (IsServer && !IsOwner) UpdateServer();
 
         if (IsOwner) MoveClient();
+
+        if (MathisDoitAnimer) MoveClient();
     }
 
     private void LateUpdate()
     {
         if (IsOwner) CamMovement();
+
+        if (MathisDoitAnimer) CamMovement();
     }
 
     private void UpdateServer()
