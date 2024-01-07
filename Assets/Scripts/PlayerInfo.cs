@@ -13,6 +13,7 @@ public class PlayerInfo : NetworkBehaviour
     private int prevCops;
     private int prevRunners;
     [Tooltip("true = chasseur | false = runner")] public bool isCops;
+    public int isCopsInt;
     public string playerName;
     #endregion
 
@@ -20,7 +21,7 @@ public class PlayerInfo : NetworkBehaviour
     private void Start()
     {
         prevCops = 0;
-        prevRunners = 0; 
+        prevRunners = 0;
     }
 
     public override void OnNetworkSpawn()
@@ -37,7 +38,7 @@ public class PlayerInfo : NetworkBehaviour
             TS.Equilibrage();
 
             LM = FindObjectOfType<LobbyManager>();
-
+               
             TS.parcName.text = LM.joinedLobby.Name;
         }
 
@@ -75,5 +76,9 @@ public class PlayerInfo : NetworkBehaviour
                 Debug.Log("Mon nom est : " + playerName);
             }
         }
+
+        if (isCopsInt == 0) Debug.Log("Je suis rien zebi");
+        if (isCopsInt == 1) Debug.Log("Je suis policier");
+        if (isCopsInt == 2) Debug.Log("Je suis voleur");
     }
 }

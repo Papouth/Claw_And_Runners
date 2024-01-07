@@ -355,22 +355,6 @@ public class LobbyManager : MonoBehaviour
     }
     #endregion
 
-    /// <summary>
-    /// Mettre un lobby en public ou en privé
-    /// </summary>
-    //public void ChangeLobbyState()
-    //{
-    //    stateLobby = !stateLobby;
-    //
-    //    if (stateLobby)
-    //    {
-    //        lobbyStateText.text = "PRIVATE";
-    //    }
-    //    else if (!stateLobby)
-    //    {
-    //        lobbyStateText.text = "PUBLIC";
-    //    }
-    //}
 
     /// <summary>
     /// Rendre le lobby public
@@ -659,7 +643,7 @@ public class LobbyManager : MonoBehaviour
             {
                 if (player.Id == AuthenticationService.Instance.PlayerId)
                 {
-                    // Le joueur ce trouve dans le lobby
+                    // Le joueur se trouve dans le lobby
                     return true;
                 }
             }
