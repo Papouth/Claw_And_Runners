@@ -63,6 +63,7 @@ public class TeamSelection : NetworkBehaviour
     public bool nameIsSetup;
     private bool tagSetup;
     private SessionManager SM;
+    private PlayerInfo PI;
     #endregion
 
 
@@ -226,7 +227,7 @@ public class TeamSelection : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void copsLimitValueServerRpc(int newValue)
+    public void CopsLimitValueServerRpc(int newValue)
     {
         copsLimit.Value = newValue;
         //Debug.Log("nouvelle limite de flic");
@@ -323,7 +324,7 @@ public class TeamSelection : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void runnersLimitValueServerRpc(int newValue)
+    public void RunnersLimitValueServerRpc(int newValue)
     {
         runnersLimit.Value = newValue;
         //Debug.Log("nouvelle limite de runner");
@@ -374,6 +375,8 @@ public class TeamSelection : NetworkBehaviour
     /// </summary>
     public void JoinCops()
     {
+        
+
         for (int i = 0; i < copsPlayerNameTxt.Count; i++)
         {
             if (copsPlayerNameTxt[i].Contains(LM.playerName))
@@ -389,6 +392,11 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
             PlayerNameCops(LM.playerName);
+
+            //// Unity event
+            //PI = GetComponent<PlayerInfo>();
+            //PI.name = LM.playerName;
+            //gameObject.name = PI.name;
 
             MorecopsNValueServerRpc();
             copsNumberTxt.text = copsN.Value.ToString();
@@ -407,6 +415,11 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
             PlayerNameCops(LM.playerName);
+
+            //// Unity event
+            //PI = GetComponent<PlayerInfo>();
+            //PI.name = LM.playerName;
+            //gameObject.name = PI.name;
 
             MorecopsNValueServerRpc();
 
@@ -446,6 +459,11 @@ public class TeamSelection : NetworkBehaviour
 
             PlayerNameRunners(LM.playerName);
 
+            //// Unity event
+            //PI = GetComponent<PlayerInfo>();
+            //PI.name = LM.playerName;
+            //gameObject.name = PI.name;
+
             MorerunnersNValueServerRpc();
             runnersNumberTxt.text = runnersN.Value.ToString();
 
@@ -463,6 +481,11 @@ public class TeamSelection : NetworkBehaviour
             runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
 
             PlayerNameRunners(LM.playerName);
+
+            //// Unity event
+            //PI = GetComponent<PlayerInfo>();
+            //PI.name = LM.playerName;
+            //gameObject.name = PI.name;
 
             MorerunnersNValueServerRpc();
 
@@ -487,33 +510,33 @@ public class TeamSelection : NetworkBehaviour
         {
             case 8:
                 Debug.Log("Il y a 2 Cops | 6 Runners");
-                copsLimitValueServerRpc(2);
-                runnersLimitValueServerRpc(6);
+                CopsLimitValueServerRpc(2);
+                RunnersLimitValueServerRpc(6);
                 break;
             case 7:
                 Debug.Log("Il y a 2 Cops | 5 Runners");
-                copsLimitValueServerRpc(2);
-                runnersLimitValueServerRpc(5);
+                CopsLimitValueServerRpc(2);
+                RunnersLimitValueServerRpc(5);
                 break;
             case 6:
                 Debug.Log("Il y a 2 Cops | 4 Runners");
-                copsLimitValueServerRpc(2);
-                runnersLimitValueServerRpc(4);
+                CopsLimitValueServerRpc(2);
+                RunnersLimitValueServerRpc(4);
                 break;
             case 5:
                 Debug.Log("Il y a 1 Cops | 4 Runners");
-                copsLimitValueServerRpc(1);
-                runnersLimitValueServerRpc(4);
+                CopsLimitValueServerRpc(1);
+                RunnersLimitValueServerRpc(4);
                 break;
             case 4:
                 Debug.Log("Il y a 1 Cops | 3 Runners");
-                copsLimitValueServerRpc(1);
-                runnersLimitValueServerRpc(3);
+                CopsLimitValueServerRpc(1);
+                RunnersLimitValueServerRpc(3);
                 break;
             case 2:
                 Debug.Log("Test 1 joueur de chaque");
-                copsLimitValueServerRpc(1);
-                runnersLimitValueServerRpc(1);
+                CopsLimitValueServerRpc(1);
+                RunnersLimitValueServerRpc(1);
                 break;
         }
 

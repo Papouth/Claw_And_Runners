@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Services.Lobbies.Models;
 
 
 public class PlayerInfo : NetworkBehaviour
@@ -24,6 +25,27 @@ public class PlayerInfo : NetworkBehaviour
         prevRunners = 0;
     }
 
+    private void OnEnable()
+    {
+        LM = FindObjectOfType<LobbyManager>();
+
+        //foreach (Player player in LM.joinedLobby.Players)
+        //{
+        //    NetworkParameter.RegisterPlayer(gameObject, player.Data["PlayerName"].Value.ToString());
+        //
+        //    Debug.Log("Un nouveau joueur viens d'entrer dans le parc et son nom est : " + player.Data["PlayerName"].Value.ToString());
+        //
+        //    playerName = player.Data["PlayerName"].Value.ToString();
+        //
+        //    gameObject.name = playerName;
+        //}
+    }
+
+    //private void OnDisable()
+    //{
+    //    NetworkParameter.UnregisterPlayer(gameObject, LM.playerName);
+    //}
+
     public override void OnNetworkSpawn()
     {
         TS = FindObjectOfType<TeamSelection>();
@@ -37,7 +59,7 @@ public class PlayerInfo : NetworkBehaviour
 
             TS.Equilibrage();
 
-            LM = FindObjectOfType<LobbyManager>();
+            if (LM == null) LM = FindObjectOfType<LobbyManager>();
                
             TS.parcName.text = LM.joinedLobby.Name;
         }
