@@ -6,7 +6,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Netcode;
 using Unity.Collections;
-
+using UnityEngine.UI;
 
 public class TeamSelection : NetworkBehaviour
 {
@@ -63,6 +63,7 @@ public class TeamSelection : NetworkBehaviour
     public bool nameIsSetup;
     private bool tagSetup;
     private SessionManager SM;
+
     private PlayerInfo PI;
     #endregion
 
@@ -87,7 +88,6 @@ public class TeamSelection : NetworkBehaviour
 
         UITeamSelection.SetActive(false);
         panelTimer.SetActive(false);
-
 
         for (int i = 0; i < copsFondText.Count; i++)
         {
@@ -370,12 +370,17 @@ public class TeamSelection : NetworkBehaviour
         }
     }
 
+
     /// <summary>
     /// Rejoindre les policiers
     /// </summary>
     public void JoinCops()
     {
-        
+        //NetworkClient client
+        //playerInfo.playerName = LM.playerName;
+        //Debug.Log(player.name);
+        //client.PlayerObject.name = LM.playerName;
+        //Debug.Log("test = " + client.PlayerObject.name);
 
         for (int i = 0; i < copsPlayerNameTxt.Count; i++)
         {

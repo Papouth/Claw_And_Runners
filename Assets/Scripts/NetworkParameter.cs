@@ -12,7 +12,6 @@ public class NetworkParameter : MonoBehaviour
     public int clientCount;
     public static List<GameObject> PlayersGameObjects = new List<GameObject>();
     public static List<string> PlayersNames = new List<string>();
-    public List<string> NamesInfo = new List<string>();
     #endregion
 
     private void Awake()
@@ -57,8 +56,6 @@ public class NetworkParameter : MonoBehaviour
     //TEST
     public void Update()
     {
-        //NamesInfo = PlayersNames;
-
         //if (PlayersGameObjects.Count != 0)
         //{
         //    // Pour chaque joueur présent dans ma liste
