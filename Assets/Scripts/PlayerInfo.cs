@@ -29,22 +29,22 @@ public class PlayerInfo : NetworkBehaviour
     {
         LM = FindObjectOfType<LobbyManager>();
 
-        //foreach (Player player in LM.joinedLobby.Players)
-        //{
-        //    NetworkParameter.RegisterPlayer(gameObject, player.Data["PlayerName"].Value.ToString());
-        //
-        //    Debug.Log("Un nouveau joueur viens d'entrer dans le parc et son nom est : " + player.Data["PlayerName"].Value.ToString());
-        //
-        //    playerName = player.Data["PlayerName"].Value.ToString();
-        //
-        //    gameObject.name = playerName;
-        //}
+        foreach (Player player in LM.joinedLobby.Players)
+        {
+            NetworkParameter.RegisterPlayer(gameObject, player.Data["PlayerName"].Value.ToString());
+        
+            Debug.Log("Un nouveau joueur viens d'entrer dans le parc et son nom est : " + player.Data["PlayerName"].Value.ToString());
+        
+            playerName = player.Data["PlayerName"].Value.ToString();
+        
+            gameObject.name = playerName;
+        }
     }
 
-    //private void OnDisable()
-    //{
-    //    NetworkParameter.UnregisterPlayer(gameObject, LM.playerName);
-    //}
+    private void OnDisable()
+    {
+        NetworkParameter.UnregisterPlayer(gameObject, LM.playerName);
+    }
 
     public override void OnNetworkSpawn()
     {
