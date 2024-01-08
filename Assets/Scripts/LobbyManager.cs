@@ -497,11 +497,9 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
-            Player player = GetPlayer();
-
             joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions
             {
-                Player = player
+                Player = GetPlayer()
             });
 
             PanelInsideLobby();
@@ -560,7 +558,12 @@ public class LobbyManager : MonoBehaviour
     }
 
     #region Debug Player
-    private Player GetPlayer()
+
+    /// <summary>
+    /// Actualise les infos du joueur
+    /// </summary>
+    /// <returns></returns>
+    public Player GetPlayer()
     {
         return new Player
         {
@@ -571,6 +574,10 @@ public class LobbyManager : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// Affiche les différents noms des joueurs présent dans le lobby
+    /// </summary>
+    /// <param name="lobby"></param>
     private void PrintPlayers(Lobby lobby)
     {
         //Debug.Log("Players in Lobby : " + lobby.Name);
@@ -644,6 +651,7 @@ public class LobbyManager : MonoBehaviour
                 if (player.Id == AuthenticationService.Instance.PlayerId)
                 {
                     // Le joueur se trouve dans le lobby
+
                     return true;
                 }
             }
