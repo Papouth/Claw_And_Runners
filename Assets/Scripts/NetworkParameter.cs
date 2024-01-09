@@ -5,6 +5,7 @@ using Unity.Netcode;
 using Unity.Collections;
 using Unity.Multiplayer.Samples.Utilities.ClientAuthority;
 using Unity.VisualScripting;
+using Unity.Services.Lobbies.Models;
 
 public class NetworkParameter : MonoBehaviour
 {
@@ -12,6 +13,8 @@ public class NetworkParameter : MonoBehaviour
     public int clientCount;
     public static List<GameObject> PlayersGameObjects = new List<GameObject>();
     public static List<string> PlayersNames = new List<string>();
+    public static int counterClient = 0;
+    public static int lastIdSave;
     #endregion
 
     private void Awake()
@@ -38,13 +41,29 @@ public class NetworkParameter : MonoBehaviour
 
     public static void RegisterPlayer(GameObject playerGo, string name)
     {
-        PlayersGameObjects.Add(playerGo);
-        PlayersNames.Add(name);
-        for (int i = 0; i < PlayersNames.Count; i++)
-        {
-            //Debug.Log("Noms des joueurs enregistré : " + PlayersNames[i]);
+        //PlayersGameObjects.Add(playerGo);
+        //
+        //Debug.Log("STEP A : " + playerGo);
 
-        }
+        PlayersNames.Add(name);
+
+        //Debug.Log("STEP B : " + name);
+
+        Debug.Log("Noms du nouveau joueurs enregistré : " + PlayersNames[counterClient]);
+
+
+        //PlayersGameObjects[counterClient].GetComponent<PlayerInfo>().playerName = PlayersNames[counterClient];
+        //
+        //Debug.Log("STEP 1 : " + PlayersGameObjects[counterClient].GetComponent<PlayerInfo>().playerName);
+        //
+        //PlayersGameObjects[counterClient].name = PlayersNames[counterClient];
+        //
+        //Debug.Log("STEP 2 : " + PlayersGameObjects[counterClient].name);
+        //
+        //counterClient++;
+        //Debug.Log(counterClient + " voici le compteur de clients");
+
+        counterClient++;
     }
 
     public static void UnregisterPlayer(GameObject playerGo, string name)
