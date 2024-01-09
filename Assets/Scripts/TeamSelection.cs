@@ -7,6 +7,7 @@ using Unity.Services.Lobbies;
 using Unity.Netcode;
 using Unity.Collections;
 using UnityEngine.UI;
+using Unity.Services.Lobbies.Models;
 
 public class TeamSelection : NetworkBehaviour
 {
@@ -64,7 +65,7 @@ public class TeamSelection : NetworkBehaviour
     private bool tagSetup;
     private SessionManager SM;
 
-    private PlayerInfo PI;
+    [HideInInspector] public bool selectionStarted;
     #endregion
 
 
@@ -157,6 +158,7 @@ public class TeamSelection : NetworkBehaviour
 
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
+                selectionStarted = false;
             }
         }
     }
@@ -352,6 +354,7 @@ public class TeamSelection : NetworkBehaviour
     public void ShowHideUI()
     {
         UITeamSelection.SetActive(true);
+        if (!selectionStarted) selectionStarted = true;
     }
 
     #region Team Selection
@@ -376,11 +379,7 @@ public class TeamSelection : NetworkBehaviour
     /// </summary>
     public void JoinCops()
     {
-        //NetworkClient client
-        //playerInfo.playerName = LM.playerName;
-        //Debug.Log(player.name);
-        //client.PlayerObject.name = LM.playerName;
-        //Debug.Log("test = " + client.PlayerObject.name);
+        //NetworkParameter.lastIdSave;
 
         for (int i = 0; i < copsPlayerNameTxt.Count; i++)
         {
@@ -397,11 +396,6 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
             PlayerNameCops(LM.playerName);
-
-            //// Unity event
-            //PI = GetComponent<PlayerInfo>();
-            //PI.name = LM.playerName;
-            //gameObject.name = PI.name;
 
             MorecopsNValueServerRpc();
             copsNumberTxt.text = copsN.Value.ToString();
@@ -420,11 +414,6 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTMPro[copsN.Value].text = copsPlayerNameTxt[copsN.Value];
 
             PlayerNameCops(LM.playerName);
-
-            //// Unity event
-            //PI = GetComponent<PlayerInfo>();
-            //PI.name = LM.playerName;
-            //gameObject.name = PI.name;
 
             MorecopsNValueServerRpc();
 
@@ -448,6 +437,8 @@ public class TeamSelection : NetworkBehaviour
     /// </summary>
     public void JoinRunners()
     {
+        //NetworkParameter.lastIdSave;
+
         for (int i = 0; i < runnersPlayerNameTxt.Count; i++)
         {
             if (runnersPlayerNameTxt[i].Contains(LM.playerName))
@@ -463,11 +454,6 @@ public class TeamSelection : NetworkBehaviour
             runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
 
             PlayerNameRunners(LM.playerName);
-
-            //// Unity event
-            //PI = GetComponent<PlayerInfo>();
-            //PI.name = LM.playerName;
-            //gameObject.name = PI.name;
 
             MorerunnersNValueServerRpc();
             runnersNumberTxt.text = runnersN.Value.ToString();
@@ -486,11 +472,6 @@ public class TeamSelection : NetworkBehaviour
             runnersPlayerNameTMPro[runnersN.Value].text = runnersPlayerNameTxt[runnersN.Value];
 
             PlayerNameRunners(LM.playerName);
-
-            //// Unity event
-            //PI = GetComponent<PlayerInfo>();
-            //PI.name = LM.playerName;
-            //gameObject.name = PI.name;
 
             MorerunnersNValueServerRpc();
 
@@ -611,4 +592,16 @@ public class TeamSelection : NetworkBehaviour
         }
     }
     #endregion
+
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SendClientIDServerRpc(ulong clientId)
+    {
+        Debug.Log("Client ayant cliqué a l'ID : " + clientId);
+    }
+
+    public void SendClientIDFunction()
+    {
+        SendClientIDServerRpc(NetworkManager.Singleton.LocalClientId);
+    }
 }
