@@ -66,6 +66,7 @@ public class TeamSelection : NetworkBehaviour
     private SessionManager SM;
 
     [HideInInspector] public bool selectionStarted;
+    [HideInInspector] public string lastNameRegistered;
     #endregion
 
 
@@ -193,7 +194,11 @@ public class TeamSelection : NetworkBehaviour
     public void PlayerNameCopsServerRpc(FixedString32Bytes playerNameCops)
     {
         copsNamesList.Add(playerNameCops);
-        //Debug.Log("cops noms : " + copsNamesList[0]);
+
+        lastNameRegistered = playerNameCops.ToString();
+        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+
+        NetworkParameter.SavePlayerInfo(lastNameRegistered);
     }
 
     public void PlayerNameCops(string name)
@@ -261,7 +266,11 @@ public class TeamSelection : NetworkBehaviour
     public void PlayerNameRunnersServerRpc(FixedString32Bytes playerNameRunners)
     {
         runnersNamesList.Add(playerNameRunners);
-        //Debug.Log("runners noms : " + runnersNamesList[0]);
+
+        lastNameRegistered = playerNameRunners.ToString();
+        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+
+        NetworkParameter.SavePlayerInfo(lastNameRegistered);
     }
 
     public void PlayerNameRunners(string name)
@@ -288,7 +297,6 @@ public class TeamSelection : NetworkBehaviour
 
     public void UpdateSelectionNames()
     {
-        // Cops Team Update
         for (int i = 0; i < copsNamesList.Count; i++)
         {
             copsPlayerNameTMPro[i].text = copsNamesList[i].ToString();
@@ -355,6 +363,8 @@ public class TeamSelection : NetworkBehaviour
     {
         UITeamSelection.SetActive(true);
         if (!selectionStarted) selectionStarted = true;
+
+        if (IsOwner) NetworkParameter.GetPlayerOnSelection();        
     }
 
     #region Team Selection
@@ -379,8 +389,6 @@ public class TeamSelection : NetworkBehaviour
     /// </summary>
     public void JoinCops()
     {
-        //NetworkParameter.lastIdSave;
-
         for (int i = 0; i < copsPlayerNameTxt.Count; i++)
         {
             if (copsPlayerNameTxt[i].Contains(LM.playerName))
@@ -437,8 +445,6 @@ public class TeamSelection : NetworkBehaviour
     /// </summary>
     public void JoinRunners()
     {
-        //NetworkParameter.lastIdSave;
-
         for (int i = 0; i < runnersPlayerNameTxt.Count; i++)
         {
             if (runnersPlayerNameTxt[i].Contains(LM.playerName))

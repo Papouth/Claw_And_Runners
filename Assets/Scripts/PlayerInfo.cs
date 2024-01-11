@@ -16,7 +16,7 @@ public class PlayerInfo : NetworkBehaviour
     [Tooltip("true = chasseur | false = runner")] public bool isCops;
     public int isCopsInt;
     public string playerName;
-    public int playerId;
+    [HideInInspector] public int playerId;
     #endregion
 
 
@@ -26,10 +26,10 @@ public class PlayerInfo : NetworkBehaviour
         prevRunners = 0;
     }
 
-    private void OnDisable()
-    {
-        NetworkParameter.UnregisterPlayer(gameObject, LM.playerName);
-    }
+    //private void OnDisable()
+    //{
+    //    NetworkParameter.UnregisterPlayer(LM.playerName);
+    //}
 
     public override void OnNetworkSpawn()
     {
@@ -37,16 +37,16 @@ public class PlayerInfo : NetworkBehaviour
 
         LM = FindObjectOfType<LobbyManager>();
 
-        if (IsOwner)
-        {
-            // On renseigne et stock dans le NetworkParameter le nom de tous les joueurs
-            foreach (Player player in LM.joinedLobby.Players)
-            {
-                NetworkParameter.RegisterPlayer(gameObject, player.Data["PlayerName"].Value.ToString());
-
-                Debug.Log("Un nouveau joueur viens d'entrer dans le parc et son nom est : " + player.Data["PlayerName"].Value.ToString());
-            }
-        }
+        //if (IsOwner)
+        //{
+        //    // On renseigne et stock dans le NetworkParameter le nom de tous les joueurs
+        //    foreach (Player player in LM.joinedLobby.Players)
+        //    {
+        //        NetworkParameter.RegisterPlayer(player.Data["PlayerName"].Value.ToString());
+        //
+        //        Debug.Log("Un nouveau joueur viens d'entrer dans le parc et son nom est : " + player.Data["PlayerName"].Value.ToString());
+        //    }
+        //}
     }
 
     private void Update()
