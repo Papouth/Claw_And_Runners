@@ -26,27 +26,11 @@ public class PlayerInfo : NetworkBehaviour
         prevRunners = 0;
     }
 
-    //private void OnDisable()
-    //{
-    //    NetworkParameter.UnregisterPlayer(LM.playerName);
-    //}
-
     public override void OnNetworkSpawn()
     {
         TS = FindObjectOfType<TeamSelection>();
 
         LM = FindObjectOfType<LobbyManager>();
-
-        //if (IsOwner)
-        //{
-        //    // On renseigne et stock dans le NetworkParameter le nom de tous les joueurs
-        //    foreach (Player player in LM.joinedLobby.Players)
-        //    {
-        //        NetworkParameter.RegisterPlayer(player.Data["PlayerName"].Value.ToString());
-        //
-        //        Debug.Log("Un nouveau joueur viens d'entrer dans le parc et son nom est : " + player.Data["PlayerName"].Value.ToString());
-        //    }
-        //}
     }
 
     private void Update()
@@ -94,12 +78,6 @@ public class PlayerInfo : NetworkBehaviour
                 TS.requireNameUpdate = false;
 
                 TS.UpdateSelectionNames();
-            }
-
-            if (TS.readySelection && !TS.nameIsSetup)
-            {
-                TS.nameIsSetup = true;
-                Debug.Log("Mon nom est : " + playerName);
             }
         }
 

@@ -54,20 +54,6 @@ public class NetworkParameter : MonoBehaviour
     }
     #endregion
 
-    //public static void RegisterPlayer(string name)
-    //{
-    //    PlayersNames.Add(name);
-    //
-    //    Debug.Log("Noms du nouveau joueurs enregistré : " + PlayersNames[counterClient]);
-    //
-    //    counterClient++;
-    //}
-
-    //public static void UnregisterPlayer(string name)
-    //{
-    //    PlayersNames.Remove(name);
-    //}
-
     /// <summary>
     /// Si le nom du joueur n'est pas encore sauvegardé, la fonction s'éxécute
     /// </summary>
@@ -98,29 +84,5 @@ public class NetworkParameter : MonoBehaviour
     {
         myPlayersGo = FindObjectsOfType<PlayerInfo>();
         Debug.Log("Found " + myPlayersGo.Length + " with PlayerInfo script attached");
-    }
-
-    //TEST
-    public void Update()
-    {
-        //if (PlayersGameObjects.Count != 0)
-        //{
-        //    // Pour chaque joueur présent dans ma liste
-        //    foreach (GameObject go in PlayersGameObjects)
-        //    {
-        //        for (int i = 0; i < PlayersGameObjects.Count; i++)
-        //        {
-        //            // Si l'ID de mon joueur est égale à i, il s'agit donc du joueur i, et je lui attribue le composant playerinfo correspondant -> il l'a déjà
-        //            if (go.GetComponent<ClientNetworkTransform>().OwnerClientId == (ulong)i)
-        //            {
-        //
-        //
-        //                break;
-        //            }
-        //        }
-        //
-        //
-        //    }
-        //}
     }
 }

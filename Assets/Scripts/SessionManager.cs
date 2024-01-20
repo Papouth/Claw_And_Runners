@@ -25,81 +25,25 @@ public class SessionManager : NetworkBehaviour
     {
         if (IsOwner)
         {
-            foreach  (Player player in LM.joinedLobby.Players)
+            foreach (NetworkClient item in NetworkManager.ConnectedClientsList)
             {
-                Debug.Log("ID du joueur est : " + player.Id);
-                //PI = player.PlayerObject.gameObject.GetComponent<PlayerInfo>();
-
-                // On associe la variable playerName de player info au nom du joueur correspondant
-                //PI.playerName = player.Data["PlayerName"].Value.ToString();
+                PI = item.PlayerObject.gameObject.GetComponent<PlayerInfo>();
 
                 //Debug.Log(PI.playerName + " player en cours de traitement");
-                Debug.Log(player.Data["PlayerName"].Value.ToString() + " player en cours de traitement");
 
-                if (TS.copsPlayerNameTxt.Contains(PI.playerName))
+                if (TS.copsNamesList.Contains(PI.playerName))
                 {
-                    Debug.Log("S1");
+                    Debug.Log(item.PlayerObject.name + " est un policier");
+
                     PI.isCops = true;
                     PI.isCopsInt = 1;
                 }
-                else if (TS.runnersPlayerNameTxt.Contains(PI.playerName))
+                else if (TS.runnersNamesList.Contains(PI.playerName))
                 {
-                    Debug.Log("S2");
+                    Debug.Log(item.PlayerObject.name + " est un voleur" );
+
                     PI.isCops = false;
                     PI.isCopsInt = 2;
-                }
-
-                Debug.Log(player.Data["PlayerName"].Value.ToString() + " est : " + PI.isCops);
-            }
-
-            //foreach (NetworkClient item in NetworkManager.ConnectedClientsList)
-            //{
-            //    PI = item.PlayerObject.gameObject.GetComponent<PlayerInfo>();
-            //
-            //    Debug.Log(PI.playerName + " player en cours de traitement");
-            //
-            //    if (TS.copsPlayerNameTxt.Contains(PI.playerName))
-            //    {
-            //        Debug.Log("S1");
-            //        PI.isCops = true;
-            //        PI.isCopsInt = 1;
-            //    }
-            //    else if (TS.runnersPlayerNameTxt.Contains(PI.playerName))
-            //    {
-            //        Debug.Log("S2");
-            //        PI.isCops = false;
-            //        PI.isCopsInt = 2;
-            //    }
-            //
-            //    Debug.Log(item.PlayerObject.name + " est : " + PI.isCops);
-            //}
-
-            PlayerInLobby();
-        }
-    }
-
-    /// <summary>
-    /// Ne fonctionne pas, ne passse même pas dedans
-    /// </summary>
-    private void PlayerInLobby()
-    {
-        if (LM.joinedLobby != null && LM.joinedLobby.Players != null)
-        {
-            Debug.Log(LM.joinedLobby.Players.Count + " est le nombre de joueurs dans le lobby");
-
-            foreach (Player player in LM.joinedLobby.Players)
-            {
-                if (player.Id == AuthenticationService.Instance.PlayerId)
-                {
-                    // Le joueur se trouve dans le lobby
-                    if (TS.copsPlayerNameTxt.Contains(player.Profile.Name))
-                    {
-                        Debug.Log(player.Profile.Name + " est : " + " un policier");
-                    }
-                    if (TS.runnersPlayerNameTxt.Contains(player.Profile.Name))
-                    {
-                        Debug.Log(player.Profile.Name + " est : " + " un voleur");
-                    }
                 }
             }
         }
