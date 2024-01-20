@@ -61,7 +61,6 @@ public class TeamSelection : NetworkBehaviour
     public bool readySelection;
     private bool showTimer;
 
-    public bool nameIsSetup;
     private bool tagSetup;
     private SessionManager SM;
 
@@ -107,13 +106,6 @@ public class TeamSelection : NetworkBehaviour
         CursorModification();
 
         TimerToBegin();
-
-        if (nameIsSetup && !tagSetup)
-        {
-            tagSetup = true;
-            // ICI ON FAIT APPARAITRE CHAQUE JOUEUR A LA POSITION DE DEPART + ATTRIBUTION DES SETTINGS
-            SM.AttributionTag();
-        }
     }
 
     public override void OnNetworkSpawn()
@@ -145,21 +137,28 @@ public class TeamSelection : NetworkBehaviour
         // Si la sélection d'équipe n'est pas encore faite et qu'il y a autant de policiers que la limite ainsi qu'autant de courreurs que la limite alors on lance la partie
         if (!readySelection && copsN.Value == copsLimit.Value && runnersN.Value == runnersLimit.Value && showTimer)
         {
-            //Debug.Log("timer start");
             panelTimer.SetActive(true);
 
             timerToBegin -= Time.deltaTime;
             timer.text = timerToBegin.ToString("0");
+
+            if (!tagSetup)
+            {
+                tagSetup = true;
+                // ATTRIBUTION DES SETTINGS
+                SM.AttributionTag();
+            }
+
             if (timerToBegin <= 0f)
             {
                 readySelection = true;
 
-                
-
-
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
                 selectionStarted = false;
+
+                // ICI ON FAIT APPARAITRE CHAQUE JOUEUR A LA POSITION DE DEPART
+
             }
         }
     }
