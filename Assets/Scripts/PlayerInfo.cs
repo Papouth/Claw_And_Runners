@@ -17,6 +17,9 @@ public class PlayerInfo : NetworkBehaviour
     public int isCopsInt;
     public string playerName;
     [HideInInspector] public int playerId;
+    public bool tsReadySelection;
+    public bool haveJail;
+    private VirtualJail VJ;
     #endregion
 
 
@@ -31,6 +34,8 @@ public class PlayerInfo : NetworkBehaviour
         TS = FindObjectOfType<TeamSelection>();
 
         LM = FindObjectOfType<LobbyManager>();
+
+        VJ = GetComponent<VirtualJail>();
     }
 
     private void Update()
@@ -50,7 +55,7 @@ public class PlayerInfo : NetworkBehaviour
 
             if (LM == null) LM = FindObjectOfType<LobbyManager>();
 
-            TS.parcName.text = LM.joinedLobby.Name;
+            if (IsServer) TS.parcName.text = LM.joinedLobby.Name;
         }
 
         if (IsOwner)
@@ -81,9 +86,10 @@ public class PlayerInfo : NetworkBehaviour
             }
         }
 
-        if (isCopsInt == 0) Debug.Log("Je suis rien zebi");
-        if (isCopsInt == 1) Debug.Log("Je suis policier");
-        if (isCopsInt == 2) Debug.Log("Je suis voleur");
+        if (TS.readySelection)
+        {
+            tsReadySelection = true;
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -99,5 +105,31 @@ public class PlayerInfo : NetworkBehaviour
     public void SendClientIDFunction()
     {
         SendClientIDServerRpc(NetworkManager.Singleton.LocalClientId);
+    }
+
+    [ClientRpc]
+    public void UpdateServerPlayerNameClientRpc(string newplayername)
+    {
+        playerName = newplayername;
+        gameObject.name = playerName;
+    }
+
+    [ClientRpc]
+    public void UpdateServerInfoClientRpc(bool playerIsCops, int playerIsCopsInt)
+    {
+        isCops = playerIsCops;
+        isCopsInt = playerIsCopsInt;
+
+        if (isCops) gameObject.tag = "cops";
+        else if (!isCops) gameObject.tag = "runners";
+    }
+
+    [ClientRpc]
+    public void UpdateServerRoleJailClientRpc(bool playerJail)
+    {
+        haveJail = playerJail;
+
+        if (!haveJail && VJ != null) Destroy(VJ);
+        else if (haveJail && !VJ.enabled ) VJ.enabled = true;
     }
 }

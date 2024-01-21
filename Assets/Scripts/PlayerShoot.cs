@@ -12,21 +12,17 @@ public class PlayerShoot : NetworkBehaviour
     private PlayerTeam playerHealth;
     private AudioSync audioSync;
 
-
     private void Awake()
     {
         playerHealth = GetComponent<PlayerTeam>();
         audioSync = GetComponent<AudioSync>();
     }
-
     private void Start()
     {
         // Détermine quelle munition va être utilisé
         if (playerHealth.team == "blue") bulletTeam = 0;
         else if (playerHealth.team == "red") bulletTeam = 1;
     }
-
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && IsOwner)
@@ -45,7 +41,6 @@ public class PlayerShoot : NetworkBehaviour
 
         PlayShootAudio();
     }
-
     private void PlayShootAudio()
     {
         audioSync.PlaySound(0);  

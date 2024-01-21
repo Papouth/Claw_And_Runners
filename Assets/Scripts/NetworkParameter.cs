@@ -74,6 +74,9 @@ public class NetworkParameter : MonoBehaviour
                     playerGo.GetComponent<PlayerInfo>().playerName = playerName;
                     playerGo.gameObject.name = playerName;
 
+                    // test semble fonctionnel
+                    playerGo.GetComponent<PlayerInfo>().UpdateServerPlayerNameClientRpc(playerName);
+
                     break;
                 }
             }
@@ -83,6 +86,6 @@ public class NetworkParameter : MonoBehaviour
     public static void GetPlayerOnSelection()
     {
         myPlayersGo = FindObjectsOfType<PlayerInfo>();
-        Debug.Log("Found " + myPlayersGo.Length + " with PlayerInfo script attached");
+        //Debug.Log("Found " + myPlayersGo.Length + " with PlayerInfo script attached");
     }
 }
