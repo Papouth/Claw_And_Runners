@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Unity.Netcode;
 
-public class VirtualJail : MonoBehaviour
+public class VirtualJail : NetworkBehaviour
 {
     #region Vairables
     [SerializeField] private GameObject debugSphere;
@@ -19,21 +20,30 @@ public class VirtualJail : MonoBehaviour
     private LineRenderer lineRenderer;
     private InputManager inputManager;
     private BoxCollider bCol;
+    private PlayerInfo PI;
     #endregion
 
 
     private void Start()
     {
         inputManager = GetComponent<InputManager>();
+        PI = GetComponent<PlayerInfo>();
     }
 
     private void Update()
     {
-        if (inputManager.CanSelect && !prisonOn)
+        // Déclenchement de la pose de la prison pour le flic | Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
+        if (IsOwner && inputManager.CanSelect && !prisonOn && PI.tsReadySelection)
         {
-            inputManager.CanSelect = false;
+            Debug.Log("passe michel");
+
             CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
             prisonOn = true;
+        }
+
+        if (inputManager.CanSelect)
+        {
+            inputManager.CanSelect = false;
         }
     }
 
@@ -44,6 +54,8 @@ public class VirtualJail : MonoBehaviour
         lineRenderer = cloneJail.GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
         lineRenderer.positionCount = numDebugSpheres;
+
+        cloneJail.GetComponent<NetworkObject>().Spawn();
 
         for (int i = 0; i < num; i++)
         {
@@ -61,8 +73,6 @@ public class VirtualJail : MonoBehaviour
 
             // On spawn les spheres
             cloneSphere = Instantiate(debugSphere, spawnPos, Quaternion.identity, cloneJail.transform);
-
-            //cloneSphere.name = i.ToString();
 
             spheresList.Add(cloneSphere);
 
@@ -128,7 +138,7 @@ public class VirtualJail : MonoBehaviour
 
                         bCol = spheresList[i].GetComponent<BoxCollider>();
                         bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
-                        bCol.center = new Vector3(0f, 0f, dist/2f);
+                        bCol.center = new Vector3(0f, 0f, dist / 2f);
                     }
                 }
                 else if (i == spheresList.Count - 1)

@@ -66,6 +66,8 @@ public class TeamSelection : NetworkBehaviour
 
     [HideInInspector] public bool selectionStarted;
     [HideInInspector] public string lastNameRegistered;
+
+    private bool equilibrageOn;
     #endregion
 
 

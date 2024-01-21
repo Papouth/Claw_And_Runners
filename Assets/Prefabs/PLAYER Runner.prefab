@@ -726,7 +726,6 @@ GameObject:
   - component: {fileID: 7601244142997339044}
   - component: {fileID: 4810945831852701589}
   - component: {fileID: 1166194459218872807}
-  - component: {fileID: -473927921773900791}
   - component: {fileID: 5228050125313347408}
   - component: {fileID: 5367549546280008564}
   - component: {fileID: 7301803508076425204}
@@ -850,6 +849,7 @@ MonoBehaviour:
     m_InternalValue: 0
   upDownPosition:
     m_InternalValue: 0
+  MathisDoitAnimer: 0
 --- !u!143 &7601244142997339044
 CharacterController:
   m_ObjectHideFlags: 0
@@ -926,21 +926,6 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 0
   SlerpPosition: 0
---- !u!114 &-473927921773900791
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560986031654225528}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87c46da40044ef1479508af95d03d7f5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bullet:
-  - {fileID: 5073644242750450350, guid: f0116c43583e44840bd0c92b326ab2b2, type: 3}
-  - {fileID: 5073644242750450350, guid: 97d387bf83349334d90549a5bb73b319, type: 3}
 --- !u!114 &5228050125313347408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1083,6 +1068,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afb15765d877f942839b51f58bb0e27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isCops: 0
+  isCopsInt: 0
+  playerName: 
+  playerId: 0
 --- !u!1 &3592100253145614398
 GameObject:
   m_ObjectHideFlags: 0
