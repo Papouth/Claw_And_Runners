@@ -23,6 +23,10 @@ public class VirtualJail : NetworkBehaviour
     [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
     private PlayerInfo PI;
+
+    public NetworkVariable<int> pointNum;
+    public NetworkVariable<Vector3> posPoint;
+    public NetworkVariable<LineRenderer> lineNetwork;
     #endregion
 
 
@@ -62,9 +66,13 @@ public class VirtualJail : NetworkBehaviour
         cloneJail.GetComponent<NetworkObject>().Spawn();
 
 
-        lineRenderer = cloneJail.GetComponent<LineRenderer>();
-        lineRenderer.enabled = false;
-        lineRenderer.positionCount = numDebugSpheres;
+        //lineRenderer = cloneJail.GetComponent<LineRenderer>();
+        //lineRenderer.enabled = false;
+        //lineRenderer.positionCount = numDebugSpheres;
+
+        lineNetwork.Value = cloneJail.GetComponent<LineRenderer>();
+        lineNetwork.Value.enabled = false;
+        lineNetwork.Value.positionCount = numDebugSpheres;
 
 
         for (int i = 0; i < num; i++)
@@ -101,11 +109,17 @@ public class VirtualJail : NetworkBehaviour
     [ServerRpc]
     private void SetLineRendererServerRpc()
     {
-        lineRenderer.enabled = true;
+        //lineRenderer.enabled = true;
+        lineNetwork.Value.enabled = true;
 
         for (int a = 0; a < spheresList.Count; a++)
         {
-            lineRenderer.SetPosition(a, spheresList[a].transform.position);
+            pointNum.Value = a;
+            posPoint.Value = spheresList[a].transform.position;
+
+            //lineRenderer.SetPosition(a, spheresList[a].transform.position); // networkvariable
+            //lineRenderer.SetPosition(pointNum.Value, posPoint.Value); // test si ça fonctionne pas
+            lineNetwork.Value.SetPosition(a, spheresList[a].transform.position);
 
             spheresList[a].GetComponent<SphereCollider>().enabled = false;
 
@@ -120,11 +134,11 @@ public class VirtualJail : NetworkBehaviour
         }
 
         // Opti
-        lineRenderer.Simplify(0.01f);
+        //lineRenderer.Simplify(0.01f);
+        lineNetwork.Value.Simplify(0.01f);
 
         CheckSurface();
     }
-
 
     private void CheckSurface()
     {
@@ -157,7 +171,11 @@ public class VirtualJail : NetworkBehaviour
                         // Le Vecteur Forward est dirigé vers la sphère suivante
                         spheresList[i].transform.LookAt(spheresList[i + 1].transform);
 
-                        bCol = spheresList[i].GetComponent<BoxCollider>();
+                        bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
+                        bCol.GetComponent<NetworkObject>().Spawn();
+                        bCol.enabled = true;
+
+
                         bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
                         bCol.center = new Vector3(0f, 0f, dist / 2f);
                     }
@@ -171,7 +189,10 @@ public class VirtualJail : NetworkBehaviour
                         // Le Vecteur Forward est dirigé vers la sphère suivante
                         spheresList[i].transform.LookAt(spheresList[0].transform);
 
-                        bCol = spheresList[i].GetComponent<BoxCollider>();
+                        bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
+                        bCol.GetComponent<NetworkObject>().Spawn();
+                        bCol.enabled = true;
+
                         bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
                         bCol.center = new Vector3(0f, 0f, dist / 2f);
                     }
