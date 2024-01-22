@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.VisualScripting;
 
 public class VirtualJail : NetworkBehaviour
 {
-    #region Vairables
+    #region Variables
     [SerializeField] private GameObject debugSphere;
     [SerializeField] private GameObject jailParent;
     [SerializeField] private int numDebugSpheres;
@@ -37,7 +38,7 @@ public class VirtualJail : NetworkBehaviour
         {
             Debug.Log("passe michel");
 
-            CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
+            CreateDebugJailServerRpc(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
             prisonOn = true;
         }
 
@@ -47,7 +48,9 @@ public class VirtualJail : NetworkBehaviour
         }
     }
 
-    private void CreateDebugJail(int num, Vector3 point, float radius)
+
+    [ServerRpc]
+    private void CreateDebugJailServerRpc(int num, Vector3 point, float radius)
     {
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
 
@@ -74,6 +77,8 @@ public class VirtualJail : NetworkBehaviour
             // On spawn les spheres
             cloneSphere = Instantiate(debugSphere, spawnPos, Quaternion.identity, cloneJail.transform);
 
+            cloneSphere.GetComponent<NetworkObject>().Spawn();
+
             spheresList.Add(cloneSphere);
 
             cloneSphere.transform.localScale = new Vector3(spheresRadius, spheresRadius, spheresRadius);
@@ -84,6 +89,7 @@ public class VirtualJail : NetworkBehaviour
         Invoke("SetLineRenderer", 0.5f);
     }
 
+
     private void SetLineRenderer()
     {
         lineRenderer.enabled = true;
@@ -91,9 +97,14 @@ public class VirtualJail : NetworkBehaviour
         for (int a = 0; a < spheresList.Count; a++)
         {
             lineRenderer.SetPosition(a, spheresList[a].transform.position);
-            Destroy(spheresList[a].GetComponent<SphereCollider>());
 
-            bCol = spheresList[a].AddComponent<BoxCollider>();
+
+            Destroy(spheresList[a].GetComponent<SphereCollider>());
+            //spheresList[a].GetComponent<SphereCollider>().enabled = false; // -> détruite pour opti
+            //spheresList[a].GetComponent<BoxCollider>().enabled = true;
+
+
+            bCol = spheresList[a].AddComponent<BoxCollider>(); // -> ajouté manuellement
             bCol.transform.localScale = new Vector3(0.08f, 30, 0.08f);
 
             bCol.transform.gameObject.layer = 13;
@@ -157,8 +168,5 @@ public class VirtualJail : NetworkBehaviour
                 }
             }
         }
-
-
-        // Ici après on fera le call du server RPC
     }
 }
