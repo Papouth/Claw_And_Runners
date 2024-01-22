@@ -1056,6 +1056,7 @@ MonoBehaviour:
   layerWall:
     serializedVersion: 2
     m_Bits: 8
+  boxColObj: {fileID: 5430516046538210551, guid: 2a4250e9eea025149aa311ad752f120c, type: 3}
 --- !u!114 &-7282930216823847445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1072,6 +1073,8 @@ MonoBehaviour:
   isCopsInt: 0
   playerName: 
   playerId: 0
+  tsReadySelection: 0
+  haveJail: 0
 --- !u!1 &3592100253145614398
 GameObject:
   m_ObjectHideFlags: 0

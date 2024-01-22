@@ -20,6 +20,7 @@ public class VirtualJail : NetworkBehaviour
     private bool prisonOn;
     private LineRenderer lineRenderer;
     private InputManager inputManager;
+    [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
     private PlayerInfo PI;
     #endregion
@@ -33,32 +34,38 @@ public class VirtualJail : NetworkBehaviour
 
     private void Update()
     {
-        // Déclenchement de la pose de la prison pour le flic | Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
-        if (IsOwner && inputManager.CanSelect && !prisonOn && PI.tsReadySelection)
-        {
-            Debug.Log("passe michel");
-
-            CreateDebugJailServerRpc(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
-            prisonOn = true;
-        }
-
         if (inputManager.CanSelect)
         {
+            PutAJail();
+
             inputManager.CanSelect = false;
         }
     }
 
+    // Déclenchement de la pose de la prison pour le flic
+    private void PutAJail()
+    {
+        // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
+        if (IsOwner && !prisonOn && PI.tsReadySelection)
+        {
+            Debug.Log("je pose une prison");
+
+            CreateDebugJailServerRpc(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
+            prisonOn = true;
+        }
+    }
 
     [ServerRpc]
     private void CreateDebugJailServerRpc(int num, Vector3 point, float radius)
     {
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
+        cloneJail.GetComponent<NetworkObject>().Spawn();
+
 
         lineRenderer = cloneJail.GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
         lineRenderer.positionCount = numDebugSpheres;
 
-        cloneJail.GetComponent<NetworkObject>().Spawn();
 
         for (int i = 0; i < num; i++)
         {
@@ -79,6 +86,8 @@ public class VirtualJail : NetworkBehaviour
 
             cloneSphere.GetComponent<NetworkObject>().Spawn();
 
+            cloneSphere.transform.parent = cloneJail.transform;
+
             spheresList.Add(cloneSphere);
 
             cloneSphere.transform.localScale = new Vector3(spheresRadius, spheresRadius, spheresRadius);
@@ -86,11 +95,11 @@ public class VirtualJail : NetworkBehaviour
             cloneSphere.transform.LookAt(point);
         }
 
-        Invoke("SetLineRenderer", 0.5f);
+        Invoke("SetLineRendererServerRpc", 0.5f);
     }
 
-
-    private void SetLineRenderer()
+    [ServerRpc]
+    private void SetLineRendererServerRpc()
     {
         lineRenderer.enabled = true;
 
@@ -98,16 +107,16 @@ public class VirtualJail : NetworkBehaviour
         {
             lineRenderer.SetPosition(a, spheresList[a].transform.position);
 
+            spheresList[a].GetComponent<SphereCollider>().enabled = false;
 
-            Destroy(spheresList[a].GetComponent<SphereCollider>());
-            //spheresList[a].GetComponent<SphereCollider>().enabled = false; // -> détruite pour opti
-            //spheresList[a].GetComponent<BoxCollider>().enabled = true;
+            bCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation, spheresList[a].transform).GetComponent<BoxCollider>();
+            bCol.GetComponent<NetworkObject>().Spawn();
+            bCol.enabled = true;
 
-
-            bCol = spheresList[a].AddComponent<BoxCollider>(); // -> ajouté manuellement
             bCol.transform.localScale = new Vector3(0.08f, 30, 0.08f);
 
             bCol.transform.gameObject.layer = 13;
+            bCol.transform.parent = spheresList[a].transform;
         }
 
         // Opti
@@ -115,6 +124,7 @@ public class VirtualJail : NetworkBehaviour
 
         CheckSurface();
     }
+
 
     private void CheckSurface()
     {
