@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Unity.Netcode;
-using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 public class VirtualJail : NetworkBehaviour
 {
@@ -23,13 +23,9 @@ public class VirtualJail : NetworkBehaviour
     [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
     private PlayerInfo PI;
-
-    public NetworkVariable<int> pointNum;
-    public NetworkVariable<Vector3> posPoint;
-    public NetworkVariable<LineRenderer> lineNetwork;
     #endregion
 
-
+    #region Built-In Methods
     private void Start()
     {
         inputManager = GetComponent<InputManager>();
@@ -45,7 +41,10 @@ public class VirtualJail : NetworkBehaviour
             inputManager.CanSelect = false;
         }
     }
+    #endregion
 
+
+    #region Customs Methods
     // Déclenchement de la pose de la prison pour le flic
     private void PutAJail()
     {
@@ -66,13 +65,11 @@ public class VirtualJail : NetworkBehaviour
         cloneJail.GetComponent<NetworkObject>().Spawn();
 
 
-        //lineRenderer = cloneJail.GetComponent<LineRenderer>();
-        //lineRenderer.enabled = false;
-        //lineRenderer.positionCount = numDebugSpheres;
+        lineRenderer = cloneJail.GetComponent<LineRenderer>();
 
-        lineNetwork.Value = cloneJail.GetComponent<LineRenderer>();
-        lineNetwork.Value.enabled = false;
-        lineNetwork.Value.positionCount = numDebugSpheres;
+        lineRenderer.positionCount = numDebugSpheres;
+        lineRenderer.enabled = false;
+
 
 
         for (int i = 0; i < num; i++)
@@ -103,23 +100,16 @@ public class VirtualJail : NetworkBehaviour
             cloneSphere.transform.LookAt(point);
         }
 
-        Invoke("SetLineRendererServerRpc", 0.5f);
+        Invoke("SetLineRenderer", 0.5f);
     }
 
-    [ServerRpc]
-    private void SetLineRendererServerRpc()
+    private void SetLineRenderer()
     {
-        //lineRenderer.enabled = true;
-        lineNetwork.Value.enabled = true;
+        lineRenderer.enabled = true;
 
         for (int a = 0; a < spheresList.Count; a++)
         {
-            pointNum.Value = a;
-            posPoint.Value = spheresList[a].transform.position;
-
-            //lineRenderer.SetPosition(a, spheresList[a].transform.position); // networkvariable
-            //lineRenderer.SetPosition(pointNum.Value, posPoint.Value); // test si ça fonctionne pas
-            lineNetwork.Value.SetPosition(a, spheresList[a].transform.position);
+            lineRenderer.SetPosition(a, spheresList[a].transform.position);
 
             spheresList[a].GetComponent<SphereCollider>().enabled = false;
 
@@ -134,11 +124,11 @@ public class VirtualJail : NetworkBehaviour
         }
 
         // Opti
-        //lineRenderer.Simplify(0.01f);
-        lineNetwork.Value.Simplify(0.01f);
+        lineRenderer.Simplify(0.01f);
 
         CheckSurface();
     }
+
 
     private void CheckSurface()
     {
@@ -200,4 +190,5 @@ public class VirtualJail : NetworkBehaviour
             }
         }
     }
+    #endregion
 }
