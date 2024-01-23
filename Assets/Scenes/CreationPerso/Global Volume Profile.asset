@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 1
   shadows:
     m_OverrideState: 1
-    m_Value: {x: 0.96915895, y: 0.96902764, z: 1, w: -0.37952337}
+    m_Value: {x: 1, y: 0.8936008, z: 0.8564611, w: -0.37952337}
   midtones:
     m_OverrideState: 0
     m_Value: {x: 0.9494929, y: 1, z: 0.9547497, w: -0.008826129}
@@ -70,7 +70,7 @@ MonoBehaviour:
     m_Value: 1
   focalLength:
     m_OverrideState: 1
-    m_Value: 20
+    m_Value: 15
   bladeCount:
     m_OverrideState: 0
     m_Value: 5
@@ -98,10 +98,10 @@ MonoBehaviour:
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.848
   response:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.358
   texture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
@@ -122,6 +122,7 @@ MonoBehaviour:
   - {fileID: 990435075390188323}
   - {fileID: -8608043126286759111}
   - {fileID: -5215696589575341201}
+  - {fileID: 6035152713138027657}
 --- !u!114 &990435075390188323
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -143,7 +144,7 @@ MonoBehaviour:
     m_Value: 0.75
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.3
   scatter:
     m_OverrideState: 0
     m_Value: 0.7
@@ -152,10 +153,10 @@ MonoBehaviour:
     m_Value: 65472
   tint:
     m_OverrideState: 1
-    m_Value: {r: 1, g: 0.60280156, b: 0, a: 1}
+    m_Value: {r: 0.23433912, g: 0.11258457, b: 0.4339623, a: 1}
   highQualityFiltering:
     m_OverrideState: 0
-    m_Value: 0
+    m_Value: 1
   downscale:
     m_OverrideState: 0
     m_Value: 0
@@ -169,3 +170,43 @@ MonoBehaviour:
   dirtIntensity:
     m_OverrideState: 0
     m_Value: 0
+--- !u!114 &6035152713138027657
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97c23e3b12dc18c42a140437e53d3951, type: 3}
+  m_Name: Tonemapping
+  m_EditorClassIdentifier: 
+  active: 1
+  mode:
+    m_OverrideState: 1
+    m_Value: 2
+  neutralHDRRangeReductionMode:
+    m_OverrideState: 0
+    m_Value: 2
+  acesPreset:
+    m_OverrideState: 1
+    m_Value: 3
+  hueShiftAmount:
+    m_OverrideState: 1
+    m_Value: 0
+  detectPaperWhite:
+    m_OverrideState: 1
+    m_Value: 0
+  paperWhite:
+    m_OverrideState: 1
+    m_Value: 300
+  detectBrightnessLimits:
+    m_OverrideState: 1
+    m_Value: 1
+  minNits:
+    m_OverrideState: 1
+    m_Value: 0.005
+  maxNits:
+    m_OverrideState: 1
+    m_Value: 1000
