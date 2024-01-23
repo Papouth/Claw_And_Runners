@@ -17,7 +17,7 @@ public class VirtualJail : NetworkBehaviour
     private GameObject cloneSphere;
     [SerializeField] private List<GameObject> spheresList = new List<GameObject>();
     [SerializeField] private LayerMask layerWall;
-    private bool prisonOn;
+    public bool prisonOn;
     private LineRenderer lineRenderer;
     private InputManager inputManager;
     [SerializeField] private GameObject boxColObj;
@@ -64,12 +64,10 @@ public class VirtualJail : NetworkBehaviour
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
         cloneJail.GetComponent<NetworkObject>().Spawn();
 
-
-        lineRenderer = cloneJail.GetComponent<LineRenderer>();
+        lineRenderer = cloneJail.GetComponent<LineRenderer>(); 
 
         lineRenderer.positionCount = numDebugSpheres;
         lineRenderer.enabled = false;
-
 
 
         for (int i = 0; i < num; i++)
@@ -105,7 +103,7 @@ public class VirtualJail : NetworkBehaviour
 
     private void SetLineRenderer()
     {
-        lineRenderer.enabled = true;
+        //lineRenderer.enabled = true; 
 
         for (int a = 0; a < spheresList.Count; a++)
         {
@@ -167,7 +165,7 @@ public class VirtualJail : NetworkBehaviour
 
 
                         bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
-                        bCol.center = new Vector3(0f, 0f, dist / 2f);
+                        bCol.transform.localPosition += new Vector3(dist/2f, 0f, 0f);
                     }
                 }
                 else if (i == spheresList.Count - 1)
@@ -184,7 +182,7 @@ public class VirtualJail : NetworkBehaviour
                         bCol.enabled = true;
 
                         bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
-                        bCol.center = new Vector3(0f, 0f, dist / 2f);
+                        bCol.transform.localPosition += new Vector3(dist/2f, 0f, 0f);
                     }
                 }
             }

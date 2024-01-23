@@ -55,6 +55,8 @@ public class SessionManager : NetworkBehaviour
 
                     PI.UpdateServerInfoClientRpc(true, 1);
 
+                    item.PlayerObject.gameObject.GetComponent<WeaponCop>().enabled = true;
+
                     // S'il s'agit du policier ayant la prison
                     if (PI.playerName == copWithJail)
                     {
@@ -80,10 +82,12 @@ public class SessionManager : NetworkBehaviour
                     item.PlayerObject.gameObject.tag = "runners";
 
                     PI.UpdateServerInfoClientRpc(false, 2);
-
                     Destroy(item.PlayerObject.gameObject.GetComponent<VirtualJail>());
 
+                    Destroy(item.PlayerObject.gameObject.GetComponent<WeaponCop>());
+                    Destroy(item.PlayerObject.gameObject.GetComponentInChildren<CapturePlayer>().gameObject);
                     PI.UpdateServerRoleJailClientRpc(false);
+                    PI.UpdateServerRoleCaptureClientRpc(false);
                 }
             }
         }
