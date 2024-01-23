@@ -20,6 +20,9 @@ public class PlayerInfo : NetworkBehaviour
     public bool tsReadySelection;
     public bool haveJail;
     private VirtualJail VJ;
+    private WeaponCop WC;
+    private bool playerCop;
+    private GameObject captureCol;
     #endregion
 
 
@@ -36,6 +39,10 @@ public class PlayerInfo : NetworkBehaviour
         LM = FindObjectOfType<LobbyManager>();
 
         VJ = GetComponent<VirtualJail>();
+
+        WC = GetComponent<WeaponCop>();
+
+        captureCol = gameObject.GetComponentInChildren<CapturePlayer>().gameObject;
     }
 
     private void Update()
@@ -131,5 +138,16 @@ public class PlayerInfo : NetworkBehaviour
 
         if (!haveJail && VJ != null) Destroy(VJ);
         else if (haveJail && !VJ.enabled ) VJ.enabled = true;
+    }
+
+    [ClientRpc]
+    public void UpdateServerRoleCaptureClientRpc(bool playerCoporNot)
+    {
+        playerCop = playerCoporNot;
+
+        if (!playerCoporNot && WC != null) Destroy(WC);
+        else if (playerCoporNot && !WC.enabled ) WC.enabled = true;
+
+        if (!playerCoporNot && captureCol != null) Destroy(captureCol);
     }
 }
