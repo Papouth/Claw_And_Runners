@@ -43,6 +43,8 @@ public class PlayerInfo : NetworkBehaviour
         WC = GetComponent<WeaponCop>();
 
         captureCol = gameObject.GetComponentInChildren<CapturePlayer>().gameObject;
+
+        //captureCol.SetActive(false);
     }
 
     private void Update()

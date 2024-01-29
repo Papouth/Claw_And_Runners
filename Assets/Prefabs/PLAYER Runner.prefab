@@ -410,7 +410,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2399140126894258813
 Transform:
   m_ObjectHideFlags: 0
@@ -459,6 +459,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de0fba3d7907b5c4886c6f5a8444a942, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  zonz: {fileID: 0}
 --- !u!1 &1753763187074785869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,6 +1125,7 @@ MonoBehaviour:
   layerWall:
     serializedVersion: 2
     m_Bits: 8
+  prisonOn: 0
   boxColObj: {fileID: 5430516046538210551, guid: 2a4250e9eea025149aa311ad752f120c, type: 3}
 --- !u!114 &-7282930216823847445
 MonoBehaviour:
