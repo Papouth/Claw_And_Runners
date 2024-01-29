@@ -18,7 +18,7 @@ public class VirtualJail : NetworkBehaviour
     [SerializeField] private List<GameObject> spheresList = new List<GameObject>();
     [SerializeField] private LayerMask layerWall;
     public bool prisonOn;
-    private LineRenderer lineRenderer;
+    //private LineRenderer lineRenderer;
     private InputManager inputManager;
     [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
@@ -62,12 +62,14 @@ public class VirtualJail : NetworkBehaviour
     private void CreateDebugJailServerRpc(int num, Vector3 point, float radius)
     {
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
+        cloneJail.name = "TheJail";
+
         cloneJail.GetComponent<NetworkObject>().Spawn();
 
-        lineRenderer = cloneJail.GetComponent<LineRenderer>(); 
+        //lineRenderer = cloneJail.GetComponent<LineRenderer>(); 
 
-        lineRenderer.positionCount = numDebugSpheres;
-        lineRenderer.enabled = false;
+        //lineRenderer.positionCount = numDebugSpheres;
+        //lineRenderer.enabled = false;
 
 
         for (int i = 0; i < num; i++)
@@ -107,7 +109,7 @@ public class VirtualJail : NetworkBehaviour
 
         for (int a = 0; a < spheresList.Count; a++)
         {
-            lineRenderer.SetPosition(a, spheresList[a].transform.position);
+            //lineRenderer.SetPosition(a, spheresList[a].transform.position);
 
             spheresList[a].GetComponent<SphereCollider>().enabled = false;
 
@@ -122,7 +124,7 @@ public class VirtualJail : NetworkBehaviour
         }
 
         // Opti
-        lineRenderer.Simplify(0.01f);
+        //lineRenderer.Simplify(0.01f);
 
         CheckSurface();
     }

@@ -8,6 +8,7 @@ public class WeaponCop : NetworkBehaviour
     private InputManager inputManager;
     [SerializeField] private GameObject hitCollider;
     private VirtualJail VJ;
+    private bool justStarted;
 
 
     private void Start()
@@ -22,6 +23,12 @@ public class WeaponCop : NetworkBehaviour
         if (inputManager.CanSelect && IsOwner && VJ.prisonOn)
         {
             EnableCol();
+            Debug.Log("Je te tape pour te mettre en prison");
+        }
+        else if (!inputManager.CanSelect && IsOwner && !justStarted)
+        {
+            justStarted = true;
+            DisableCol();
         }
     }
 
