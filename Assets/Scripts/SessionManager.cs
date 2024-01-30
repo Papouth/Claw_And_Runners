@@ -24,8 +24,15 @@ public class SessionManager : NetworkBehaviour
 
     public void AttributionTag()
     {
+        Invoke("Tagging", 1f);
+    }
+
+    private void Tagging()
+    {
         if (IsOwner)
         {
+            Debug.Log(TS.copsNamesList[0] + " nom du flic");
+
             // Attribution de la prison à l'un des flics si entre 6 et 8 joueurs
             if (NetworkManager.ConnectedClientsList.Count >= 6)
             {
@@ -68,7 +75,7 @@ public class SessionManager : NetworkBehaviour
                     else if (PI.playerName != copWithJail)
                     {
                         Destroy(item.PlayerObject.gameObject.GetComponent<VirtualJail>());
-                        
+
                         PI.UpdateServerRoleJailClientRpc(false);
                     }
                 }

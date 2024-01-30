@@ -43,8 +43,6 @@ public class PlayerInfo : NetworkBehaviour
         WC = GetComponent<WeaponCop>();
 
         captureCol = gameObject.GetComponentInChildren<CapturePlayer>().gameObject;
-
-        //captureCol.SetActive(false);
     }
 
     private void Update()
@@ -126,8 +124,10 @@ public class PlayerInfo : NetworkBehaviour
     [ClientRpc]
     public void UpdateServerInfoClientRpc(bool playerIsCops, int playerIsCopsInt)
     {
-        isCops = playerIsCops;
         isCopsInt = playerIsCopsInt;
+        isCops = playerIsCops;
+
+        Debug.Log(TS.copsNamesList[0] + "Passe serverInfoClientRpc");
 
         if (isCops) gameObject.tag = "cops";
         else if (!isCops) gameObject.tag = "runners";
