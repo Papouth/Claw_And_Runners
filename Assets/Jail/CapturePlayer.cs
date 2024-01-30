@@ -11,7 +11,7 @@ public class CapturePlayer : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("runners"))
+        if (other.gameObject.CompareTag("runners") && IsOwner)
         {
             idPlayerCaptured = other.GetComponent<PlayerInfo>().playerId;
 
@@ -22,8 +22,12 @@ public class CapturePlayer : NetworkBehaviour
             Debug.Log("Zou direction la zonz");
 
             // ensuite transmettre au reste du server avec un call rpc
-            if (IsOwner) TeleportInsideJailServerRpc((ulong)idPlayerCaptured, zonz.transform.position);
-            ClientTeleportClientRpc((ulong)idPlayerCaptured, zonz.transform.position);
+            NetworkObject playerPrefab = NetworkManager.Singleton.ConnectedClients[(ulong)idPlayerCaptured].PlayerObject;
+
+            SetPlayerInJail((ulong)idPlayerCaptured);
+
+            //TeleportInsideJailServerRpc((ulong)idPlayerCaptured, zonz.transform.position);
+            //ClientTeleportClientRpc((ulong)idPlayerCaptured, zonz.transform.position);
         }
     }
 
@@ -33,18 +37,24 @@ public class CapturePlayer : NetworkBehaviour
     {
         NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
     }
-
-    [ServerRpc]
-    private void TeleportInsideJailServerRpc(ulong idPlayer, Vector3 pos)
+    
+    private void SetPlayerInJail(ulong clientID)
     {
-        NetworkManager.ConnectedClients[idPlayer].PlayerObject.transform.position = pos;
-        Debug.Log("Passe dans le serveur RPC de la jail");
+        NetworkObject playerPrefab = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject;
+        playerPrefab.transform.position = zonz.transform.position;
     }
 
-    [ClientRpc]
-    private void ClientTeleportClientRpc(ulong idPlayer, Vector3 pos)
-    {
-        NetworkManager.ConnectedClients[idPlayer].PlayerObject.transform.position = pos;
-        Debug.Log("Client RPC Validé");
-    }
+    //[ServerRpc]
+    //private void TeleportInsideJailServerRpc(ulong idPlayer, Vector3 pos)
+    //{
+    //    NetworkManager.ConnectedClients[idPlayer].PlayerObject.transform.position = pos;
+    //    Debug.Log("Passe dans le serveur RPC de la jail");
+    //}
+    //
+    //[ClientRpc]
+    //private void ClientTeleportClientRpc(ulong idPlayer, Vector3 pos)
+    //{
+    //    NetworkManager.ConnectedClients[idPlayer].PlayerObject.transform.position = pos;
+    //    Debug.Log("Client RPC Validé");
+    //}
 }
