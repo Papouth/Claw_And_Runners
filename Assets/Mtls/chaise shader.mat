@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Material
+  m_Name: chaise shader
   m_Shader: {fileID: -6465566751694194690, guid: 8f2f65b7ad8bed1489005bb4ab302588, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Texture:
-        m_Texture: {fileID: 2800000, guid: e801b505d06a67d4585992cbc7c9ba81, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7e9214564a1ee6e458b315f649f1c6ee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -86,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2D:
-        m_Texture: {fileID: 2800000, guid: e801b505d06a67d4585992cbc7c9ba81, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7e9214564a1ee6e458b315f649f1c6ee, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_02829c29b34b4f478a600b467379d01f_Out_0_Texture2D:
@@ -94,7 +94,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _emmisive:
-        m_Texture: {fileID: 2800000, guid: ad746b3c938105241bd48186518cccb4, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -126,12 +126,12 @@ Material:
     - _DstBlend: 0
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
-    - _FalloffThreshold: 4.57
+    - _FalloffThreshold: 4.9
     - _Float: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Lit_Threshold: 0.75
+    - _Lit_Threshold: 2.64
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
