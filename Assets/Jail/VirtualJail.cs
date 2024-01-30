@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using Unity.Netcode;
+using UnityEngine.UIElements;
 
-public class VirtualJail : MonoBehaviour
+public class VirtualJail : NetworkBehaviour
 {
-    #region Vairables
+    #region Variables
     [SerializeField] private GameObject debugSphere;
     [SerializeField] private GameObject jailParent;
     [SerializeField] private int numDebugSpheres;
@@ -15,35 +17,60 @@ public class VirtualJail : MonoBehaviour
     private GameObject cloneSphere;
     [SerializeField] private List<GameObject> spheresList = new List<GameObject>();
     [SerializeField] private LayerMask layerWall;
-    private bool prisonOn;
-    private LineRenderer lineRenderer;
+    public bool prisonOn;
+    //private LineRenderer lineRenderer;
     private InputManager inputManager;
+    [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
+    private PlayerInfo PI;
     #endregion
 
-
+    #region Built-In Methods
     private void Start()
     {
         inputManager = GetComponent<InputManager>();
+        PI = GetComponent<PlayerInfo>();
     }
 
     private void Update()
     {
-        if (inputManager.CanSelect && !prisonOn)
+        if (inputManager.CanSelect)
         {
+            PutAJail();
+
             inputManager.CanSelect = false;
-            CreateDebugJail(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
+        }
+    }
+    #endregion
+
+
+    #region Customs Methods
+    // Déclenchement de la pose de la prison pour le flic
+    private void PutAJail()
+    {
+        // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
+        if (IsOwner && !prisonOn && PI.tsReadySelection)
+        {
+            Debug.Log("je pose une prison");
+
+            CreateDebugJailServerRpc(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
             prisonOn = true;
         }
     }
 
-    private void CreateDebugJail(int num, Vector3 point, float radius)
+    [ServerRpc]
+    private void CreateDebugJailServerRpc(int num, Vector3 point, float radius)
     {
         cloneJail = Instantiate(jailParent, transform.position, Quaternion.identity);
+        cloneJail.name = "TheJail";
 
-        lineRenderer = cloneJail.GetComponent<LineRenderer>();
-        lineRenderer.enabled = false;
-        lineRenderer.positionCount = numDebugSpheres;
+        cloneJail.GetComponent<NetworkObject>().Spawn();
+
+        //lineRenderer = cloneJail.GetComponent<LineRenderer>(); 
+
+        //lineRenderer.positionCount = numDebugSpheres;
+        //lineRenderer.enabled = false;
+
 
         for (int i = 0; i < num; i++)
         {
@@ -62,7 +89,9 @@ public class VirtualJail : MonoBehaviour
             // On spawn les spheres
             cloneSphere = Instantiate(debugSphere, spawnPos, Quaternion.identity, cloneJail.transform);
 
-            //cloneSphere.name = i.ToString();
+            cloneSphere.GetComponent<NetworkObject>().Spawn();
+
+            cloneSphere.transform.parent = cloneJail.transform;
 
             spheresList.Add(cloneSphere);
 
@@ -76,24 +105,30 @@ public class VirtualJail : MonoBehaviour
 
     private void SetLineRenderer()
     {
-        lineRenderer.enabled = true;
+        //lineRenderer.enabled = true; 
 
         for (int a = 0; a < spheresList.Count; a++)
         {
-            lineRenderer.SetPosition(a, spheresList[a].transform.position);
-            Destroy(spheresList[a].GetComponent<SphereCollider>());
+            //lineRenderer.SetPosition(a, spheresList[a].transform.position);
 
-            bCol = spheresList[a].AddComponent<BoxCollider>();
+            spheresList[a].GetComponent<SphereCollider>().enabled = false;
+
+            bCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation, spheresList[a].transform).GetComponent<BoxCollider>();
+            bCol.GetComponent<NetworkObject>().Spawn();
+            bCol.enabled = true;
+
             bCol.transform.localScale = new Vector3(0.08f, 30, 0.08f);
 
             bCol.transform.gameObject.layer = 13;
+            bCol.transform.parent = spheresList[a].transform;
         }
 
         // Opti
-        lineRenderer.Simplify(0.01f);
+        //lineRenderer.Simplify(0.01f);
 
         CheckSurface();
     }
+
 
     private void CheckSurface()
     {
@@ -126,9 +161,13 @@ public class VirtualJail : MonoBehaviour
                         // Le Vecteur Forward est dirigé vers la sphère suivante
                         spheresList[i].transform.LookAt(spheresList[i + 1].transform);
 
-                        bCol = spheresList[i].GetComponent<BoxCollider>();
+                        bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
+                        bCol.GetComponent<NetworkObject>().Spawn();
+                        bCol.enabled = true;
+
+
                         bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
-                        bCol.center = new Vector3(0f, 0f, dist/2f);
+                        bCol.transform.localPosition += new Vector3(dist/2f, 0f, 0f);
                     }
                 }
                 else if (i == spheresList.Count - 1)
@@ -140,15 +179,16 @@ public class VirtualJail : MonoBehaviour
                         // Le Vecteur Forward est dirigé vers la sphère suivante
                         spheresList[i].transform.LookAt(spheresList[0].transform);
 
-                        bCol = spheresList[i].GetComponent<BoxCollider>();
+                        bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
+                        bCol.GetComponent<NetworkObject>().Spawn();
+                        bCol.enabled = true;
+
                         bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
-                        bCol.center = new Vector3(0f, 0f, dist / 2f);
+                        bCol.transform.localPosition += new Vector3(dist/2f, 0f, 0f);
                     }
                 }
             }
         }
-
-
-        // Ici après on fera le call du server RPC
     }
+    #endregion
 }

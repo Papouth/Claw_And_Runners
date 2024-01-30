@@ -6,7 +6,8 @@ using Unity.Services.Authentication;
 using Unity.Services.Lobbies;
 using Unity.Netcode;
 using Unity.Collections;
-
+using UnityEngine.UI;
+using Unity.Services.Lobbies.Models;
 
 public class TeamSelection : NetworkBehaviour
 {
@@ -14,12 +15,12 @@ public class TeamSelection : NetworkBehaviour
     [SerializeField] private GameObject UITeamSelection;
 
     // Team Selection Max Player Number
-    public NetworkVariable<int> copsLimit = new NetworkVariable<int>();
-    public NetworkVariable<int> runnersLimit = new NetworkVariable<int>();
+    public NetworkVariable<int> copsLimit;
+    public NetworkVariable<int> runnersLimit;
 
     // Team Selection Actual Player Number
-    public NetworkVariable<int> copsN = new NetworkVariable<int>();
-    public NetworkVariable<int> runnersN = new NetworkVariable<int>();
+    public NetworkVariable<int> copsN;
+    public NetworkVariable<int> runnersN;
 
     // Noms des joueurs de chaque équipe
     public List<string> copsPlayerNameTxt;
@@ -27,8 +28,6 @@ public class TeamSelection : NetworkBehaviour
 
     public NetworkList<FixedString32Bytes> runnersNamesList;
     public NetworkList<FixedString32Bytes> copsNamesList;
-
-    public NetworkVariable<FixedString32Bytes> parcNameTxt;
 
     [Header("Team Selection")]
     [SerializeField] private TextMeshProUGUI copsNumberTxt;
@@ -43,7 +42,7 @@ public class TeamSelection : NetworkBehaviour
     [SerializeField] private List<GameObject> runnersFondText;
 
     [SerializeField] private List<TextMeshProUGUI> runnersPlayerNameTMPro;
-    [SerializeField] private TextMeshProUGUI parcName;
+    public TextMeshProUGUI parcName;
 
     private bool alreadyCop;
     private bool alreadyRunner;
@@ -61,12 +60,26 @@ public class TeamSelection : NetworkBehaviour
     private float timerToBegin = 5f;
     public bool readySelection;
     private bool showTimer;
+
+    private bool tagSetup;
+    private SessionManager SM;
+
+    [HideInInspector] public bool selectionStarted;
+    [HideInInspector] public string lastNameRegistered;
+
+    private bool equilibrageOn;
     #endregion
 
 
     #region Built In Methods
     private void Awake()
     {
+        copsLimit = new NetworkVariable<int>();
+        runnersLimit = new NetworkVariable<int>();
+
+        copsN = new NetworkVariable<int>();
+        runnersN = new NetworkVariable<int>();
+
         runnersNamesList = new NetworkList<FixedString32Bytes>();
         copsNamesList = new NetworkList<FixedString32Bytes>();
     }
@@ -74,10 +87,10 @@ public class TeamSelection : NetworkBehaviour
     private void Start()
     {
         LM = FindObjectOfType<LobbyManager>();
+        SM = gameObject.GetComponent<SessionManager>();
 
         UITeamSelection.SetActive(false);
         panelTimer.SetActive(false);
-
 
         for (int i = 0; i < copsFondText.Count; i++)
         {
@@ -111,8 +124,6 @@ public class TeamSelection : NetworkBehaviour
         copsLimit.OnValueChanged += OncopsLimitChanged;
         runnersLimit.OnValueChanged += OnrunnersLimitChanged;
 
-        parcName.text = LM.lobbyName;
-
         InitTeamSelection();
     }
     #endregion
@@ -128,38 +139,31 @@ public class TeamSelection : NetworkBehaviour
         // Si la sélection d'équipe n'est pas encore faite et qu'il y a autant de policiers que la limite ainsi qu'autant de courreurs que la limite alors on lance la partie
         if (!readySelection && copsN.Value == copsLimit.Value && runnersN.Value == runnersLimit.Value && showTimer)
         {
-            Debug.Log("timer start");
             panelTimer.SetActive(true);
 
             timerToBegin -= Time.deltaTime;
             timer.text = timerToBegin.ToString("0");
+
+            if (!tagSetup)
+            {
+                tagSetup = true;
+                // ATTRIBUTION DES SETTINGS
+                SM.AttributionTag();
+            }
+
             if (timerToBegin <= 0f)
             {
                 readySelection = true;
 
-                //foreach (var item in runnersNamesList)
-                //{
-                //   FindObjectOfType<PlayerUI>().NetworkObjectId
-                //}
-
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
+                selectionStarted = false;
+
+                // ICI ON FAIT APPARAITRE CHAQUE JOUEUR A LA POSITION DE DEPART
+
             }
         }
     }
-
-    // Nom Du Parc
-    [ServerRpc(RequireOwnership = false)]
-    public void ParcNameServerRpc(FixedString32Bytes parcLobbyName)
-    {
-        parcName.text = parcLobbyName.ToString();
-    }
-
-    public void ParcName(string name)
-    {
-        ParcNameServerRpc(new FixedString32Bytes(name));
-    }
-
 
     #region Netcode Cops
     private void OncopsNChanged(int previous, int current)
@@ -191,7 +195,11 @@ public class TeamSelection : NetworkBehaviour
     public void PlayerNameCopsServerRpc(FixedString32Bytes playerNameCops)
     {
         copsNamesList.Add(playerNameCops);
-        //Debug.Log("cops noms : " + copsNamesList[0]);
+
+        lastNameRegistered = playerNameCops.ToString();
+        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+
+        NetworkParameter.SavePlayerInfo(lastNameRegistered);
     }
 
     public void PlayerNameCops(string name)
@@ -227,7 +235,7 @@ public class TeamSelection : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void copsLimitValueServerRpc(int newValue)
+    public void CopsLimitValueServerRpc(int newValue)
     {
         copsLimit.Value = newValue;
         //Debug.Log("nouvelle limite de flic");
@@ -259,7 +267,11 @@ public class TeamSelection : NetworkBehaviour
     public void PlayerNameRunnersServerRpc(FixedString32Bytes playerNameRunners)
     {
         runnersNamesList.Add(playerNameRunners);
-        //Debug.Log("runners noms : " + runnersNamesList[0]);
+
+        lastNameRegistered = playerNameRunners.ToString();
+        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+
+        NetworkParameter.SavePlayerInfo(lastNameRegistered);
     }
 
     public void PlayerNameRunners(string name)
@@ -286,7 +298,6 @@ public class TeamSelection : NetworkBehaviour
 
     public void UpdateSelectionNames()
     {
-        // Cops Team Update
         for (int i = 0; i < copsNamesList.Count; i++)
         {
             copsPlayerNameTMPro[i].text = copsNamesList[i].ToString();
@@ -324,7 +335,7 @@ public class TeamSelection : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void runnersLimitValueServerRpc(int newValue)
+    public void RunnersLimitValueServerRpc(int newValue)
     {
         runnersLimit.Value = newValue;
         //Debug.Log("nouvelle limite de runner");
@@ -352,6 +363,9 @@ public class TeamSelection : NetworkBehaviour
     public void ShowHideUI()
     {
         UITeamSelection.SetActive(true);
+        if (!selectionStarted) selectionStarted = true;
+
+        if (IsOwner) NetworkParameter.GetPlayerOnSelection();        
     }
 
     #region Team Selection
@@ -369,6 +383,7 @@ public class TeamSelection : NetworkBehaviour
             runnersPlayerNameTxt.Add(i.ToString());
         }
     }
+
 
     /// <summary>
     /// Rejoindre les policiers
@@ -488,33 +503,33 @@ public class TeamSelection : NetworkBehaviour
         {
             case 8:
                 Debug.Log("Il y a 2 Cops | 6 Runners");
-                copsLimitValueServerRpc(2);
-                runnersLimitValueServerRpc(6);
+                CopsLimitValueServerRpc(2);
+                RunnersLimitValueServerRpc(6);
                 break;
             case 7:
                 Debug.Log("Il y a 2 Cops | 5 Runners");
-                copsLimitValueServerRpc(2);
-                runnersLimitValueServerRpc(5);
+                CopsLimitValueServerRpc(2);
+                RunnersLimitValueServerRpc(5);
                 break;
             case 6:
                 Debug.Log("Il y a 2 Cops | 4 Runners");
-                copsLimitValueServerRpc(2);
-                runnersLimitValueServerRpc(4);
+                CopsLimitValueServerRpc(2);
+                RunnersLimitValueServerRpc(4);
                 break;
             case 5:
                 Debug.Log("Il y a 1 Cops | 4 Runners");
-                copsLimitValueServerRpc(1);
-                runnersLimitValueServerRpc(4);
+                CopsLimitValueServerRpc(1);
+                RunnersLimitValueServerRpc(4);
                 break;
             case 4:
                 Debug.Log("Il y a 1 Cops | 3 Runners");
-                copsLimitValueServerRpc(1);
-                runnersLimitValueServerRpc(3);
+                CopsLimitValueServerRpc(1);
+                RunnersLimitValueServerRpc(3);
                 break;
             case 2:
                 Debug.Log("Test 1 joueur de chaque");
-                copsLimitValueServerRpc(1);
-                runnersLimitValueServerRpc(1);
+                CopsLimitValueServerRpc(1);
+                RunnersLimitValueServerRpc(1);
                 break;
         }
 
@@ -584,4 +599,16 @@ public class TeamSelection : NetworkBehaviour
         }
     }
     #endregion
+
+
+    [ServerRpc(RequireOwnership = false)]
+    public void SendClientIDServerRpc(ulong clientId)
+    {
+        Debug.Log("Client ayant cliqué a l'ID : " + clientId);
+    }
+
+    public void SendClientIDFunction()
+    {
+        SendClientIDServerRpc(NetworkManager.Singleton.LocalClientId);
+    }
 }

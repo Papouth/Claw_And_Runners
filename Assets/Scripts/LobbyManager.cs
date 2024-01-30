@@ -96,8 +96,6 @@ public class LobbyManager : MonoBehaviour
         lobbyMenu.SetActive(true);
         createLobbyMenu.SetActive(false);
         insideLobbyMenu.SetActive(false);
-
-        teamSelection = FindObjectOfType<TeamSelection>();
     }
 
     private void Update()
@@ -200,6 +198,7 @@ public class LobbyManager : MonoBehaviour
 
 
                 insideLobbyName.text = joinedLobby.Name;
+                teamSelection.parcName.text = insideLobbyName.text;
                 lobbyCodeDisplay.text = joinedLobby.LobbyCode;
 
                 //foreach (var player in joinedLobby.Players)
@@ -356,22 +355,6 @@ public class LobbyManager : MonoBehaviour
     }
     #endregion
 
-    /// <summary>
-    /// Mettre un lobby en public ou en privé
-    /// </summary>
-    //public void ChangeLobbyState()
-    //{
-    //    stateLobby = !stateLobby;
-    //
-    //    if (stateLobby)
-    //    {
-    //        lobbyStateText.text = "PRIVATE";
-    //    }
-    //    else if (!stateLobby)
-    //    {
-    //        lobbyStateText.text = "PUBLIC";
-    //    }
-    //}
 
     /// <summary>
     /// Rendre le lobby public
@@ -514,11 +497,9 @@ public class LobbyManager : MonoBehaviour
     {
         try
         {
-            Player player = GetPlayer();
-
             joinedLobby = await LobbyService.Instance.JoinLobbyByIdAsync(lobby.Id, new JoinLobbyByIdOptions
             {
-                Player = player
+                Player = GetPlayer()
             });
 
             PanelInsideLobby();
@@ -577,7 +558,12 @@ public class LobbyManager : MonoBehaviour
     }
 
     #region Debug Player
-    private Player GetPlayer()
+
+    /// <summary>
+    /// Actualise les infos du joueur
+    /// </summary>
+    /// <returns></returns>
+    public Player GetPlayer()
     {
         return new Player
         {
@@ -588,6 +574,10 @@ public class LobbyManager : MonoBehaviour
         };
     }
 
+    /// <summary>
+    /// Affiche les différents noms des joueurs présent dans le lobby
+    /// </summary>
+    /// <param name="lobby"></param>
     private void PrintPlayers(Lobby lobby)
     {
         //Debug.Log("Players in Lobby : " + lobby.Name);
@@ -660,7 +650,8 @@ public class LobbyManager : MonoBehaviour
             {
                 if (player.Id == AuthenticationService.Instance.PlayerId)
                 {
-                    // Le joueur ce trouve dans le lobby
+                    // Le joueur se trouve dans le lobby
+
                     return true;
                 }
             }
