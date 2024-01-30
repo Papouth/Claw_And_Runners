@@ -487,9 +487,11 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTxt[index] = "";
             copsPlayerNameTMPro[index].text = "";
 
-            LesscopsNValueServerRpc();
 
             RemovePlayerNameCops(LM.playerName);
+
+            LesscopsNValueServerRpc();
+
 
             // Nombre de policier et de courreur
             copsNumberTxt.text = copsN.Value.ToString();

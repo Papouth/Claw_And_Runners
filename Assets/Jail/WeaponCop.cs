@@ -22,23 +22,25 @@ public class WeaponCop : NetworkBehaviour
         // Vérifier aussi que le policier à en main son baton
         if (inputManager.CanSelect && IsOwner && VJ.prisonOn)
         {
-            EnableCol();
+            EnableColServerRpc();
             Debug.Log("Je te tape pour te mettre en prison");
         }
         else if (!inputManager.CanSelect && IsOwner && !justStarted)
         {
             justStarted = true;
-            DisableCol();
+            DisableColServerRpc();
         }
     }
 
-    private void EnableCol()
+    [ServerRpc]
+    private void EnableColServerRpc()
     {
         hitCollider.SetActive(true);
-        Invoke("DisableCol", 1f);
+        Invoke("DisableColServerRpc", 1f);
     }
 
-    private void DisableCol()
+    [ServerRpc]
+    private void DisableColServerRpc()
     {
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;
