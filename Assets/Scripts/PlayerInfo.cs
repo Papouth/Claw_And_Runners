@@ -129,8 +129,16 @@ public class PlayerInfo : NetworkBehaviour
 
         Debug.Log(TS.copsNamesList[0] + "Passe serverInfoClientRpc");
 
-        if (isCops) gameObject.tag = "cops";
-        else if (!isCops) gameObject.tag = "runners";
+        if (playerIsCops)
+        {
+            gameObject.tag = "cops";
+            Debug.Log(TS.copsNamesList[0] + "playerInfo tag Cops");
+        }
+        else if (!playerIsCops)
+        {
+            gameObject.tag = "runners";
+            Debug.Log(TS.copsNamesList[0] + "playerInfo tag Runners");
+        }
     }
 
     [ClientRpc]
