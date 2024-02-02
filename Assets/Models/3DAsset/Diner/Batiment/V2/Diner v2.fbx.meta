@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7b343b6b32771b343a7ba7d8e9b6152a
+guid: 28359b5bc304cbe439fd4f12ce22a4e4
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,8 +7,38 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Material.009
-    second: {fileID: 2100000, guid: b6ea55f9ac8df7c40a728818715d2097, type: 2}
+      name: Exterieur
+    second: {fileID: 2100000, guid: 28c50e22e2fde4146b0ee29ac6b17345, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MurEx
+    second: {fileID: 2100000, guid: 4475c0cbd04af974b90698ddb336efe7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MurInterieur
+    second: {fileID: 2100000, guid: 32e1e28379962784192fb0a46e0b6257, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PlafonEtSol
+    second: {fileID: 2100000, guid: 11c6179639ea7cd4eb95b3d5070ff487, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Vitre
+    second: {fileID: 2100000, guid: ce589a6e0751d1446bcb65c5d687eed6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: porteEtPilone
+    second: {fileID: 2100000, guid: 5918e0a1971d5fa43acd23e94bff61bc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: terasse
+    second: {fileID: 2100000, guid: 00abdc362e171254ea79c37fdffefb9e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
