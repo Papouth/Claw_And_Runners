@@ -18,7 +18,6 @@ public class VirtualJail : NetworkBehaviour
     [SerializeField] private List<GameObject> spheresList = new List<GameObject>();
     [SerializeField] private LayerMask layerWall;
     public bool prisonOn;
-    //private LineRenderer lineRenderer;
     private InputManager inputManager;
     [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
@@ -51,7 +50,7 @@ public class VirtualJail : NetworkBehaviour
         // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
         if (IsOwner && !prisonOn && PI.tsReadySelection)
         {
-            Debug.Log("je pose une prison");
+            //Debug.Log("je pose une prison");
 
             CreateDebugJailServerRpc(numDebugSpheres, new Vector3(transform.position.x, transform.position.y + (spheresRadius * 2f), transform.position.z), distanceFromPlayer);
             prisonOn = true;
@@ -65,11 +64,6 @@ public class VirtualJail : NetworkBehaviour
         cloneJail.name = "TheJail";
 
         cloneJail.GetComponent<NetworkObject>().Spawn();
-
-        //lineRenderer = cloneJail.GetComponent<LineRenderer>(); 
-
-        //lineRenderer.positionCount = numDebugSpheres;
-        //lineRenderer.enabled = false;
 
 
         for (int i = 0; i < num; i++)
@@ -105,12 +99,8 @@ public class VirtualJail : NetworkBehaviour
 
     private void SetLineRenderer()
     {
-        //lineRenderer.enabled = true; 
-
         for (int a = 0; a < spheresList.Count; a++)
         {
-            //lineRenderer.SetPosition(a, spheresList[a].transform.position);
-
             spheresList[a].GetComponent<SphereCollider>().enabled = false;
 
             bCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation, spheresList[a].transform).GetComponent<BoxCollider>();
@@ -122,9 +112,6 @@ public class VirtualJail : NetworkBehaviour
             bCol.transform.gameObject.layer = 13;
             bCol.transform.parent = spheresList[a].transform;
         }
-
-        // Opti
-        //lineRenderer.Simplify(0.01f);
 
         CheckSurface();
     }
