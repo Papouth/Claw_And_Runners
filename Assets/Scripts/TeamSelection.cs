@@ -61,11 +61,10 @@ public class TeamSelection : NetworkBehaviour
     public bool readySelection;
     private bool showTimer;
 
-    private bool tagSetup;
+    public bool tagSetup;
     private SessionManager SM;
 
     [HideInInspector] public bool selectionStarted;
-    [HideInInspector] public string lastNameRegistered;
 
     private bool equilibrageOn;
     #endregion
@@ -196,10 +195,9 @@ public class TeamSelection : NetworkBehaviour
     {
         copsNamesList.Add(playerNameCops);
 
-        lastNameRegistered = playerNameCops.ToString();
-        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+        Debug.Log("dernier nom sauvegardé : " + playerNameCops.ToString());
 
-        NetworkParameter.SavePlayerInfo(lastNameRegistered);
+        NetworkParameter.SavePlayerInfo(playerNameCops.ToString());
     }
 
     public void PlayerNameCops(string name)
@@ -268,10 +266,9 @@ public class TeamSelection : NetworkBehaviour
     {
         runnersNamesList.Add(playerNameRunners);
 
-        lastNameRegistered = playerNameRunners.ToString();
-        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+        Debug.Log("dernier nom sauvegardé : " + playerNameRunners.ToString());
 
-        NetworkParameter.SavePlayerInfo(lastNameRegistered);
+        NetworkParameter.SavePlayerInfo(playerNameRunners.ToString());
     }
 
     public void PlayerNameRunners(string name)
