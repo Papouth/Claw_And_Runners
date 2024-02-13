@@ -25,7 +25,6 @@ public class NetworkParameter : MonoBehaviour
     public static int counterClient = 0;
 
     public static int lastIdSave;
-    public static string lastNameSavedInfo;
     public static GameObject playerGO;
 
     [HideInInspector] public static PlayerInfo[] myPlayersGo;
@@ -60,8 +59,6 @@ public class NetworkParameter : MonoBehaviour
     /// <param name="playerName"></param>
     public static void SavePlayerInfo(string playerName)
     {
-        lastNameSavedInfo = playerName;
-
         if (!PlayersNamesIdentified.Contains(playerName))
         {
             foreach (var playerGo in myPlayersGo)

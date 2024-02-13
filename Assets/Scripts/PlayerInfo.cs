@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using Unity.Services.Lobbies.Models;
+using Unity.Collections;
+
 
 
 public class PlayerInfo : NetworkBehaviour
@@ -19,10 +21,13 @@ public class PlayerInfo : NetworkBehaviour
     [HideInInspector] public int playerId;
     public bool tsReadySelection;
     public bool haveJail;
-    private VirtualJail VJ;
-    private WeaponCop WC;
-    private bool playerCop;
-    private GameObject captureCol;
+    public VirtualJail VJ;
+    public WeaponCop WC;
+    public bool playerCop;
+    public GameObject captureCol;
+
+    private FixedString32Bytes copWithJail;
+    private bool status;
     #endregion
 
 
@@ -42,7 +47,7 @@ public class PlayerInfo : NetworkBehaviour
 
         WC = GetComponent<WeaponCop>();
 
-        captureCol = gameObject.GetComponentInChildren<CapturePlayer>().gameObject;
+        captureCol = GetComponentInChildren<CapturePlayer>().gameObject;
     }
 
     private void Update()
@@ -97,6 +102,115 @@ public class PlayerInfo : NetworkBehaviour
         {
             tsReadySelection = true;
         }
+
+        if (TS.tagSetup && !status)
+        {
+            status = true;
+            Invoke("StatusPlayer", 1f);
+        }
+    }
+
+
+    private void StatusPlayer()
+    {
+        if (IsOwner)
+        {
+            if (TS.copsNamesList.Contains(playerName))
+            {
+                if (TS.copsNamesList[0] == playerName)
+                {
+                    // Attribution de la prison au premier policier présent dans la partie
+                    copWithJail = TS.copsNamesList[0];
+                }
+
+                isCops = true;
+                isCopsInt = 1;
+
+                gameObject.tag = "cops";
+
+                InfoServerRpc(true, 1);
+
+                WC.enabled = true;
+
+                // S'il s'agit du policier ayant la prison
+                if (playerName == copWithJail)
+                {
+                    // On enable le script de la prison sur le joueur
+                    VJ.enabled = true;
+
+                    RoleJailServerRpc(true);
+                }
+                else if (playerName != copWithJail)
+                {
+                    Destroy(VJ);
+
+                    RoleJailServerRpc(false);
+                }
+            }
+            else if (TS.runnersNamesList.Contains(playerName))
+            {
+                isCops = false;
+                isCopsInt = 2;
+
+                gameObject.tag = "runners";
+
+                InfoServerRpc(false, 2);
+
+                Destroy(VJ);
+
+                Destroy(WC);
+                Destroy(captureCol);
+
+                RoleJailServerRpc(false);
+                RoleCaptureServerRpc(false);
+            }
+        }
+    }
+
+    [ServerRpc]
+    public void InfoServerRpc(bool playerIsCops, int playerIsCopsInt)
+    {
+        isCopsInt = playerIsCopsInt;
+        isCops = playerIsCops;
+
+        Debug.Log("Passe TEST serverInfoClientRpc");
+
+        if (playerIsCops)
+        {
+            gameObject.tag = "cops";
+            Debug.Log("playerInfo TEST tag Cops");
+        }
+        else if (!playerIsCops)
+        {
+            gameObject.tag = "runners";
+            Debug.Log("playerInfo TEST tag Runners");
+        }
+
+        UpdateServerInfoClientRpc(isCops, isCopsInt);
+    }
+
+    [ServerRpc]
+    public void RoleJailServerRpc(bool playerJail)
+    {
+        haveJail = playerJail;
+
+        if (!haveJail && VJ != null) Destroy(VJ);
+        else if (haveJail && !VJ.enabled) VJ.enabled = true;
+
+        UpdateServerRoleJailClientRpc(haveJail);
+    }
+
+    [ServerRpc]
+    public void RoleCaptureServerRpc(bool playerCoporNot)
+    {
+        playerCop = playerCoporNot;
+
+        if (!playerCoporNot && WC != null) Destroy(WC);
+        else if (playerCoporNot && !WC.enabled) WC.enabled = true;
+
+        if (!playerCoporNot && captureCol != null) Destroy(captureCol);
+
+        UpdateServerRoleJailClientRpc(playerCop);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -121,6 +235,7 @@ public class PlayerInfo : NetworkBehaviour
         gameObject.name = playerName;
     }
 
+    
     [ClientRpc]
     public void UpdateServerInfoClientRpc(bool playerIsCops, int playerIsCopsInt)
     {
