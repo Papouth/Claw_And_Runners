@@ -37,6 +37,8 @@ public class WeaponCop : NetworkBehaviour
     {
         hitCollider.SetActive(true);
         Invoke("DisableColServerRpc", 1f);
+
+        EnableColClientRpc();
     }
 
     [ServerRpc]
@@ -44,5 +46,23 @@ public class WeaponCop : NetworkBehaviour
     {
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;
+
+        Debug.Log("Disable SERVER RPC");
+    }
+
+    [ClientRpc]
+    private void EnableColClientRpc()
+    {
+        hitCollider.SetActive(true);
+        Invoke("DisableColClientRpc", 1f);
+    }
+
+    [ClientRpc]
+    private void DisableColClientRpc() 
+    {
+        hitCollider.SetActive(false);
+        inputManager.CanSelect = false;
+
+        Debug.Log("Disable CLIENT RPC");
     }
 }

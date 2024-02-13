@@ -460,6 +460,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zonz: {fileID: 0}
+  Position:
+    m_InternalValue: {x: 0, y: 0, z: 0}
 --- !u!1 &1753763187074785869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,6 +1147,8 @@ MonoBehaviour:
   playerId: 0
   tsReadySelection: 0
   haveJail: 0
+  playerCop: 0
+  captureCol: {fileID: 0}
 --- !u!114 &1058844584936608633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1152,7 +1156,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3560986031654225528}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6019feb8fab56a34982612ffd7543ae9, type: 3}
   m_Name: 

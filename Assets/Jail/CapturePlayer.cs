@@ -34,10 +34,6 @@ public class CapturePlayer : NetworkBehaviour
                 playerPrefab.transform.position = Position.Value;
             }
 
-
-
-
-
             //TeleportInsideJailServerRpc((ulong)idPlayerCaptured, zonz.transform.position);
             //ClientTeleportClientRpc((ulong)idPlayerCaptured, zonz.transform.position);
         }
