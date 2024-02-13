@@ -28,6 +28,7 @@ public class PlayerInfo : NetworkBehaviour
 
     private FixedString32Bytes copWithJail;
     private bool status;
+    private bool setPlayerInJail;
     #endregion
 
 
@@ -108,9 +109,26 @@ public class PlayerInfo : NetworkBehaviour
             status = true;
             Invoke("StatusPlayer", 1f);
         }
+
+        if (IsOwner)
+        {
+            SetPlayerInJail();
+        }
     }
 
+    private void SetPlayerInJail()
+    {
+        if (gameObject.layer == 10 && !setPlayerInJail)
+        {
+            setPlayerInJail = true;
 
+
+        }
+    }
+
+    /// <summary>
+    /// Gère les tags et les scripts du joueur
+    /// </summary>
     private void StatusPlayer()
     {
         if (IsOwner)
@@ -168,6 +186,7 @@ public class PlayerInfo : NetworkBehaviour
         }
     }
 
+    #region ServerRpc
     [ServerRpc]
     public void InfoServerRpc(bool playerIsCops, int playerIsCopsInt)
     {
@@ -218,24 +237,24 @@ public class PlayerInfo : NetworkBehaviour
     public void SendClientIDServerRpc(ulong clientId)
     {
         // fonction a appelé pour déclencher
-        //SendClientIDFunction();
         Debug.Log("Client ayant cliqué a l'ID : " + clientId);
         playerId = (int)clientId;
         NetworkParameter.lastIdSave = playerId;
     }
+    #endregion
 
     public void SendClientIDFunction()
     {
         SendClientIDServerRpc(NetworkManager.Singleton.LocalClientId);
     }
 
+    #region ClientRpc
     [ClientRpc]
     public void UpdateServerPlayerNameClientRpc(string newplayername)
     {
         playerName = newplayername;
         gameObject.name = playerName;
     }
-
     
     [ClientRpc]
     public void UpdateServerInfoClientRpc(bool playerIsCops, int playerIsCopsInt)
@@ -243,17 +262,15 @@ public class PlayerInfo : NetworkBehaviour
         isCopsInt = playerIsCopsInt;
         isCops = playerIsCops;
 
-        Debug.Log(TS.copsNamesList[0] + "Passe serverInfoClientRpc");
-
         if (playerIsCops)
         {
             gameObject.tag = "cops";
-            Debug.Log(TS.copsNamesList[0] + "playerInfo tag Cops");
+            //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Cops");
         }
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
-            Debug.Log(TS.copsNamesList[0] + "playerInfo tag Runners");
+            //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Runners");
         }
     }
 
@@ -276,4 +293,5 @@ public class PlayerInfo : NetworkBehaviour
 
         if (!playerCop && captureCol != null) Destroy(captureCol);
     }
+    #endregion
 }
