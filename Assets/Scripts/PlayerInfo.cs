@@ -21,8 +21,8 @@ public class PlayerInfo : NetworkBehaviour
     [HideInInspector] public int playerId;
     public bool tsReadySelection;
     public bool haveJail;
-    public VirtualJail VJ;
-    public WeaponCop WC;
+    private VirtualJail VJ;
+    private WeaponCop WC;
     public bool playerCop;
     public GameObject captureCol;
 
@@ -131,6 +131,7 @@ public class PlayerInfo : NetworkBehaviour
                 InfoServerRpc(true, 1);
 
                 WC.enabled = true;
+                captureCol.SetActive(false);
 
                 // S'il s'agit du policier ayant la prison
                 if (playerName == copWithJail)
@@ -205,12 +206,12 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerCop = playerCoporNot;
 
-        if (!playerCoporNot && WC != null) Destroy(WC);
-        else if (playerCoporNot && !WC.enabled) WC.enabled = true;
+        if (!playerCop && WC != null) Destroy(WC);
+        else if (playerCop && !WC.enabled) WC.enabled = true;
 
-        if (!playerCoporNot && captureCol != null) Destroy(captureCol);
+        if (!playerCop && captureCol != null) Destroy(captureCol);
 
-        UpdateServerRoleJailClientRpc(playerCop);
+        UpdateServerRoleCaptureClientRpc(playerCop);
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -270,9 +271,9 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerCop = playerCoporNot;
 
-        if (!playerCoporNot && WC != null) Destroy(WC);
-        else if (playerCoporNot && !WC.enabled ) WC.enabled = true;
+        if (!playerCop && WC != null) Destroy(WC);
+        else if (playerCop && !WC.enabled ) WC.enabled = true;
 
-        if (!playerCoporNot && captureCol != null) Destroy(captureCol);
+        if (!playerCop && captureCol != null) Destroy(captureCol);
     }
 }

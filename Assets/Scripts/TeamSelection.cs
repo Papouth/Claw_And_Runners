@@ -62,7 +62,6 @@ public class TeamSelection : NetworkBehaviour
     private bool showTimer;
 
     public bool tagSetup;
-    private SessionManager SM;
 
     [HideInInspector] public bool selectionStarted;
 
@@ -86,7 +85,6 @@ public class TeamSelection : NetworkBehaviour
     private void Start()
     {
         LM = FindObjectOfType<LobbyManager>();
-        SM = gameObject.GetComponent<SessionManager>();
 
         UITeamSelection.SetActive(false);
         panelTimer.SetActive(false);
@@ -146,8 +144,6 @@ public class TeamSelection : NetworkBehaviour
             if (!tagSetup)
             {
                 tagSetup = true;
-                // ATTRIBUTION DES SETTINGS
-                SM.AttributionTag();
             }
 
             if (timerToBegin <= 0f)
