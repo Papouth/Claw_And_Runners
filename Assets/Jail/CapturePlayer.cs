@@ -21,49 +21,24 @@ public class CapturePlayer : NetworkBehaviour
             other.gameObject.layer = 10;
             playerCaptured = other.gameObject;
 
-            JailLayerServerRpc((ulong)idPlayerCaptured, 10);
+
+            if (IsOwner) JailLayerServerRpc((ulong)idPlayerCaptured, 10);
 
             zonz = GameObject.Find("TheJail");
+
             Debug.Log("Zou direction la zonz");
-
-            // On téléporte le joueur en prison ICI
-
-            //NetworkObject playerPrefab = NetworkManager.Singleton.ConnectedClients[(ulong)idPlayerCaptured].PlayerObject;
-            //playerPrefab.transform.position = Position.Value;
-
-            //SubmitPositionServerRpc((ulong)idPlayerCaptured);
         }
     }
 
     [ServerRpc]
     private void JailLayerServerRpc(ulong idPlayer, int layer)
     {
-        //NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
-        playerCaptured.layer = layer;
-
-        JailLayerClientRpc(idPlayer, layer);
-    }
-
-    [ServerRpc]
-    private void SubmitPositionServerRpc(ulong idPlayer)
-    {
-        NetworkManager.ConnectedClients[idPlayer].PlayerObject.transform.position = zonz.transform.position;
-        Position.Value = zonz.transform.position;
-
-        SubmitPositionClientRpc(idPlayer);
+        NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
     }
 
     [ClientRpc]
     private void JailLayerClientRpc(ulong idPlayer, int layer)
     {
-        //NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
         playerCaptured.layer = layer;
-    }
-
-    [ClientRpc]
-    private void SubmitPositionClientRpc(ulong idPlayer)
-    {
-        NetworkManager.ConnectedClients[idPlayer].PlayerObject.transform.position = zonz.transform.position;
-        Position.Value = zonz.transform.position;
     }
 }

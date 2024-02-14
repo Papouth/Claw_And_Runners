@@ -29,6 +29,7 @@ public class PlayerInfo : NetworkBehaviour
     private FixedString32Bytes copWithJail;
     private bool status;
     private bool setPlayerInJail;
+    private GameObject zonz;
     #endregion
 
 
@@ -97,6 +98,8 @@ public class PlayerInfo : NetworkBehaviour
 
                 TS.UpdateSelectionNames();
             }
+
+            SetPlayerInJail();
         }
 
         if (TS.readySelection)
@@ -109,20 +112,24 @@ public class PlayerInfo : NetworkBehaviour
             status = true;
             Invoke("StatusPlayer", 1f);
         }
-
-        if (IsOwner)
-        {
-            SetPlayerInJail();
-        }
     }
 
     private void SetPlayerInJail()
     {
         if (gameObject.layer == 10 && !setPlayerInJail)
         {
+            if (zonz == null)
+            {
+                zonz = GameObject.Find("TheJail");
+            }
+
             setPlayerInJail = true;
 
+            JailLayerServerRpc(10);
 
+            gameObject.transform.position = zonz.transform.position;
+
+            SubmitPositionServerRpc();
         }
     }
 
@@ -187,6 +194,22 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     #region ServerRpc
+    [ServerRpc(RequireOwnership = false)]
+    private void JailLayerServerRpc(int layer)
+    {
+        gameObject.layer = layer;
+
+        JailLayerClientRpc(layer);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SubmitPositionServerRpc()
+    {
+        gameObject.transform.position = zonz.transform.position;
+
+        SubmitPositionClientRpc();
+    }
+
     [ServerRpc]
     public void InfoServerRpc(bool playerIsCops, int playerIsCopsInt)
     {
@@ -250,12 +273,24 @@ public class PlayerInfo : NetworkBehaviour
 
     #region ClientRpc
     [ClientRpc]
+    private void JailLayerClientRpc(int layer)
+    {
+        gameObject.layer = layer;
+    }
+
+    [ClientRpc]
+    private void SubmitPositionClientRpc()
+    {
+        gameObject.transform.position = zonz.transform.position;
+    }
+
+    [ClientRpc]
     public void UpdateServerPlayerNameClientRpc(string newplayername)
     {
         playerName = newplayername;
         gameObject.name = playerName;
     }
-    
+
     [ClientRpc]
     public void UpdateServerInfoClientRpc(bool playerIsCops, int playerIsCopsInt)
     {
@@ -280,7 +315,7 @@ public class PlayerInfo : NetworkBehaviour
         haveJail = playerJail;
 
         if (!haveJail && VJ != null) Destroy(VJ);
-        else if (haveJail && !VJ.enabled ) VJ.enabled = true;
+        else if (haveJail && !VJ.enabled) VJ.enabled = true;
     }
 
     [ClientRpc]
@@ -289,7 +324,7 @@ public class PlayerInfo : NetworkBehaviour
         playerCop = playerCoporNot;
 
         if (!playerCop && WC != null) Destroy(WC);
-        else if (playerCop && !WC.enabled ) WC.enabled = true;
+        else if (playerCop && !WC.enabled) WC.enabled = true;
 
         if (!playerCop && captureCol != null) Destroy(captureCol);
     }
