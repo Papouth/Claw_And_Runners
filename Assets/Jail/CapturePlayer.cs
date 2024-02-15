@@ -40,7 +40,7 @@ public class CapturePlayer : NetworkBehaviour
     [ClientRpc]
     private void JailLayerClientRpc(ulong idPlayer, int layer)
     {
-        NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
+        if (IsServer) NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
 
         Debug.Log("CLIENT CAPTURE PLAYER");
     }

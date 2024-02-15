@@ -97,9 +97,9 @@ public class PlayerInfo : NetworkBehaviour
 
                 TS.UpdateSelectionNames();
             }
-
-            SetPlayerInJail();
         }
+
+        SetPlayerInJail();
 
         if (TS.readySelection)
         {
@@ -119,16 +119,17 @@ public class PlayerInfo : NetworkBehaviour
         {
             Debug.Log("PLayer info pour aller en prison");
 
-            if (zonz == null)
-            {
-                zonz = GameObject.Find("TheJail");
-            }
-
             setPlayerInJail = true;
 
             JailLayerServerRpc(10);
 
-            gameObject.transform.position = zonz.transform.position;
+            if (zonz == null)
+            {
+                zonz = GameObject.Find("TheJail");
+                gameObject.transform.position = zonz.transform.position;
+            }
+            else gameObject.transform.position = zonz.transform.position;
+
 
             SubmitPositionServerRpc(zonz.transform.position);
         }
@@ -195,7 +196,7 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     #region ServerRpc
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void JailLayerServerRpc(int layer)
     {
         gameObject.layer = layer;
