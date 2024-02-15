@@ -13,9 +13,16 @@ public class WeaponCop : NetworkBehaviour
 
     private void Start()
     {
+        //inputManager = GetComponent<InputManager>();
+        VJ = GetComponent<VirtualJail>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
         inputManager = GetComponent<InputManager>();
         VJ = GetComponent<VirtualJail>();
     }
+
 
     private void Update()
     {
@@ -41,7 +48,7 @@ public class WeaponCop : NetworkBehaviour
         EnableColClientRpc();
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     private void DisableColServerRpc()
     {
         hitCollider.SetActive(false);
@@ -56,7 +63,7 @@ public class WeaponCop : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void DisableColClientRpc() 
+    private void DisableColClientRpc()
     {
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;

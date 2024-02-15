@@ -60,7 +60,6 @@ public class PlayerInfo : NetworkBehaviour
             SendClientIDFunction();
         }
 
-
         if (IsOwner && !equilibrageOn)
         {
             equilibrageOn = true;
@@ -118,6 +117,8 @@ public class PlayerInfo : NetworkBehaviour
     {
         if (gameObject.layer == 10 && !setPlayerInJail)
         {
+            Debug.Log("PLayer info pour aller en prison");
+
             if (zonz == null)
             {
                 zonz = GameObject.Find("TheJail");
@@ -129,7 +130,7 @@ public class PlayerInfo : NetworkBehaviour
 
             gameObject.transform.position = zonz.transform.position;
 
-            SubmitPositionServerRpc();
+            SubmitPositionServerRpc(zonz.transform.position);
         }
     }
 
@@ -194,7 +195,7 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     #region ServerRpc
-    [ServerRpc(RequireOwnership = false)]
+    [ServerRpc]
     private void JailLayerServerRpc(int layer)
     {
         gameObject.layer = layer;
@@ -203,11 +204,11 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SubmitPositionServerRpc()
+    private void SubmitPositionServerRpc(Vector3 pos)
     {
-        gameObject.transform.position = zonz.transform.position;
+        gameObject.transform.position = pos;
 
-        SubmitPositionClientRpc();
+        SubmitPositionClientRpc(zonz.transform.position);
     }
 
     [ServerRpc]
@@ -279,9 +280,9 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void SubmitPositionClientRpc()
+    private void SubmitPositionClientRpc(Vector3 pos)
     {
-        gameObject.transform.position = zonz.transform.position;
+        gameObject.transform.position = pos;
     }
 
     [ClientRpc]

@@ -27,6 +27,12 @@ public class VirtualJail : NetworkBehaviour
     #region Built-In Methods
     private void Start()
     {
+        //inputManager = GetComponent<InputManager>();
+        //PI = GetComponent<PlayerInfo>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
         inputManager = GetComponent<InputManager>();
         PI = GetComponent<PlayerInfo>();
     }

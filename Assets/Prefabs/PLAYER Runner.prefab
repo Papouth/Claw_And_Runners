@@ -789,7 +789,6 @@ GameObject:
   m_Component:
   - component: {fileID: 416785699351997794}
   - component: {fileID: 4475708049282112685}
-  - component: {fileID: 6964715314992607256}
   - component: {fileID: 8164864892196274323}
   - component: {fileID: 127072128648723445}
   - component: {fileID: 7601244142997339044}
@@ -797,8 +796,9 @@ GameObject:
   - component: {fileID: 1166194459218872807}
   - component: {fileID: 5228050125313347408}
   - component: {fileID: 5367549546280008564}
-  - component: {fileID: 7301803508076425204}
   - component: {fileID: -7282930216823847445}
+  - component: {fileID: 6964715314992607256}
+  - component: {fileID: 7301803508076425204}
   - component: {fileID: 1058844584936608633}
   m_Layer: 6
   m_Name: PLAYER Runner
@@ -856,18 +856,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &6964715314992607256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560986031654225528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a34681a01eb798849862ec79482035ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!95 &8164864892196274323
 Animator:
   serializedVersion: 5
@@ -1106,6 +1094,38 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-7282930216823847445
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3560986031654225528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afb15765d877f942839b51f58bb0e27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isCops: 0
+  isCopsInt: 0
+  playerName: 
+  playerId: 0
+  tsReadySelection: 0
+  haveJail: 0
+  playerCop: 0
+  captureCol: {fileID: 0}
+--- !u!114 &6964715314992607256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3560986031654225528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34681a01eb798849862ec79482035ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7301803508076425204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1129,26 +1149,6 @@ MonoBehaviour:
     m_Bits: 8
   prisonOn: 0
   boxColObj: {fileID: 5430516046538210551, guid: 2a4250e9eea025149aa311ad752f120c, type: 3}
---- !u!114 &-7282930216823847445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560986031654225528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3afb15765d877f942839b51f58bb0e27, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isCops: 0
-  isCopsInt: 0
-  playerName: 
-  playerId: 0
-  tsReadySelection: 0
-  haveJail: 0
-  playerCop: 0
-  captureCol: {fileID: 0}
 --- !u!114 &1058844584936608633
 MonoBehaviour:
   m_ObjectHideFlags: 0

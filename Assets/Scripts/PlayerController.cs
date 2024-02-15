@@ -64,7 +64,11 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            Destroy(inputManager);
+            //Destroy(inputManager);
+            if (inputManager == null) inputManager = GetComponent<InputManager>();
+
+            inputManager.enabled = false;
+
             cameraCam.GetComponent<Camera>().enabled = false;
 
             teamSelection = FindObjectOfType<TeamSelection>();
