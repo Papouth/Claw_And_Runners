@@ -9,7 +9,6 @@ public class CapturePlayer : NetworkBehaviour
     [SerializeField] private GameObject zonz;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     private int idPlayerCaptured;
-    private GameObject playerCaptured;
 
 
     private void OnTriggerEnter(Collider other)
@@ -19,8 +18,6 @@ public class CapturePlayer : NetworkBehaviour
             idPlayerCaptured = other.GetComponent<PlayerInfo>().playerId;
 
             other.gameObject.layer = 10;
-            playerCaptured = other.gameObject;
-
 
             if (IsOwner) JailLayerServerRpc((ulong)idPlayerCaptured, 10);
 
@@ -34,11 +31,17 @@ public class CapturePlayer : NetworkBehaviour
     private void JailLayerServerRpc(ulong idPlayer, int layer)
     {
         NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
+
+        Debug.Log("SERVER CAPTURE PLAYER");
+
+        JailLayerClientRpc(idPlayer, layer);
     }
 
     [ClientRpc]
     private void JailLayerClientRpc(ulong idPlayer, int layer)
     {
-        playerCaptured.layer = layer;
+        NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
+
+        Debug.Log("CLIENT CAPTURE PLAYER");
     }
 }
