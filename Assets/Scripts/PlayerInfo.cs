@@ -117,7 +117,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         if (gameObject.layer == 10 && !setPlayerInJail)
         {
-            Debug.Log("PLayer info pour aller en prison");
+            //Debug.Log("PLayer info pour aller en prison");
 
             setPlayerInJail = true;
 
@@ -125,7 +125,8 @@ public class PlayerInfo : NetworkBehaviour
 
             if (zonz == null)
             {
-                zonz = GameObject.Find("TheJail");
+                zonz = GameObject.FindWithTag("JailObject");
+
                 gameObject.transform.position = zonz.transform.position;
             }
             else gameObject.transform.position = zonz.transform.position;
@@ -209,7 +210,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         gameObject.transform.position = pos;
 
-        SubmitPositionClientRpc(zonz.transform.position);
+        SubmitPositionClientRpc(pos);
     }
 
     [ServerRpc]
@@ -218,17 +219,17 @@ public class PlayerInfo : NetworkBehaviour
         isCopsInt = playerIsCopsInt;
         isCops = playerIsCops;
 
-        Debug.Log("Passe TEST serverInfoClientRpc");
+        //Debug.Log("Passe TEST serverInfoClientRpc");
 
         if (playerIsCops)
         {
             gameObject.tag = "cops";
-            Debug.Log("playerInfo TEST tag Cops");
+            //Debug.Log("playerInfo TEST tag Cops");
         }
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
-            Debug.Log("playerInfo TEST tag Runners");
+            //Debug.Log("playerInfo TEST tag Runners");
         }
 
         UpdateServerInfoClientRpc(isCops, isCopsInt);
@@ -262,7 +263,7 @@ public class PlayerInfo : NetworkBehaviour
     public void SendClientIDServerRpc(ulong clientId)
     {
         // fonction a appelé pour déclencher
-        Debug.Log("Client ayant cliqué a l'ID : " + clientId);
+        //Debug.Log("Client ayant cliqué a l'ID : " + clientId);
         playerId = (int)clientId;
         NetworkParameter.lastIdSave = playerId;
     }
