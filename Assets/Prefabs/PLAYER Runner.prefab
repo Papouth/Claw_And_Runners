@@ -797,8 +797,8 @@ GameObject:
   - component: {fileID: 5228050125313347408}
   - component: {fileID: 5367549546280008564}
   - component: {fileID: -7282930216823847445}
-  - component: {fileID: 6964715314992607256}
   - component: {fileID: 6871396601706279436}
+  - component: {fileID: 6964715314992607256}
   - component: {fileID: 7301803508076425204}
   - component: {fileID: 1058844584936608633}
   m_Layer: 6
@@ -1117,18 +1117,6 @@ MonoBehaviour:
   playerCop: 0
   captureCol: {fileID: 1422796664965266123}
   releaseCol: {fileID: 7582837180393020021}
---- !u!114 &6964715314992607256
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3560986031654225528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a34681a01eb798849862ec79482035ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6871396601706279436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1142,6 +1130,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitCollider: {fileID: 7582837180393020021}
+--- !u!114 &6964715314992607256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3560986031654225528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34681a01eb798849862ec79482035ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7301803508076425204
 MonoBehaviour:
   m_ObjectHideFlags: 0

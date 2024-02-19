@@ -202,7 +202,8 @@ public class PlayerInfo : NetworkBehaviour
                 }
                 else if (playerName != copWithJail)
                 {
-                    Destroy(VJ);
+                    //Destroy(VJ);
+                    VJ.enabled = false;
 
                     RoleJailServerRpc(false);
                 }
@@ -222,10 +223,13 @@ public class PlayerInfo : NetworkBehaviour
 
                 InfoServerRpc(false, 2);
 
-                Destroy(VJ);
+                //Destroy(VJ);
+                VJ.enabled = false;
 
                 // On gère l'arme du joueur selon son rôle
-                Destroy(WC);
+                //Destroy(WC);
+                WC.enabled = false;
+
                 Destroy(captureCol);
 
                 WR.enabled = true;
@@ -305,7 +309,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         haveJail = playerJail;
 
-        if (!haveJail && VJ != null) Destroy(VJ);
+        if (!haveJail && VJ != null) /*Destroy(VJ)*/ VJ.enabled = false;
         else if (haveJail && !VJ.enabled) VJ.enabled = true;
 
         UpdateServerRoleJailClientRpc(haveJail);
@@ -316,7 +320,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerCop = playerCoporNot;
 
-        if (!playerCop && WC != null) Destroy(WC);
+        if (!playerCop && WC != null) /*Destroy(WC)*/ WC.enabled = false;
         else if (playerCop && !WC.enabled) WC.enabled = true;
 
         if (!playerCop && captureCol != null) Destroy(captureCol);
@@ -340,7 +344,6 @@ public class PlayerInfo : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SendClientIDServerRpc(ulong clientId)
     {
-        // fonction a appelé pour déclencher
         //Debug.Log("Client ayant cliqué a l'ID : " + clientId);
         playerId = (int)clientId;
         NetworkParameter.lastIdSave = playerId;
@@ -412,7 +415,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         haveJail = playerJail;
 
-        if (!haveJail && VJ != null) Destroy(VJ);
+        if (!haveJail && VJ != null) /*Destroy(VJ)*/ VJ.enabled = false;
         else if (haveJail && !VJ.enabled) VJ.enabled = true;
     }
 
@@ -421,7 +424,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerCop = playerCoporNot;
 
-        if (!playerCop && WC != null) Destroy(WC);
+        if (!playerCop && WC != null) /*Destroy(WC)*/ WC.enabled = false;
         else if (playerCop && !WC.enabled) WC.enabled = true;
 
         if (!playerCop && captureCol != null) Destroy(captureCol);
