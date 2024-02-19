@@ -3,33 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class WeaponCop : NetworkBehaviour
+
+public class WeaponRunner : NetworkBehaviour
 {
     private InputManager inputManager;
     [SerializeField] private GameObject hitCollider;
-    private VirtualJail VJ;
     private bool justStarted;
 
-
-    private void Start()
-    {
-        VJ = GetComponent<VirtualJail>();
-    }
 
     public override void OnNetworkSpawn()
     {
         inputManager = GetComponent<InputManager>();
-        VJ = GetComponent<VirtualJail>();
     }
-
 
     private void Update()
     {
-        // Vérifier aussi que le policier à en main son baton
-        if (inputManager.CanSelect && IsOwner && VJ.prisonOn)
+        // Vérifier aussi que le runner à en main son baton
+        if (inputManager.CanSelect && IsOwner)
         {
             EnableColServerRpc();
-            Debug.Log("Je te tape pour te mettre en prison");
         }
         else if (!inputManager.CanSelect && IsOwner && !justStarted)
         {
