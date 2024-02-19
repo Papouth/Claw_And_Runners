@@ -153,9 +153,6 @@ public class TeamSelection : NetworkBehaviour
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
                 selectionStarted = false;
-
-                // ICI ON FAIT APPARAITRE CHAQUE JOUEUR A LA POSITION DE DEPART
-
             }
         }
     }
