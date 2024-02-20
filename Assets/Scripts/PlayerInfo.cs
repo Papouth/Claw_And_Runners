@@ -23,6 +23,7 @@ public class PlayerInfo : NetworkBehaviour
     private WeaponCop WC;
     public bool playerCop;
     public GameObject captureCol;
+    [SerializeField] private GameObject hatCops;
 
     private FixedString32Bytes copWithJail;
     private bool status;
@@ -34,6 +35,8 @@ public class PlayerInfo : NetworkBehaviour
 
     private Transform spawnCops;
     private Transform spawnRunners;
+
+    private PlayerController controller;
     #endregion
 
 
@@ -56,6 +59,8 @@ public class PlayerInfo : NetworkBehaviour
 
         captureCol = GetComponentInChildren<CapturePlayer>().gameObject;
         releaseCol = GetComponentInChildren<ReleasePlayer>().gameObject;
+
+        controller = GetComponent<PlayerController>();
     }
 
     private void Update()
@@ -169,6 +174,8 @@ public class PlayerInfo : NetworkBehaviour
             if (TS.copsNamesList.Contains(playerName))
             {
                 // Attribution du tag et des scripts
+                // Augmentation de la vitesse du policier
+                controller.speed += 1;
 
                 if (TS.copsNamesList[0] == playerName)
                 {
@@ -185,10 +192,13 @@ public class PlayerInfo : NetworkBehaviour
 
                 // On gère l'arme du joueur selon son rôle
                 WR.enabled = false;
-                Destroy(releaseCol);
+
+                //Destroy(releaseCol);
+                releaseCol.SetActive(false);
 
                 WC.enabled = true;
                 captureCol.SetActive(false);
+                hatCops.SetActive(true);
 
                 RoleReleaseServerRpc(true);
 
@@ -202,7 +212,6 @@ public class PlayerInfo : NetworkBehaviour
                 }
                 else if (playerName != copWithJail)
                 {
-                    //Destroy(VJ);
                     VJ.enabled = false;
 
                     RoleJailServerRpc(false);
@@ -210,8 +219,9 @@ public class PlayerInfo : NetworkBehaviour
 
                 // Spawn du joueur à la position SpawnCops
                 spawnCops = GameObject.FindWithTag("SpawnCops").transform;
-                gameObject.transform.position = spawnCops.position;
-                SpawnPlayerServerRpc(spawnCops.position);
+                float rand = Random.Range(0f, 2f);
+                gameObject.transform.position = new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand);
+                SpawnPlayerServerRpc(new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand));
             }
             else if (TS.runnersNamesList.Contains(playerName))
             {
@@ -223,14 +233,14 @@ public class PlayerInfo : NetworkBehaviour
 
                 InfoServerRpc(false, 2);
 
-                //Destroy(VJ);
                 VJ.enabled = false;
 
                 // On gère l'arme du joueur selon son rôle
-                //Destroy(WC);
                 WC.enabled = false;
+                hatCops.SetActive(false);
 
-                Destroy(captureCol);
+                //Destroy(captureCol);
+                captureCol.SetActive(false);
 
                 WR.enabled = true;
                 releaseCol.SetActive(false);
@@ -240,8 +250,9 @@ public class PlayerInfo : NetworkBehaviour
 
                 // Spawn du joueur à la position SpawnRunners
                 spawnRunners = GameObject.FindWithTag("SpawnRunners").transform;
-                gameObject.transform.position = spawnRunners.position;
-                SpawnPlayerServerRpc(spawnRunners.position);
+                float rand = Random.Range(0f, 2f);
+                gameObject.transform.position = new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand);
+                SpawnPlayerServerRpc(new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand));
             }
         }
     }
@@ -309,7 +320,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         haveJail = playerJail;
 
-        if (!haveJail && VJ != null) /*Destroy(VJ)*/ VJ.enabled = false;
+        if (!haveJail && VJ != null) VJ.enabled = false;
         else if (haveJail && !VJ.enabled) VJ.enabled = true;
 
         UpdateServerRoleJailClientRpc(haveJail);
@@ -320,10 +331,27 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerCop = playerCoporNot;
 
-        if (!playerCop && WC != null) /*Destroy(WC)*/ WC.enabled = false;
-        else if (playerCop && !WC.enabled) WC.enabled = true;
+        if (!playerCop && WC != null)
+        {
+            WC.enabled = false;
+        }
+        else if (playerCop && !WC.enabled)
+        {
+            WC.enabled = true;
+        }
 
-        if (!playerCop && captureCol != null) Destroy(captureCol);
+        if (!playerCop && captureCol != null)
+        {
+            hatCops.SetActive(false);
+
+            /*Destroy(captureCol)*/
+            captureCol.SetActive(false);
+        }
+        else if (playerCop)
+        {
+            hatCops.SetActive(true);
+        }
+
 
         UpdateServerRoleCaptureClientRpc(playerCop);
     }
@@ -333,10 +361,16 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerCop = playerCoporNot;
 
-        if (playerCop && WR != null) WR.enabled = false;
-        else if (!playerCop && !WR.enabled) WR.enabled = true;
+        if (playerCop && WR != null)
+        {
+            WR.enabled = false;
+        }
+        else if (!playerCop && !WR.enabled)
+        {
+            WR.enabled = true;
+        }
 
-        if (playerCop && captureCol != null) Destroy(releaseCol);
+        if (playerCop && captureCol != null) /*Destroy(releaseCol)*/ releaseCol.SetActive(false);
 
         UpdateServerRoleReleaseClientRpc(playerCop);
     }
@@ -415,7 +449,7 @@ public class PlayerInfo : NetworkBehaviour
     {
         haveJail = playerJail;
 
-        if (!haveJail && VJ != null) /*Destroy(VJ)*/ VJ.enabled = false;
+        if (!haveJail && VJ != null) VJ.enabled = false;
         else if (haveJail && !VJ.enabled) VJ.enabled = true;
     }
 
@@ -424,10 +458,19 @@ public class PlayerInfo : NetworkBehaviour
     {
         playerCop = playerCoporNot;
 
-        if (!playerCop && WC != null) /*Destroy(WC)*/ WC.enabled = false;
+        if (!playerCop && WC != null) WC.enabled = false;
         else if (playerCop && !WC.enabled) WC.enabled = true;
 
-        if (!playerCop && captureCol != null) Destroy(captureCol);
+        if (!playerCop && captureCol != null) /*Destroy(captureCol)*/ captureCol.SetActive(false);
+
+        if (!playerCop)
+        {
+            hatCops.SetActive(false);
+        }
+        else if (playerCop)
+        {
+            hatCops.SetActive(true);
+        }
     }
 
     [ClientRpc]
@@ -438,7 +481,7 @@ public class PlayerInfo : NetworkBehaviour
         if (playerCop && WR != null) WR.enabled = false;
         else if (!playerCop && !WR.enabled) WR.enabled = true;
 
-        if (playerCop && captureCol != null) Destroy(releaseCol);
+        if (playerCop && captureCol != null) /*Destroy(releaseCol)*/ releaseCol.SetActive(false);
     }
     #endregion
 }
