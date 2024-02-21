@@ -10,7 +10,7 @@ public class PlayerController : NetworkBehaviour
     #region Variables
     private InputManager inputManager;
 
-    [SerializeField] private float speed = 8f;
+    public float speed = 8f;
 
     [SerializeField] private Transform cameraRoot;
     [SerializeField] private Transform cameraCam;
@@ -64,7 +64,6 @@ public class PlayerController : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            //Destroy(inputManager);
             if (inputManager == null) inputManager = GetComponent<InputManager>();
 
             inputManager.enabled = false;
