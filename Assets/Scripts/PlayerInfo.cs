@@ -23,7 +23,7 @@ public class PlayerInfo : NetworkBehaviour
     private WeaponCop WC;
     public bool playerCop;
     public GameObject captureCol;
-    [SerializeField] private GameObject hatCops;
+    //[SerializeField] private GameObject hatCops;
 
     private FixedString32Bytes copWithJail;
     private bool status;
@@ -37,6 +37,8 @@ public class PlayerInfo : NetworkBehaviour
     private Transform spawnRunners;
 
     private PlayerController controller;
+    [SerializeField] private GameObject playerCopPrefab;
+    [SerializeField] private GameObject playerRunnerPrefab;
     #endregion
 
 
@@ -193,12 +195,16 @@ public class PlayerInfo : NetworkBehaviour
                 // On gère l'arme du joueur selon son rôle
                 WR.enabled = false;
 
-                //Destroy(releaseCol);
                 releaseCol.SetActive(false);
 
                 WC.enabled = true;
                 captureCol.SetActive(false);
-                hatCops.SetActive(true);
+
+
+                //hatCops.SetActive(true);
+                playerCopPrefab.SetActive(true);
+                //playerRunnerPrefab.SetActive(false);
+
 
                 RoleReleaseServerRpc(true);
 
@@ -237,9 +243,13 @@ public class PlayerInfo : NetworkBehaviour
 
                 // On gère l'arme du joueur selon son rôle
                 WC.enabled = false;
-                hatCops.SetActive(false);
 
-                //Destroy(captureCol);
+
+                //hatCops.SetActive(false);
+                playerRunnerPrefab.SetActive(true);
+                //playerCopPrefab.SetActive(false);
+
+
                 captureCol.SetActive(false);
 
                 WR.enabled = true;
@@ -342,14 +352,18 @@ public class PlayerInfo : NetworkBehaviour
 
         if (!playerCop && captureCol != null)
         {
-            hatCops.SetActive(false);
+            //hatCops.SetActive(false);
+            playerRunnerPrefab.SetActive(true);
+            //playerCopPrefab.SetActive(false);
 
-            /*Destroy(captureCol)*/
+
             captureCol.SetActive(false);
         }
         else if (playerCop)
         {
-            hatCops.SetActive(true);
+            //hatCops.SetActive(true);
+            playerCopPrefab.SetActive(true);
+            //playerRunnerPrefab.SetActive(false);
         }
 
 
@@ -370,7 +384,7 @@ public class PlayerInfo : NetworkBehaviour
             WR.enabled = true;
         }
 
-        if (playerCop && captureCol != null) /*Destroy(releaseCol)*/ releaseCol.SetActive(false);
+        if (playerCop && captureCol != null) releaseCol.SetActive(false);
 
         UpdateServerRoleReleaseClientRpc(playerCop);
     }
@@ -461,15 +475,19 @@ public class PlayerInfo : NetworkBehaviour
         if (!playerCop && WC != null) WC.enabled = false;
         else if (playerCop && !WC.enabled) WC.enabled = true;
 
-        if (!playerCop && captureCol != null) /*Destroy(captureCol)*/ captureCol.SetActive(false);
+        if (!playerCop && captureCol != null) captureCol.SetActive(false);
 
         if (!playerCop)
         {
-            hatCops.SetActive(false);
+            //hatCops.SetActive(false);
+            playerRunnerPrefab.SetActive(true);
+            //playerCopPrefab.SetActive(false);
         }
         else if (playerCop)
         {
-            hatCops.SetActive(true);
+            //hatCops.SetActive(true);
+            playerCopPrefab.SetActive(true);
+            //playerRunnerPrefab.SetActive(false);
         }
     }
 
@@ -481,7 +499,7 @@ public class PlayerInfo : NetworkBehaviour
         if (playerCop && WR != null) WR.enabled = false;
         else if (!playerCop && !WR.enabled) WR.enabled = true;
 
-        if (playerCop && captureCol != null) /*Destroy(releaseCol)*/ releaseCol.SetActive(false);
+        if (playerCop && captureCol != null) releaseCol.SetActive(false);
     }
     #endregion
 }
