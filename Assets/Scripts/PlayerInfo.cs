@@ -23,7 +23,6 @@ public class PlayerInfo : NetworkBehaviour
     private WeaponCop WC;
     public bool playerCop;
     public GameObject captureCol;
-    //[SerializeField] private GameObject hatCops;
 
     private FixedString32Bytes copWithJail;
     private bool status;
@@ -200,11 +199,8 @@ public class PlayerInfo : NetworkBehaviour
                 WC.enabled = true;
                 captureCol.SetActive(false);
 
-
-                //hatCops.SetActive(true);
                 playerCopPrefab.SetActive(true);
-                //playerRunnerPrefab.SetActive(false);
-
+                playerCopPrefab.GetComponentInChildren<Head>().gameObject.SetActive(false);
 
                 RoleReleaseServerRpc(true);
 
@@ -244,11 +240,8 @@ public class PlayerInfo : NetworkBehaviour
                 // On gère l'arme du joueur selon son rôle
                 WC.enabled = false;
 
-
-                //hatCops.SetActive(false);
                 playerRunnerPrefab.SetActive(true);
-                //playerCopPrefab.SetActive(false);
-
+                playerRunnerPrefab.GetComponentInChildren<Head>().gameObject.SetActive(false);
 
                 captureCol.SetActive(false);
 
@@ -315,11 +308,15 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
             //Debug.Log("playerInfo TEST tag Cops");
+
+            playerCopPrefab.SetActive(true);
         }
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
             //Debug.Log("playerInfo TEST tag Runners");
+
+            playerRunnerPrefab.SetActive(true);
         }
 
         UpdateServerInfoClientRpc(isCops, isCopsInt);
@@ -352,20 +349,8 @@ public class PlayerInfo : NetworkBehaviour
 
         if (!playerCop && captureCol != null)
         {
-            //hatCops.SetActive(false);
-            playerRunnerPrefab.SetActive(true);
-            //playerCopPrefab.SetActive(false);
-
-
             captureCol.SetActive(false);
         }
-        else if (playerCop)
-        {
-            //hatCops.SetActive(true);
-            playerCopPrefab.SetActive(true);
-            //playerRunnerPrefab.SetActive(false);
-        }
-
 
         UpdateServerRoleCaptureClientRpc(playerCop);
     }
@@ -450,11 +435,13 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
             //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Cops");
+            playerCopPrefab.SetActive(true);
         }
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
             //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Runners");
+            playerRunnerPrefab.SetActive(true);
         }
     }
 
@@ -476,19 +463,6 @@ public class PlayerInfo : NetworkBehaviour
         else if (playerCop && !WC.enabled) WC.enabled = true;
 
         if (!playerCop && captureCol != null) captureCol.SetActive(false);
-
-        if (!playerCop)
-        {
-            //hatCops.SetActive(false);
-            playerRunnerPrefab.SetActive(true);
-            //playerCopPrefab.SetActive(false);
-        }
-        else if (playerCop)
-        {
-            //hatCops.SetActive(true);
-            playerCopPrefab.SetActive(true);
-            //playerRunnerPrefab.SetActive(false);
-        }
     }
 
     [ClientRpc]
