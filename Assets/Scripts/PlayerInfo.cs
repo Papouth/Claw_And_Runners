@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using Unity.Services.Lobbies.Models;
+using Unity.Collections;
 
 
 public class PlayerInfo : NetworkBehaviour
@@ -20,6 +20,25 @@ public class PlayerInfo : NetworkBehaviour
     public bool tsReadySelection;
     public bool haveJail;
     private VirtualJail VJ;
+    private WeaponCop WC;
+    public bool playerCop;
+    public GameObject captureCol;
+    //[SerializeField] private GameObject hatCops;
+
+    private FixedString32Bytes copWithJail;
+    private bool status;
+    private bool playerInJail;
+    private GameObject zonz;
+
+    private WeaponRunner WR;
+    public GameObject releaseCol;
+
+    private Transform spawnCops;
+    private Transform spawnRunners;
+
+    private PlayerController controller;
+    [SerializeField] private GameObject playerCopPrefab;
+    [SerializeField] private GameObject playerRunnerPrefab;
     #endregion
 
 
@@ -36,6 +55,14 @@ public class PlayerInfo : NetworkBehaviour
         LM = FindObjectOfType<LobbyManager>();
 
         VJ = GetComponent<VirtualJail>();
+
+        WC = GetComponent<WeaponCop>();
+        WR = GetComponent<WeaponRunner>();
+
+        captureCol = GetComponentInChildren<CapturePlayer>().gameObject;
+        releaseCol = GetComponentInChildren<ReleasePlayer>().gameObject;
+
+        controller = GetComponent<PlayerController>();
     }
 
     private void Update()
@@ -45,7 +72,6 @@ public class PlayerInfo : NetworkBehaviour
         {
             SendClientIDFunction();
         }
-
 
         if (IsOwner && !equilibrageOn)
         {
@@ -86,25 +112,325 @@ public class PlayerInfo : NetworkBehaviour
             }
         }
 
+        SetPlayerInJail();
+
+        ReleasePlayerFromJail();
+
         if (TS.readySelection)
         {
             tsReadySelection = true;
         }
+
+        if (TS.tagSetup && !status)
+        {
+            status = true;
+            Invoke("StatusPlayer", 1f);
+        }
+    }
+
+    private void SetPlayerInJail()
+    {
+        if (gameObject.layer == 10 && !playerInJail)
+        {
+            //Debug.Log("PLayer info pour aller en prison");
+
+            playerInJail = true;
+
+            // On Désactive arme du joueur
+            WR.enabled = false;
+
+            JailLayerServerRpc(10);
+
+            if (zonz == null)
+            {
+                zonz = GameObject.FindWithTag("JailObject");
+
+                gameObject.transform.position = zonz.transform.position;
+            }
+            else gameObject.transform.position = zonz.transform.position;
+
+            SubmitPositionServerRpc(zonz.transform.position);
+        }
+    }
+
+    private void ReleasePlayerFromJail()
+    {
+        if (gameObject.layer == 6 && playerInJail)
+        {
+            playerInJail = false;
+
+            // On Réactive arme du joueur
+            WR.enabled = true;
+
+            JailLayerServerRpc(6);
+        }
+    }
+
+    /// <summary>
+    /// Gère les tags et les scripts du joueur
+    /// </summary>
+    private void StatusPlayer()
+    {
+        if (IsOwner)
+        {
+            if (TS.copsNamesList.Contains(playerName))
+            {
+                // Attribution du tag et des scripts
+                // Augmentation de la vitesse du policier
+                controller.speed += 1;
+
+                if (TS.copsNamesList[0] == playerName)
+                {
+                    // Attribution de la prison au premier policier présent dans la partie
+                    copWithJail = TS.copsNamesList[0];
+                }
+
+                isCops = true;
+                isCopsInt = 1;
+
+                gameObject.tag = "cops";
+
+                InfoServerRpc(true, 1);
+
+                // On gère l'arme du joueur selon son rôle
+                WR.enabled = false;
+
+                releaseCol.SetActive(false);
+
+                WC.enabled = true;
+                captureCol.SetActive(false);
+
+
+                //hatCops.SetActive(true);
+                playerCopPrefab.SetActive(true);
+                //playerRunnerPrefab.SetActive(false);
+
+
+                RoleReleaseServerRpc(true);
+
+                // S'il s'agit du policier ayant la prison
+                if (playerName == copWithJail)
+                {
+                    // On enable le script de la prison sur le joueur
+                    VJ.enabled = true;
+
+                    RoleJailServerRpc(true);
+                }
+                else if (playerName != copWithJail)
+                {
+                    VJ.enabled = false;
+
+                    RoleJailServerRpc(false);
+                }
+
+                // Spawn du joueur à la position SpawnCops
+                spawnCops = GameObject.FindWithTag("SpawnCops").transform;
+                float rand = Random.Range(0f, 2f);
+                gameObject.transform.position = new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand);
+                SpawnPlayerServerRpc(new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand));
+            }
+            else if (TS.runnersNamesList.Contains(playerName))
+            {
+                // Attribution du tag et des scripts
+                isCops = false;
+                isCopsInt = 2;
+
+                gameObject.tag = "runners";
+
+                InfoServerRpc(false, 2);
+
+                VJ.enabled = false;
+
+                // On gère l'arme du joueur selon son rôle
+                WC.enabled = false;
+
+
+                //hatCops.SetActive(false);
+                playerRunnerPrefab.SetActive(true);
+                //playerCopPrefab.SetActive(false);
+
+
+                captureCol.SetActive(false);
+
+                WR.enabled = true;
+                releaseCol.SetActive(false);
+
+                RoleJailServerRpc(false);
+                RoleCaptureServerRpc(false);
+
+                // Spawn du joueur à la position SpawnRunners
+                spawnRunners = GameObject.FindWithTag("SpawnRunners").transform;
+                float rand = Random.Range(0f, 2f);
+                gameObject.transform.position = new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand);
+                SpawnPlayerServerRpc(new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand));
+            }
+        }
+    }
+
+    #region ServerRpc
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnPlayerServerRpc(Vector3 spawnPos)
+    {
+        gameObject.transform.position = spawnPos;
+
+        SpawnPlayerClientRpc(spawnPos);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void JailLayerServerRpc(int layer)
+    {
+        gameObject.layer = layer;
+
+        if (layer == 10)
+        {
+            // Le joueur est en prison, on lui enlève le script de son arme
+            WR.enabled = false;
+        }
+        else if (layer == 6)
+        {
+            // Le joueur est libéré, on lui remet le script de son arme
+            WR.enabled = true;
+        }
+
+        JailLayerClientRpc(layer);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SubmitPositionServerRpc(Vector3 pos)
+    {
+        gameObject.transform.position = pos;
+
+        SubmitPositionClientRpc(pos);
+    }
+
+    [ServerRpc]
+    public void InfoServerRpc(bool playerIsCops, int playerIsCopsInt)
+    {
+        isCopsInt = playerIsCopsInt;
+        isCops = playerIsCops;
+
+        //Debug.Log("Passe TEST serverInfoClientRpc");
+
+        if (playerIsCops)
+        {
+            gameObject.tag = "cops";
+            //Debug.Log("playerInfo TEST tag Cops");
+        }
+        else if (!playerIsCops)
+        {
+            gameObject.tag = "runners";
+            //Debug.Log("playerInfo TEST tag Runners");
+        }
+
+        UpdateServerInfoClientRpc(isCops, isCopsInt);
+    }
+
+    [ServerRpc]
+    public void RoleJailServerRpc(bool playerJail)
+    {
+        haveJail = playerJail;
+
+        if (!haveJail && VJ != null) VJ.enabled = false;
+        else if (haveJail && !VJ.enabled) VJ.enabled = true;
+
+        UpdateServerRoleJailClientRpc(haveJail);
+    }
+
+    [ServerRpc]
+    public void RoleCaptureServerRpc(bool playerCoporNot)
+    {
+        playerCop = playerCoporNot;
+
+        if (!playerCop && WC != null)
+        {
+            WC.enabled = false;
+        }
+        else if (playerCop && !WC.enabled)
+        {
+            WC.enabled = true;
+        }
+
+        if (!playerCop && captureCol != null)
+        {
+            //hatCops.SetActive(false);
+            playerRunnerPrefab.SetActive(true);
+            //playerCopPrefab.SetActive(false);
+
+
+            captureCol.SetActive(false);
+        }
+        else if (playerCop)
+        {
+            //hatCops.SetActive(true);
+            playerCopPrefab.SetActive(true);
+            //playerRunnerPrefab.SetActive(false);
+        }
+
+
+        UpdateServerRoleCaptureClientRpc(playerCop);
+    }
+
+    [ServerRpc]
+    public void RoleReleaseServerRpc(bool playerCoporNot)
+    {
+        playerCop = playerCoporNot;
+
+        if (playerCop && WR != null)
+        {
+            WR.enabled = false;
+        }
+        else if (!playerCop && !WR.enabled)
+        {
+            WR.enabled = true;
+        }
+
+        if (playerCop && captureCol != null) releaseCol.SetActive(false);
+
+        UpdateServerRoleReleaseClientRpc(playerCop);
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void SendClientIDServerRpc(ulong clientId)
     {
-        // fonction a appelé pour déclencher
-        //SendClientIDFunction();
-        Debug.Log("Client ayant cliqué a l'ID : " + clientId);
+        //Debug.Log("Client ayant cliqué a l'ID : " + clientId);
         playerId = (int)clientId;
         NetworkParameter.lastIdSave = playerId;
     }
+    #endregion
 
     public void SendClientIDFunction()
     {
         SendClientIDServerRpc(NetworkManager.Singleton.LocalClientId);
+    }
+
+    #region ClientRpc
+    [ClientRpc]
+    private void SpawnPlayerClientRpc(Vector3 spawnPos)
+    {
+        gameObject.transform.position = spawnPos;
+    }
+
+    [ClientRpc]
+    private void JailLayerClientRpc(int layer)
+    {
+        gameObject.layer = layer;
+
+        if (layer == 10)
+        {
+            // Le joueur est en prison, on lui enlève le script de son arme
+            WR.enabled = false;
+        }
+        else if (layer == 6)
+        {
+            // Le joueur est libéré, on lui remet le script de son arme
+            WR.enabled = true;
+        }
+    }
+
+    [ClientRpc]
+    private void SubmitPositionClientRpc(Vector3 pos)
+    {
+        gameObject.transform.position = pos;
     }
 
     [ClientRpc]
@@ -117,11 +443,19 @@ public class PlayerInfo : NetworkBehaviour
     [ClientRpc]
     public void UpdateServerInfoClientRpc(bool playerIsCops, int playerIsCopsInt)
     {
-        isCops = playerIsCops;
         isCopsInt = playerIsCopsInt;
+        isCops = playerIsCops;
 
-        if (isCops) gameObject.tag = "cops";
-        else if (!isCops) gameObject.tag = "runners";
+        if (playerIsCops)
+        {
+            gameObject.tag = "cops";
+            //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Cops");
+        }
+        else if (!playerIsCops)
+        {
+            gameObject.tag = "runners";
+            //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Runners");
+        }
     }
 
     [ClientRpc]
@@ -129,7 +463,43 @@ public class PlayerInfo : NetworkBehaviour
     {
         haveJail = playerJail;
 
-        if (!haveJail && VJ != null) Destroy(VJ);
-        else if (haveJail && !VJ.enabled ) VJ.enabled = true;
+        if (!haveJail && VJ != null) VJ.enabled = false;
+        else if (haveJail && !VJ.enabled) VJ.enabled = true;
     }
+
+    [ClientRpc]
+    public void UpdateServerRoleCaptureClientRpc(bool playerCoporNot)
+    {
+        playerCop = playerCoporNot;
+
+        if (!playerCop && WC != null) WC.enabled = false;
+        else if (playerCop && !WC.enabled) WC.enabled = true;
+
+        if (!playerCop && captureCol != null) captureCol.SetActive(false);
+
+        if (!playerCop)
+        {
+            //hatCops.SetActive(false);
+            playerRunnerPrefab.SetActive(true);
+            //playerCopPrefab.SetActive(false);
+        }
+        else if (playerCop)
+        {
+            //hatCops.SetActive(true);
+            playerCopPrefab.SetActive(true);
+            //playerRunnerPrefab.SetActive(false);
+        }
+    }
+
+    [ClientRpc]
+    public void UpdateServerRoleReleaseClientRpc(bool playerCoporNot)
+    {
+        playerCop = playerCoporNot;
+
+        if (playerCop && WR != null) WR.enabled = false;
+        else if (!playerCop && !WR.enabled) WR.enabled = true;
+
+        if (playerCop && captureCol != null) releaseCol.SetActive(false);
+    }
+    #endregion
 }

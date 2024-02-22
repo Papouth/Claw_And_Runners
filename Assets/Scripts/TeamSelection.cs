@@ -61,11 +61,9 @@ public class TeamSelection : NetworkBehaviour
     public bool readySelection;
     private bool showTimer;
 
-    private bool tagSetup;
-    private SessionManager SM;
+    public bool tagSetup;
 
     [HideInInspector] public bool selectionStarted;
-    [HideInInspector] public string lastNameRegistered;
 
     private bool equilibrageOn;
     #endregion
@@ -87,7 +85,6 @@ public class TeamSelection : NetworkBehaviour
     private void Start()
     {
         LM = FindObjectOfType<LobbyManager>();
-        SM = gameObject.GetComponent<SessionManager>();
 
         UITeamSelection.SetActive(false);
         panelTimer.SetActive(false);
@@ -147,8 +144,6 @@ public class TeamSelection : NetworkBehaviour
             if (!tagSetup)
             {
                 tagSetup = true;
-                // ATTRIBUTION DES SETTINGS
-                SM.AttributionTag();
             }
 
             if (timerToBegin <= 0f)
@@ -158,9 +153,6 @@ public class TeamSelection : NetworkBehaviour
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
                 selectionStarted = false;
-
-                // ICI ON FAIT APPARAITRE CHAQUE JOUEUR A LA POSITION DE DEPART
-
             }
         }
     }
@@ -196,10 +188,9 @@ public class TeamSelection : NetworkBehaviour
     {
         copsNamesList.Add(playerNameCops);
 
-        lastNameRegistered = playerNameCops.ToString();
-        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+        Debug.Log("dernier nom sauvegardé : " + playerNameCops.ToString());
 
-        NetworkParameter.SavePlayerInfo(lastNameRegistered);
+        NetworkParameter.SavePlayerInfo(playerNameCops.ToString());
     }
 
     public void PlayerNameCops(string name)
@@ -268,10 +259,9 @@ public class TeamSelection : NetworkBehaviour
     {
         runnersNamesList.Add(playerNameRunners);
 
-        lastNameRegistered = playerNameRunners.ToString();
-        Debug.Log("dernier nom sauvegardé : " + lastNameRegistered);
+        Debug.Log("dernier nom sauvegardé : " + playerNameRunners.ToString());
 
-        NetworkParameter.SavePlayerInfo(lastNameRegistered);
+        NetworkParameter.SavePlayerInfo(playerNameRunners.ToString());
     }
 
     public void PlayerNameRunners(string name)
@@ -487,9 +477,11 @@ public class TeamSelection : NetworkBehaviour
             copsPlayerNameTxt[index] = "";
             copsPlayerNameTMPro[index].text = "";
 
-            LesscopsNValueServerRpc();
 
             RemovePlayerNameCops(LM.playerName);
+
+            LesscopsNValueServerRpc();
+
 
             // Nombre de policier et de courreur
             copsNumberTxt.text = copsN.Value.ToString();

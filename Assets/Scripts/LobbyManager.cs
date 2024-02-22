@@ -21,6 +21,7 @@ public class LobbyManager : MonoBehaviour
     [HideInInspector] public Lobby joinedLobby;
     private string inputCode;
     public string playerName;
+    private string saveTempoName;
     [SerializeField] private TextMeshProUGUI IDText;
     [Tooltip("Nom Temporaire Joueur")][SerializeField] private TextMeshProUGUI namePlaceHolder;
     [Tooltip("Nom Temporaire Lobby")][SerializeField] private TextMeshProUGUI lobbyNamePlaceHolder;
@@ -72,6 +73,7 @@ public class LobbyManager : MonoBehaviour
         startBttn.SetActive(false);
         playerName = "FunkyPlayer" + Random.Range(10, 99);
         namePlaceHolder.text = playerName;
+        saveTempoName = playerName;
 
         foreach (var item in namesPlayersInsideLobby)
         {
@@ -160,7 +162,14 @@ public class LobbyManager : MonoBehaviour
     /// </summary>
     public void ChooseName(string customName)
     {
-        playerName = customName;
+        if (customName != "")
+        {
+            playerName = customName;
+        }
+        else
+        {
+            playerName = saveTempoName;
+        }
     }
     #endregion
 
@@ -200,13 +209,6 @@ public class LobbyManager : MonoBehaviour
                 insideLobbyName.text = joinedLobby.Name;
                 teamSelection.parcName.text = insideLobbyName.text;
                 lobbyCodeDisplay.text = joinedLobby.LobbyCode;
-
-                //foreach (var player in joinedLobby.Players)
-                //{
-                //
-                //    //copsNumberTxt.text = copsN.ToString();
-                //    //runnersNumberTxt.text = runnersN.ToString();
-                //}
 
                 if (joinedLobby.Players.Count == maxPlayers)
                 {

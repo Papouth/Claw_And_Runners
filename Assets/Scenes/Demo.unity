@@ -9002,6 +9002,39 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4633631007455644, guid: e836a075ea7fb4948a5ac07f447e206d, type: 3}
   m_PrefabInstance: {fileID: 616005899}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &917926899
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 917926900}
+  m_Layer: 0
+  m_Name: Spawns
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &917926900
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917926899}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1824138972}
+  - {fileID: 1672942785}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &919629675
 GameObject:
   m_ObjectHideFlags: 0
@@ -11340,7 +11373,7 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_RegexValue: 
   m_GlobalPointSize: 14
-  m_CharacterLimit: 16
+  m_CharacterLimit: 14
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls:
@@ -17612,6 +17645,37 @@ RectTransform:
   m_AnchoredPosition: {x: -954.85, y: -2.8}
   m_SizeDelta: {x: 77.80493, y: 62.1}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &1672942784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1672942785}
+  m_Layer: 0
+  m_Name: SpawnRunners
+  m_TagString: SpawnRunners
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1672942785
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1672942784}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 24.48, y: 0, z: -29.66}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 917926900}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1675412370
 GameObject:
   m_ObjectHideFlags: 0
@@ -17708,7 +17772,6 @@ GameObject:
   - component: {fileID: 1689696850}
   - component: {fileID: 1689696852}
   - component: {fileID: 1689696853}
-  - component: {fileID: 1689696854}
   m_Layer: 0
   m_Name: TeamManager
   m_TagString: Untagged
@@ -17785,8 +17848,8 @@ MonoBehaviour:
   panelTimer: {fileID: 391000937}
   timer: {fileID: 391000939}
   readySelection: 0
+  tagSetup: 0
   selectionStarted: 0
-  lastNameRegistered: 
 --- !u!114 &1689696853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17807,19 +17870,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &1689696854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1689696849}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d0a780b70b760c4c8c58dc65e6ff18f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LM: {fileID: 709216763}
 --- !u!1 &1700383702
 GameObject:
   m_ObjectHideFlags: 0
@@ -19327,6 +19377,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 967b6a6ac4bbda54b8d622a64f435755, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1824138971
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1824138972}
+  m_Layer: 0
+  m_Name: SpawnCops
+  m_TagString: SpawnCops
+  m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1824138972
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1824138971}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -14.4, y: 0, z: -30.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 917926900}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &1832247659
 GameObject:
   m_ObjectHideFlags: 0
@@ -19758,7 +19839,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ProtocolType: 1
-  m_MaxPacketQueueSize: 128
+  m_MaxPacketQueueSize: 300
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
@@ -50781,3 +50862,4 @@ SceneRoots:
   - {fileID: 1428043915}
   - {fileID: 496073327}
   - {fileID: 1901072946}
+  - {fileID: 917926900}
