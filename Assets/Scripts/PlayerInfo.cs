@@ -200,7 +200,7 @@ public class PlayerInfo : NetworkBehaviour
                 captureCol.SetActive(false);
 
                 playerCopPrefab.SetActive(true);
-                playerCopPrefab.GetComponentInChildren<Head>().gameObject.SetActive(false);
+                playerCopPrefab.GetComponentInChildren<DisplayArms>().gameObject.SetActive(false);
 
                 RoleReleaseServerRpc(true);
 
@@ -241,7 +241,7 @@ public class PlayerInfo : NetworkBehaviour
                 WC.enabled = false;
 
                 playerRunnerPrefab.SetActive(true);
-                playerRunnerPrefab.GetComponentInChildren<Head>().gameObject.SetActive(false);
+                playerRunnerPrefab.GetComponentInChildren<DisplayArms>().gameObject.SetActive(false);
 
                 captureCol.SetActive(false);
 
