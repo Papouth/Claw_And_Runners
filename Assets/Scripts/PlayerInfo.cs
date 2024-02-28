@@ -200,7 +200,13 @@ public class PlayerInfo : NetworkBehaviour
                 captureCol.SetActive(false);
 
                 playerCopPrefab.SetActive(true);
-                playerCopPrefab.GetComponentInChildren<DisplayArms>().gameObject.SetActive(false);
+
+                // DOIT ETRE TESTER
+                //for (int i = 0; i < playerCopPrefab.transform.childCount; i++)
+                //{
+                //    if (playerCopPrefab.transform.GetChild(i).GetComponent<DoNotDisplayThisToPlayer>()) playerCopPrefab.transform.GetChild(i).gameObject.SetActive(false);
+                //}
+
 
                 RoleReleaseServerRpc(true);
 
@@ -241,7 +247,12 @@ public class PlayerInfo : NetworkBehaviour
                 WC.enabled = false;
 
                 playerRunnerPrefab.SetActive(true);
-                playerRunnerPrefab.GetComponentInChildren<DisplayArms>().gameObject.SetActive(false);
+
+                // DOIT ETRE TESTER
+                //for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
+                //{
+                //    if (playerRunnerPrefab.transform.GetChild(i).GetComponent<DoNotDisplayThisToPlayer>()) playerRunnerPrefab.transform.GetChild(i).gameObject.SetActive(false);
+                //}
 
                 captureCol.SetActive(false);
 
