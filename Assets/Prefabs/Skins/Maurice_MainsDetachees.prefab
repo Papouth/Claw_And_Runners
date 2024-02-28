@@ -488,6 +488,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6314084477313844949}
   - component: {fileID: 883058741780049960}
+  - component: {fileID: 8984418993690698099}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Bas
   m_TagString: Untagged
@@ -629,6 +630,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000020310283, y: -0.4339223, z: 0.0064425766}
     m_Extent: {x: 0.29429573, y: 0.623229, z: 0.27119088}
   m_DirtyAABB: 0
+--- !u!114 &8984418993690698099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1616439370923569668}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1684683046522741244
 GameObject:
   m_ObjectHideFlags: 0
@@ -1737,6 +1750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5639668096778456044}
   - component: {fileID: 912045346976980562}
+  - component: {fileID: 2351153027337992998}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Haut
   m_TagString: Untagged
@@ -1878,6 +1892,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000007748604, y: 0.41012076, z: 0.064169854}
     m_Extent: {x: 0.40057957, y: 0.3313708, z: 0.27370864}
   m_DirtyAABB: 0
+--- !u!114 &2351153027337992998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6101034101590450659}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6147953306346661986
 GameObject:
   m_ObjectHideFlags: 0
@@ -1983,6 +2009,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7235154129379642178}
   - component: {fileID: 3612339040973105917}
+  - component: {fileID: 2436945116489122014}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Tete
   m_TagString: Untagged
@@ -2160,6 +2187,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.021665141, y: 0.8046932, z: 0.098830976}
     m_Extent: {x: 0.14828925, y: 0.17146695, z: 0.14099014}
   m_DirtyAABB: 0
+--- !u!114 &2436945116489122014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6412743572150560167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6555553183615512117
 GameObject:
   m_ObjectHideFlags: 0
@@ -2234,7 +2273,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6716291426088409447}
   - component: {fileID: 5976176112979336498}
-  - component: {fileID: 5479822587537947519}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Bras PlayerSide
   m_TagString: Untagged
@@ -2376,18 +2414,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0000005066395, y: 0.17527163, z: -0.0078358725}
     m_Extent: {x: 0.59787905, y: 0.32857692, z: 0.13641047}
   m_DirtyAABB: 0
---- !u!114 &5479822587537947519
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6854238935480807800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6914543944175161683
 GameObject:
   m_ObjectHideFlags: 0
@@ -2617,6 +2643,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7533410949514746447}
   - component: {fileID: 2242927287030225112}
+  - component: {fileID: 2604572953223888904}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Bras
   m_TagString: Untagged
@@ -2758,6 +2785,18 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0000005066395, y: 0.17527163, z: -0.0078358725}
     m_Extent: {x: 0.59787905, y: 0.32857692, z: 0.13641047}
   m_DirtyAABB: 0
+--- !u!114 &2604572953223888904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7577761221120129219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7757230783771613662
 GameObject:
   m_ObjectHideFlags: 0
