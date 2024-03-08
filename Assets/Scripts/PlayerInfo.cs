@@ -38,6 +38,7 @@ public class PlayerInfo : NetworkBehaviour
     private PlayerController controller;
     [SerializeField] private GameObject playerCopPrefab;
     [SerializeField] private GameObject playerRunnerPrefab;
+    private CharacterController CCPlayer;
     #endregion
 
 
@@ -62,6 +63,8 @@ public class PlayerInfo : NetworkBehaviour
         releaseCol = GetComponentInChildren<ReleasePlayer>().gameObject;
 
         controller = GetComponent<PlayerController>();
+
+        CCPlayer = GetComponent<CharacterController>();
     }
 
     private void Update()
@@ -140,6 +143,8 @@ public class PlayerInfo : NetworkBehaviour
 
             JailLayerServerRpc(10);
 
+            CCPlayer.enabled = false;
+
             if (zonz == null)
             {
                 zonz = GameObject.FindWithTag("JailObject");
@@ -147,6 +152,8 @@ public class PlayerInfo : NetworkBehaviour
                 gameObject.transform.position = zonz.transform.position;
             }
             else gameObject.transform.position = zonz.transform.position;
+
+            CCPlayer.enabled = true;
 
             SubmitPositionServerRpc(zonz.transform.position);
         }
@@ -225,10 +232,14 @@ public class PlayerInfo : NetworkBehaviour
                 }
 
                 // Spawn du joueur à la position SpawnCops
+                CCPlayer.enabled = false;
+
                 spawnCops = GameObject.FindWithTag("SpawnCops").transform;
                 float rand = Random.Range(0f, 2f);
                 gameObject.transform.position = new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand);
                 SpawnPlayerServerRpc(new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand));
+
+                CCPlayer.enabled = true;
             }
             else if (TS.runnersNamesList.Contains(playerName))
             {
@@ -261,10 +272,14 @@ public class PlayerInfo : NetworkBehaviour
                 RoleCaptureServerRpc(false);
 
                 // Spawn du joueur à la position SpawnRunners
+                CCPlayer.enabled = false;
+
                 spawnRunners = GameObject.FindWithTag("SpawnRunners").transform;
                 float rand = Random.Range(0f, 2f);
                 gameObject.transform.position = new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand);
                 SpawnPlayerServerRpc(new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand));
+
+                CCPlayer.enabled = true;
             }
         }
     }
