@@ -14,6 +14,10 @@ public class PlayerController : NetworkBehaviour
 
     [SerializeField] private Transform cameraRoot;
     [SerializeField] private Transform cameraCam;
+    [SerializeField] private Transform cameraCamDepth;
+
+    [SerializeField] private GameObject[] playerSideArms;
+
     private float xRotation;
     [SerializeField] private float minClamp;
     [SerializeField] private float maxClamp;
@@ -69,6 +73,12 @@ public class PlayerController : NetworkBehaviour
             inputManager.enabled = false;
 
             cameraCam.GetComponent<Camera>().enabled = false;
+            cameraCamDepth.GetComponent<Camera>().enabled = false;
+
+            foreach (var item in playerSideArms)
+            {
+                item.SetActive(false);
+            }
 
             teamSelection = FindObjectOfType<TeamSelection>();
 
