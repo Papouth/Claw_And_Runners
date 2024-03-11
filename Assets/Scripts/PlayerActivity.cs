@@ -6,4 +6,5 @@ public class PlayerActivity : MonoBehaviour
 {
     [Header("Stand2Tir")]
     [SerializeField] private GameObject pistolPrefab;
+
 }
