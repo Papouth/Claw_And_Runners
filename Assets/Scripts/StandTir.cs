@@ -10,11 +10,7 @@ public class StandTir : MonoBehaviour
     [SerializeField] private float speedRot;
     [SerializeField] private Transform ballonCircle;
     [SerializeField] private Transform tripleTarget;
-
-    [Header("Models")]
-    [SerializeField] private GameObject[] pistolsPrefab;
-
-
+    [SerializeField] private Transform[] ballonParents;
     #endregion
 
 
@@ -39,6 +35,11 @@ public class StandTir : MonoBehaviour
     {
         ballonCircle.Rotate(Vector3.right * speedRot * Time.deltaTime);
         tripleTarget.Rotate(Vector3.right * speedRot * Time.deltaTime);
+
+        for (int i = 0; i < ballonParents.Length; i++)
+        {
+            ballonParents[i].Rotate(-Vector3.right * speedRot * Time.deltaTime);
+        }
     }
 
     #endregion
