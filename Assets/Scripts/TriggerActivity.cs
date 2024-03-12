@@ -26,6 +26,8 @@ public class TriggerActivity : MonoBehaviour
         {
             if (player.GetComponent<InputManager>().CanInteract)
             {
+                player.GetComponent<InputManager>().CanInteract = false;
+                Debug.Log("interact");
                 InteractActivity();
             }
         }
@@ -33,8 +35,23 @@ public class TriggerActivity : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log(other.name);
+
         if (other.gameObject.CompareTag("Player"))
         {
+            Debug.Log(other.name + " here");
+
+            player = other.gameObject;
+            startActivity = true;
+        }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            Debug.Log(other.name + " stay");
+
             player = other.gameObject;
             startActivity = true;
         }

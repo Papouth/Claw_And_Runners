@@ -708,7 +708,7 @@ GameObject:
   - component: {fileID: 3556326875577580550}
   m_Layer: 0
   m_Name: SandPiouPiou - Playable
-  m_TagString: Untagged
+  m_TagString: Stand2Tir
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959067874753712728}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2f05b39d733590468995462d151f667, type: 3}
   m_Name: 
@@ -1537,8 +1537,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5355911ffbcf8947926231678d36317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  activityPrefab: {fileID: 0}
-  stand2TirActivity: 0
+  activityPrefab: {fileID: 959067874753712728}
+  stand2TirActivity: 1
 --- !u!1 &2430845248679358009
 GameObject:
   m_ObjectHideFlags: 0
