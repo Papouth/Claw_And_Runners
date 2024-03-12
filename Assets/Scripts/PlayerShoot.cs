@@ -10,18 +10,20 @@ public class PlayerShoot : MonoBehaviour
     private float rateOfFire;
     private bool firstBullet;
     private Ray ray;
+    private Camera cam;
     [SerializeField] private LayerMask aimColLayermask;
 
-    private Animator playerAnimator;
+    public Animator playerAnimator;
     private InputManager inputManager;
     #endregion
 
     private void Start()
     {
-        playerAnimator = GetComponent<Animator>();
         inputManager = GetComponentInParent<InputManager>();
 
         rateOfFire = rpmMult / RPM;
+
+        cam = GetComponentInParent<Camera>();
     }
 
     private void Update()
@@ -56,11 +58,12 @@ public class PlayerShoot : MonoBehaviour
 
     private void InstantiateBullet()
     {
-        //playerAnimator.Play("PistolShot");
+        playerAnimator.SetTrigger("PistolShot");
+        Debug.Log("Bang");
 
         // Raycast shoot
         Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+        ray = cam.ScreenPointToRay(screenCenterPoint);
 
         if (Physics.Raycast(ray, out RaycastHit raycastHit, 10f, aimColLayermask))
         {
