@@ -2987,7 +2987,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5611059970100184946
 Transform:
   m_ObjectHideFlags: 0
@@ -5321,6 +5321,10 @@ PrefabInstance:
     - target: {fileID: 8574673171397902760, guid: f098e24cd42fc06468a9d767264a80a6, type: 3}
       propertyPath: m_Name
       value: BluePistoPiouPiou
+      objectReference: {fileID: 0}
+    - target: {fileID: 8574673171397902760, guid: f098e24cd42fc06468a9d767264a80a6, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
