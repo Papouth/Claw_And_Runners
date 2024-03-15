@@ -21,16 +21,19 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: paquet the
-  m_Shader: {fileID: -6465566751694194690, guid: 8f2f65b7ad8bed1489005bb4ab302588, type: 3}
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
+  m_ValidKeywords:
+  - _METALLICSPECGLOSSMAP
+  - _NORMALMAP
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap: {}
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -114,6 +117,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
+    - _BlendOp: 0
     - _BumpScale: 1
     - _CircleDensity: 26.72
     - _ClearCoatMask: 0
@@ -138,8 +142,9 @@ Material:
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Rotation: 5.9
+    - _SampleGI: 0
     - _ShadingMultiplier: 0.1
-    - _Smoothness: 0.574
+    - _Smoothness: 1
     - _SmoothnessTextureChannel: 0
     - _Softness: 0
     - _SpecularHighlights: 1
