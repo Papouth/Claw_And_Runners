@@ -1,48 +1,74 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
 
-[RequireComponent(typeof(AudioSync))]
-public class PlayerShoot : NetworkBehaviour
+public class PlayerShoot : MonoBehaviour
 {
-    [SerializeField] private GameObject[] bullet;
-    private int bulletTeam;
-    private GameObject cloneBullet;
-    private PlayerTeam playerHealth;
-    private AudioSync audioSync;
+    #region Variables
+    [SerializeField] private float RPM;
+    private float rpmMult = 60;
+    private float rateOfFire;
+    private bool firstBullet;
+    private Ray ray;
+    private Camera cam;
+    [SerializeField] private LayerMask aimColLayermask;
 
-    private void Awake()
-    {
-        playerHealth = GetComponent<PlayerTeam>();
-        audioSync = GetComponent<AudioSync>();
-    }
+    public Animator playerAnimator;
+    private InputManager inputManager;
+    #endregion
+
     private void Start()
     {
-        // Détermine quelle munition va être utilisé
-        if (playerHealth.team == "blue") bulletTeam = 0;
-        else if (playerHealth.team == "red") bulletTeam = 1;
+        inputManager = GetComponentInParent<InputManager>();
+
+        rateOfFire = rpmMult / RPM;
+
+        cam = GetComponentInParent<Camera>();
     }
+
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && IsOwner)
+        Shoot();
+    }
+
+    private void Shoot()
+    {
+        if (inputManager.CanSelect)
         {
-            ShootServerRpc(new Vector3(transform.position.x, 1, transform.position.z + 1), Quaternion.identity);
+            if (!firstBullet)
+            {
+                firstBullet = true;
+                InstantiateBullet();
+            }
+
+            rateOfFire -= Time.deltaTime;
+
+            if (rateOfFire < 0)
+            {
+                rateOfFire = rpmMult / RPM;
+                InstantiateBullet();
+            }
+        }
+        else if (inputManager.CanSelect && firstBullet)
+        {
+            firstBullet = false;
+            rateOfFire = rpmMult / RPM;
         }
     }
 
-    [ServerRpc]
-    private void ShootServerRpc(Vector3 pos, Quaternion rot)
+    private void InstantiateBullet()
     {
-        cloneBullet = Instantiate(bullet[bulletTeam], pos, rot);
-        cloneBullet.GetComponent<Rigidbody>().isKinematic = false;
+        playerAnimator.SetTrigger("PistolShot");
+        Debug.Log("Bang");
 
-        cloneBullet.GetComponent<NetworkObject>().Spawn();
+        // Raycast shoot
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        ray = cam.ScreenPointToRay(screenCenterPoint);
 
-        PlayShootAudio();
-    }
-    private void PlayShootAudio()
-    {
-        audioSync.PlaySound(0);  
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 10f, aimColLayermask))
+        {
+            Debug.Log(raycastHit.collider.name);
+            raycastHit.collider.GetComponentInParent<StandTarget>().TargetHit();
+        }
     }
 }
