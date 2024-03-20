@@ -22,6 +22,7 @@ public class VirtualJail : NetworkBehaviour
     [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
     private PlayerInfo PI;
+    private PlayerInventory playerInventory;
     #endregion
 
     #region Built-In Methods
@@ -29,6 +30,7 @@ public class VirtualJail : NetworkBehaviour
     {
         inputManager = GetComponent<InputManager>();
         PI = GetComponent<PlayerInfo>();
+        playerInventory = GetComponent<PlayerInventory>();
     }
 
     private void Update()
@@ -48,7 +50,7 @@ public class VirtualJail : NetworkBehaviour
     private void PutAJail()
     {
         // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
-        if (IsOwner && !prisonOn && PI.tsReadySelection)
+        if (IsOwner && !prisonOn && PI.tsReadySelection && playerInventory.isSlot2)
         {
             //Debug.Log("je pose une prison");
 
