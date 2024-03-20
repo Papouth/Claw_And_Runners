@@ -44,6 +44,11 @@ public class PlayerInventory : NetworkBehaviour
                                           
                 clientAnimator = PI.playerRunnerPrefab.GetComponentInChildren<Animator>();
             }
+
+            // Slot 1 par défaut
+            isSlot2 = false;
+            //serverAnimator.SetBool(blabla)
+            //clientAnimator.SetBool(blabla)
         }
 
         if (skinChoosed && animatorsReady) ChangeSlot();
