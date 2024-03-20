@@ -6,9 +6,9 @@ using Unity.Netcode;
 public class PlayerInventory : NetworkBehaviour
 {
     #region Variables
-    [HideInInspector] public bool isSlot2;
-    [HideInInspector] public bool isSlot2Used;
-    [HideInInspector] public bool skinChoosed;
+    public bool isSlot2;
+    public bool isSlot2Used;
+    public bool skinChoosed;
     private bool animatorsReady;
 
     private PlayerInfo PI;
@@ -21,15 +21,17 @@ public class PlayerInventory : NetworkBehaviour
     #region Built-In Methods
     public override void OnNetworkSpawn()
     {
-        PI = GetComponent<PlayerInfo>();
-
         inputManager = GetComponent<InputManager>();
+
+        PI = GetComponent<PlayerInfo>();
     }
 
     private void Update()
     {
         if (!animatorsReady && skinChoosed)
         {
+            Debug.Log("herehrehe");
+
             animatorsReady = true;
 
             if (PI.isCops)
@@ -58,12 +60,14 @@ public class PlayerInventory : NetworkBehaviour
     #region Customs Methods
     public void ChangeSlot()
     {
-        if (inputManager.TakeSlot1 && isSlot2)
+        Debug.Log("Est ce que le joueur est dans le slot 2 ? : " + isSlot2);
+
+        if (inputManager.CanSlot1 && isSlot2 && IsOwner)
         {
             Debug.Log("Baton");
 
             // Switch pour le Slot 1
-            inputManager.TakeSlot1 = false;
+            inputManager.CanSlot1 = false;
             isSlot2 = false;
 
 
@@ -74,12 +78,12 @@ public class PlayerInventory : NetworkBehaviour
 
             ChangeSlotServerRpc(isSlot2);
         }
-        else if (inputManager.TakeSlot2 && !isSlot2 && !isSlot2Used)
+        else if (inputManager.CanSlot2 && !isSlot2 && !isSlot2Used && IsOwner)
         {
             Debug.Log("Pouvoir");
 
             // Switch pour le Slot 2
-            inputManager.TakeSlot2 = false;
+            inputManager.CanSlot2 = false;
             isSlot2 = true;
 
 
@@ -91,12 +95,15 @@ public class PlayerInventory : NetworkBehaviour
             ChangeSlotServerRpc(isSlot2);
         }
 
-        if (inputManager.ScrollMouse.y != 0)
+        if (inputManager.CanSlot1) inputManager.CanSlot1 = false;
+        else if (inputManager.CanSlot2) inputManager.CanSlot2 = false;
+
+        if (inputManager.ScrollMouse.y != 0 && IsOwner)
         {
             // Switch sur l'autre Slot
             if (isSlot2)
             {
-                Debug.Log("Baton");
+                Debug.Log("Baton molette");
 
                 // Switch pour le slot 1
                 isSlot2 = false;
@@ -111,7 +118,7 @@ public class PlayerInventory : NetworkBehaviour
             }
             else if (!isSlot2 && !isSlot2Used)
             {
-                Debug.Log("Pouvoir");
+                Debug.Log("Pouvoir molette");
 
                 // Switch pour le slot 2
                 isSlot2 = true;
@@ -135,8 +142,6 @@ public class PlayerInventory : NetworkBehaviour
         if (slot)
         {
             // Switch pour le slot 2
-            isSlot2 = true;
-
 
             // On prend l'objet du slot 2
             //serverAnimator.SetBool(blabla)
@@ -145,8 +150,6 @@ public class PlayerInventory : NetworkBehaviour
         else if (!slot)
         {
             // Switch pour le slot 1
-            isSlot2 = false;
-
 
             // On prend l'objet du slot 1
             //serverAnimator.SetBool(blabla)
@@ -159,27 +162,23 @@ public class PlayerInventory : NetworkBehaviour
 
     #region ClientRpc
     [ClientRpc]
-    private void ChangeSlotClientRpc(bool slot)
+    private void ChangeSlotClientRpc(bool stateSlot)
     {
-        if (slot)
+        if (stateSlot)
         {
-            Debug.Log("Pouvoir");
+            Debug.Log("Pouvoir ClientRpc");
 
             // Switch pour le slot 2
-            isSlot2 = true;
-
 
             // On prend l'objet du slot 2
             //serverAnimator.SetBool(blabla)
             //clientAnimator.SetBool(blabla)
         }
-        else if (!slot)
+        else if (!stateSlot)
         {
-            Debug.Log("Baton");
+            Debug.Log("Baton ClientRpc");
 
             // Switch pour le slot 1
-            isSlot2 = false;
-
 
             // On prend l'objet du slot 1
             //serverAnimator.SetBool(blabla)
