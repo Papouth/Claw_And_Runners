@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class TriggerActivity : MonoBehaviour
+public class TriggerActivity : NetworkBehaviour
 {
     [SerializeField] private GameObject activityPrefab;
 
@@ -13,9 +14,11 @@ public class TriggerActivity : MonoBehaviour
     private GameObject player;
     private bool startActivity;
     private bool interactActivity;
+    [SerializeField] private LayerMask playerLayer;
 
 
-    private void Awake()
+
+    public override void OnNetworkSpawn()
     {
         if (stand2TirActivity) standTir = activityPrefab.GetComponent<StandTir>();
     }
@@ -24,7 +27,7 @@ public class TriggerActivity : MonoBehaviour
     {
         if (player != null)
         {
-            if (player.GetComponent<InputManager>().CanInteract)
+            if (player.GetComponent<InputManager>().CanInteract && IsOwner)
             {
                 player.GetComponent<InputManager>().CanInteract = false;
                 Debug.Log("interact");
@@ -35,9 +38,7 @@ public class TriggerActivity : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.name);
-
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.layer == playerLayer)
         {
             Debug.Log(other.name + " here");
 
@@ -46,27 +47,19 @@ public class TriggerActivity : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Debug.Log(other.name + " stay");
-
-            player = other.gameObject;
-            startActivity = true;
-        }
-    }
-
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.layer == playerLayer)
         {
             if (other.GetComponent<PlayerInfo>().isCops)
             {
                 activity = other.GetComponent<PlayerActivity>();
-                activity.Pistol(false);
 
-                other.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
+                if (stand2TirActivity)
+                {
+                    activity.Pistol(false);
+                    other.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
+                }
 
                 startActivity = false;
                 interactActivity = false;
@@ -80,18 +73,30 @@ public class TriggerActivity : MonoBehaviour
         {
             interactActivity = true;
 
-            // Reset activité
-            standTir.ResetActivity();
-
-            // Pour l'instant stand de tir dispo seulement pour le policier
-            if (player.GetComponent<PlayerInfo>().isCops)
+            if (stand2TirActivity)
             {
-                activity = player.GetComponent<PlayerActivity>();
-                activity.Pistol(true);
+                Debug.Log("J'interragis avec le stand de tir");
 
-                player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", true);
+                // Reset activité
+                standTir.ResetActivity();
+
+                // Pour l'instant stand de tir dispo seulement pour le policier
+                if (player.GetComponent<PlayerInfo>().isCops)
+                {
+                    activity = player.GetComponent<PlayerActivity>();
+                    activity.Pistol(true);
+
+                    player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", true);
+                }
             }
         }
-        
+        else if (startActivity && interactActivity)
+        {
+            // Si on ré-interragi, alors on quitte l'activité
+            player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
+
+            startActivity = false;
+            interactActivity = false;
+        }
     }
 }

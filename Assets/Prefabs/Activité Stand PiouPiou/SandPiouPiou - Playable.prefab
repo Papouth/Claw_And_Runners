@@ -771,7 +771,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 959067874753712728}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c2f05b39d733590468995462d151f667, type: 3}
   m_Name: 
@@ -1482,6 +1482,7 @@ GameObject:
   - component: {fileID: 2701562458983609937}
   - component: {fileID: 1882788763796534075}
   - component: {fileID: 4549568997892490600}
+  - component: {fileID: 9094839718034814478}
   m_Layer: 0
   m_Name: TriggerZone Activity
   m_TagString: Stand2Tir
@@ -1523,8 +1524,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.674354, y: 0.93991655, z: 0.4669663}
+  m_Center: {x: 0.053047918, y: -0.030041821, z: -0.0077303476}
 --- !u!114 &4549568997892490600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1539,6 +1540,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activityPrefab: {fileID: 959067874753712728}
   stand2TirActivity: 1
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 64
+--- !u!114 &9094839718034814478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2400749507790775516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &2430845248679358009
 GameObject:
   m_ObjectHideFlags: 0
