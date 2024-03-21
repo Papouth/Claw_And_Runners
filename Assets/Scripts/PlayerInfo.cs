@@ -210,6 +210,8 @@ public class PlayerInfo : NetworkBehaviour
                 captureCol.SetActive(false);
 
                 playerCopPrefab.SetActive(true);
+                // On désactive les autres skins
+                playerRunnerPrefab.SetActive(false);
 
                 for (int i = 0; i < playerCopPrefab.transform.childCount; i++)
                 {
@@ -263,6 +265,8 @@ public class PlayerInfo : NetworkBehaviour
                 WC.enabled = false;
 
                 playerRunnerPrefab.SetActive(true);
+                // On désactive les autres skins
+                playerCopPrefab.SetActive(false);
 
                 for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
                 {
@@ -343,6 +347,9 @@ public class PlayerInfo : NetworkBehaviour
             //Debug.Log("playerInfo TEST tag Cops");
 
             playerCopPrefab.SetActive(true);
+
+            // On désactive les autres skins
+            playerRunnerPrefab.SetActive(false);
         }
         else if (!playerIsCops)
         {
@@ -350,6 +357,9 @@ public class PlayerInfo : NetworkBehaviour
             //Debug.Log("playerInfo TEST tag Runners");
 
             playerRunnerPrefab.SetActive(true);
+
+            // On désactive les autres skins
+            playerCopPrefab.SetActive(false);
         }
 
         UpdateServerInfoClientRpc(isCops, isCopsInt);
@@ -469,12 +479,18 @@ public class PlayerInfo : NetworkBehaviour
             gameObject.tag = "cops";
             //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Cops");
             playerCopPrefab.SetActive(true);
+
+            // On désactive les autres skins
+            playerRunnerPrefab.SetActive(false);
         }
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
             //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Runners");
             playerRunnerPrefab.SetActive(true);
+
+            // On désactive les autres skins
+            playerCopPrefab.SetActive(false);
         }
     }
 
