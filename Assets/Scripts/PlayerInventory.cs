@@ -10,6 +10,7 @@ public class PlayerInventory : NetworkBehaviour
     public bool isSlot2Used;
     public bool skinChoosed;
     private bool animatorsReady;
+    public bool inActivity; // vérifie si le joueur se trouve dans une activité
 
     private PlayerInfo PI;
     private InputManager inputManager;
@@ -30,8 +31,6 @@ public class PlayerInventory : NetworkBehaviour
     {
         if (!animatorsReady && skinChoosed)
         {
-            Debug.Log("herehrehe");
-
             animatorsReady = true;
 
             if (PI.isCops)
@@ -60,11 +59,9 @@ public class PlayerInventory : NetworkBehaviour
     #region Customs Methods
     public void ChangeSlot()
     {
-        Debug.Log("Est ce que le joueur est dans le slot 2 ? : " + isSlot2);
-
         if (inputManager.CanSlot1 && isSlot2 && IsOwner)
         {
-            Debug.Log("Baton");
+            //Debug.Log("Baton");
 
             // Switch pour le Slot 1
             inputManager.CanSlot1 = false;
@@ -80,7 +77,7 @@ public class PlayerInventory : NetworkBehaviour
         }
         else if (inputManager.CanSlot2 && !isSlot2 && !isSlot2Used && IsOwner)
         {
-            Debug.Log("Pouvoir");
+            //Debug.Log("Pouvoir");
 
             // Switch pour le Slot 2
             inputManager.CanSlot2 = false;
@@ -103,7 +100,7 @@ public class PlayerInventory : NetworkBehaviour
             // Switch sur l'autre Slot
             if (isSlot2)
             {
-                Debug.Log("Baton molette");
+                //Debug.Log("Baton molette");
 
                 // Switch pour le slot 1
                 isSlot2 = false;
@@ -118,7 +115,7 @@ public class PlayerInventory : NetworkBehaviour
             }
             else if (!isSlot2 && !isSlot2Used)
             {
-                Debug.Log("Pouvoir molette");
+                //Debug.Log("Pouvoir molette");
 
                 // Switch pour le slot 2
                 isSlot2 = true;
@@ -166,7 +163,7 @@ public class PlayerInventory : NetworkBehaviour
     {
         if (stateSlot)
         {
-            Debug.Log("Pouvoir ClientRpc");
+            //Debug.Log("Pouvoir ClientRpc");
 
             // Switch pour le slot 2
 
@@ -176,7 +173,7 @@ public class PlayerInventory : NetworkBehaviour
         }
         else if (!stateSlot)
         {
-            Debug.Log("Baton ClientRpc");
+            //Debug.Log("Baton ClientRpc");
 
             // Switch pour le slot 1
 

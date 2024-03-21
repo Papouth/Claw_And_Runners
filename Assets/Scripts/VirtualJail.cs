@@ -37,7 +37,7 @@ public class VirtualJail : NetworkBehaviour
     {
         if (inputManager.CanSelect)
         {
-            if (playerInventory.isSlot2) PutAJail();
+            if (playerInventory.isSlot2 && !playerInventory.inActivity) PutAJail();
 
             inputManager.CanSelect = false;
         }
@@ -49,7 +49,7 @@ public class VirtualJail : NetworkBehaviour
     // Déclenchement de la pose de la prison pour le flic
     private void PutAJail()
     {
-        // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
+        // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu et qu'il n'est pas dans une activité
         if (IsOwner && !prisonOn && PI.tsReadySelection)
         {
             //Debug.Log("je pose une prison");
