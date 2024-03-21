@@ -5,6 +5,7 @@ using Unity.Netcode;
 
 public class TriggerActivity : NetworkBehaviour
 {
+    #region Variables
     [SerializeField] private GameObject activityPrefab;
 
     [SerializeField] private bool stand2TirActivity;
@@ -15,9 +16,11 @@ public class TriggerActivity : NetworkBehaviour
     private bool startActivity;
     private bool interactActivity;
     [SerializeField] private LayerMask playerLayer;
+    private PlayerInventory playerInventory;
+    #endregion
 
 
-
+    #region Built-In Methods
     public override void OnNetworkSpawn()
     {
         if (stand2TirActivity) standTir = activityPrefab.GetComponent<StandTir>();
@@ -38,40 +41,48 @@ public class TriggerActivity : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.layer == playerLayer)
+        if (other.GetComponent<PlayerInfo>())
         {
-            Debug.Log(other.name + " here");
-
-            player = other.gameObject;
+            player = other.GetComponent<PlayerInfo>().gameObject;
             startActivity = true;
+            playerInventory = other.GetComponent<PlayerInventory>();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == playerLayer)
+        if (other.GetComponent<PlayerInfo>())
         {
-            if (other.GetComponent<PlayerInfo>().isCops)
+            if (other.GetComponent<PlayerInfo>().isCops) // On pourra le retirer plus tard quand le voleur pourra aussi faire les activités (pas d'anim atm)
             {
+                Debug.Log("Je quitte l'activité");
+
                 activity = other.GetComponent<PlayerActivity>();
 
                 if (stand2TirActivity)
                 {
-                    activity.Pistol(false);
-                    other.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
+                   activity.Pistol(false);
+                   player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
                 }
 
                 startActivity = false;
                 interactActivity = false;
+                playerInventory.inActivity = false;
+                player = null;
+                playerInventory = null;
             }
         }
     }
+    #endregion
 
+
+    #region Customs Methods
     private void InteractActivity()
     {
         if (startActivity && !interactActivity)
         {
             interactActivity = true;
+            playerInventory.inActivity = true;
 
             if (stand2TirActivity)
             {
@@ -92,11 +103,17 @@ public class TriggerActivity : NetworkBehaviour
         }
         else if (startActivity && interactActivity)
         {
+            Debug.Log("Je quitte le stand de tir");
+
             // Si on ré-interragi, alors on quitte l'activité
             player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
 
             startActivity = false;
             interactActivity = false;
+            playerInventory.inActivity = false;
+            player = null;
+            playerInventory = null;
         }
     }
+    #endregion
 }
