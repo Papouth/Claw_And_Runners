@@ -9,6 +9,7 @@ public class WeaponCop : NetworkBehaviour
     [SerializeField] private GameObject hitCollider;
     private VirtualJail VJ;
     private bool justStarted;
+    private PlayerInventory playerInventory;
 
 
     private void Start()
@@ -20,13 +21,14 @@ public class WeaponCop : NetworkBehaviour
     {
         inputManager = GetComponent<InputManager>();
         VJ = GetComponent<VirtualJail>();
+        playerInventory = GetComponent<PlayerInventory>();
     }
 
 
     private void Update()
     {
         // Vérifier aussi que le policier à en main son baton
-        if (inputManager.CanSelect && IsOwner && VJ.prisonOn)
+        if (inputManager.CanSelect && IsOwner && VJ.prisonOn && !playerInventory.isSlot2)
         {
             EnableColServerRpc();
             Debug.Log("Je te tape pour te mettre en prison");

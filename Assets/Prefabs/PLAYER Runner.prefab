@@ -143,7 +143,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 9471
+    m_Bits: 75007
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -219,6 +219,7 @@ GameObject:
   - component: {fileID: 4475708049282112685}
   - component: {fileID: 127072128648723445}
   - component: {fileID: 8294582914860649372}
+  - component: {fileID: 2883660073154148482}
   - component: {fileID: 7601244142997339044}
   - component: {fileID: 4810945831852701589}
   - component: {fileID: 1166194459218872807}
@@ -335,6 +336,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pistolPrefab: {fileID: 1618391657588684485}
+--- !u!114 &2883660073154148482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3560986031654225528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6b2ff5ec4240554fb65c8de420eae1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSlot2: 0
+  isSlot2Used: 0
+  skinChoosed: 0
 --- !u!143 &7601244142997339044
 CharacterController:
   m_ObjectHideFlags: 0

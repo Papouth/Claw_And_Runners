@@ -36,9 +36,10 @@ public class PlayerInfo : NetworkBehaviour
     private Transform spawnRunners;
 
     private PlayerController controller;
-    [SerializeField] private GameObject playerCopPrefab;
-    [SerializeField] private GameObject playerRunnerPrefab;
+    public GameObject playerCopPrefab;
+    public GameObject playerRunnerPrefab;
     private CharacterController CCPlayer;
+    private PlayerInventory playerInventory;
     #endregion
 
 
@@ -65,6 +66,8 @@ public class PlayerInfo : NetworkBehaviour
         controller = GetComponent<PlayerController>();
 
         CCPlayer = GetComponent<CharacterController>();
+
+        playerInventory = GetComponent<PlayerInventory>();
     }
 
     private void Update()
@@ -240,6 +243,9 @@ public class PlayerInfo : NetworkBehaviour
                 SpawnPlayerServerRpc(new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand));
 
                 CCPlayer.enabled = true;
+
+                // Indication bool PlayerInventory
+                playerInventory.skinChoosed = true;
             }
             else if (TS.runnersNamesList.Contains(playerName))
             {
@@ -280,6 +286,9 @@ public class PlayerInfo : NetworkBehaviour
                 SpawnPlayerServerRpc(new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand));
 
                 CCPlayer.enabled = true;
+
+                // Indication bool PlayerInventory
+                playerInventory.skinChoosed = true;
             }
         }
     }

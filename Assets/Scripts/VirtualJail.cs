@@ -22,6 +22,7 @@ public class VirtualJail : NetworkBehaviour
     [SerializeField] private GameObject boxColObj;
     private BoxCollider bCol;
     private PlayerInfo PI;
+    [SerializeField] private PlayerInventory playerInventory;
     #endregion
 
     #region Built-In Methods
@@ -29,13 +30,14 @@ public class VirtualJail : NetworkBehaviour
     {
         inputManager = GetComponent<InputManager>();
         PI = GetComponent<PlayerInfo>();
+        playerInventory = GetComponent<PlayerInventory>();
     }
 
     private void Update()
     {
         if (inputManager.CanSelect)
         {
-            PutAJail();
+            if (playerInventory.isSlot2) PutAJail();
 
             inputManager.CanSelect = false;
         }
