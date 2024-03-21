@@ -351,6 +351,7 @@ MonoBehaviour:
   isSlot2: 0
   isSlot2Used: 0
   skinChoosed: 0
+  inActivity: 0
 --- !u!143 &7601244142997339044
 CharacterController:
   m_ObjectHideFlags: 0
@@ -607,6 +608,7 @@ MonoBehaviour:
     m_Bits: 8
   prisonOn: 0
   boxColObj: {fileID: 5430516046538210551, guid: 2a4250e9eea025149aa311ad752f120c, type: 3}
+  playerInventory: {fileID: 0}
 --- !u!114 &1058844584936608633
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -918,9 +920,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1925714024633064803}
     m_Modifications:
+    - target: {fileID: 4361491650385792807, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 3398312356306029447}
+    - target: {fileID: 4475314982330328982, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5086162656080698824, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_Name
       value: Maurice_BrasDetaches
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086162656080698824, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5611059970100184946, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1038,6 +1052,10 @@ PrefabInstance:
     - target: {fileID: 9061698586791312604, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: m_Name
       value: Michelle_BrasDetaches
+      objectReference: {fileID: 0}
+    - target: {fileID: 9061698586791312604, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

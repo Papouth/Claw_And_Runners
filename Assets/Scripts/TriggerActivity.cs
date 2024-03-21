@@ -7,16 +7,17 @@ public class TriggerActivity : NetworkBehaviour
 {
     #region Variables
     [SerializeField] private GameObject activityPrefab;
-
     [SerializeField] private bool stand2TirActivity;
-    private StandTir standTir;
-
-    private PlayerActivity activity;
     private GameObject player;
     private bool startActivity;
     private bool interactActivity;
     [SerializeField] private LayerMask playerLayer;
+
+    private StandTir standTir;
+    private PlayerActivity activity;
     private PlayerInventory playerInventory;
+    private InputManager inputManager;
+    private PlayerShoot playerShoot;
     #endregion
 
 
@@ -30,9 +31,9 @@ public class TriggerActivity : NetworkBehaviour
     {
         if (player != null)
         {
-            if (player.GetComponent<InputManager>().CanInteract && IsOwner)
+            if (inputManager.CanInteract && IsOwner)
             {
-                player.GetComponent<InputManager>().CanInteract = false;
+                inputManager.CanInteract = false;
                 Debug.Log("interact");
                 InteractActivity();
             }
@@ -44,8 +45,13 @@ public class TriggerActivity : NetworkBehaviour
         if (other.GetComponent<PlayerInfo>())
         {
             player = other.GetComponent<PlayerInfo>().gameObject;
+
             startActivity = true;
+
             playerInventory = other.GetComponent<PlayerInventory>();
+            inputManager = other.GetComponent<InputManager>();
+
+            if (stand2TirActivity) playerShoot = other.GetComponentInChildren<PlayerShoot>();
         }
     }
 
@@ -61,8 +67,9 @@ public class TriggerActivity : NetworkBehaviour
 
                 if (stand2TirActivity)
                 {
-                   activity.Pistol(false);
-                   player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
+                    activity.Pistol(false);
+                    playerShoot.playerAnimator.SetBool("PistolOn", false);
+                    playerShoot = null;
                 }
 
                 startActivity = false;
@@ -70,6 +77,7 @@ public class TriggerActivity : NetworkBehaviour
                 playerInventory.inActivity = false;
                 player = null;
                 playerInventory = null;
+                inputManager = null;
             }
         }
     }
@@ -97,7 +105,8 @@ public class TriggerActivity : NetworkBehaviour
                     activity = player.GetComponent<PlayerActivity>();
                     activity.Pistol(true);
 
-                    player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", true);
+                    playerShoot.playerAnimator.SetBool("PistolOn", true);
+                    playerShoot = null;
                 }
             }
         }
@@ -106,13 +115,19 @@ public class TriggerActivity : NetworkBehaviour
             Debug.Log("Je quitte le stand de tir");
 
             // Si on ré-interragi, alors on quitte l'activité
-            player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
+            if (stand2TirActivity)
+            {
+                activity.Pistol(false);
+                playerShoot.playerAnimator.SetBool("PistolOn", false);
+                playerShoot = null;
+            }
 
             startActivity = false;
             interactActivity = false;
             playerInventory.inActivity = false;
             player = null;
             playerInventory = null;
+            inputManager = null;
         }
     }
     #endregion
