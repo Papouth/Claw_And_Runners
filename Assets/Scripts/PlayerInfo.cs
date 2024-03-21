@@ -243,6 +243,9 @@ public class PlayerInfo : NetworkBehaviour
                 SpawnPlayerServerRpc(new Vector3(spawnCops.position.x + rand, spawnCops.position.y, spawnCops.position.z + rand));
 
                 CCPlayer.enabled = true;
+
+                // Indication bool PlayerInventory
+                playerInventory.skinChoosed = true;
             }
             else if (TS.runnersNamesList.Contains(playerName))
             {

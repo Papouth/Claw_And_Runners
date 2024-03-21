@@ -13,8 +13,8 @@ public class InputManager : MonoBehaviour
     private bool canJump;
     private bool canInteract;
     private bool canSelect;
-    private bool takeSlot1;
-    private bool takeSlot2;
+    private bool canSlot1;
+    private bool canSlot2;
     #endregion
 
 
@@ -40,16 +40,16 @@ public class InputManager : MonoBehaviour
         set { canSelect = value; }
     }
 
-    public bool TakeSlot1
+    public bool CanSlot1
     {
-        get { return takeSlot1; }
-        set { takeSlot1 = value; }
+        get { return canSlot1; }
+        set { canSlot1 = value; }
     }
 
-    public bool TakeSlot2
+    public bool CanSlot2
     {
-        get { return takeSlot2; }
-        set { takeSlot2 = value; }
+        get { return canSlot2; }
+        set { canSlot2 = value; }
     }
     #endregion
 
@@ -84,12 +84,12 @@ public class InputManager : MonoBehaviour
 
     public void OnSlot1()
     {
-        takeSlot1 = true;
+        canSlot1 = true;
     }
 
     public void OnSlot2()
     {
-        takeSlot2 = true;
+        canSlot2 = true;
     }
 
     public void OnNextSlot(InputValue value)
