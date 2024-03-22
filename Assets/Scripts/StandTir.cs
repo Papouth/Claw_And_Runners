@@ -50,7 +50,7 @@ public class StandTir : MonoBehaviour
     {
         for (int i = 0; i < ciblesPivots.Length; i++)
         {
-            ciblesPivots[i].transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            ciblesPivots[i].transform.rotation = Quaternion.Euler(0f, -90f, 0f);
         }
     }
 
