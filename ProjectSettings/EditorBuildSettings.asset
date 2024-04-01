@@ -6,16 +6,19 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/SCENES/CreationPerso.unity
+    path: Assets/Scenes/CreationPerso.unity
     guid: 9f5395302d56bd04d8529ad0196e1791
-  - enabled: 1
-    path: Assets/SCENES/Demo.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo.unity
     guid: 35299a6a99d6dfe4bb709527ba95aab0
   - enabled: 0
-    path: Assets/SCENES/Marie.unity
+    path: Assets/Scenes/Marie.unity
     guid: 9ed457e0070bb894e9eaf64ded8de097
   - enabled: 0
-    path: Assets/SCENES/Josserand.unity
+    path: Assets/Scenes/Josserand.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 8202a36abf54bf94b96fa71322ec6b30
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: e6f1a49a706f6574f890764439e56b36, type: 2}
