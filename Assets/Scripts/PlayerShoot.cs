@@ -1,58 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerShoot : MonoBehaviour
+public class PlayerShoot : NetworkBehaviour
 {
     #region Variables
-    [SerializeField] private float RPM;
-    private float rpmMult = 60;
-    private float rateOfFire;
-    private bool firstBullet;
     private Ray ray;
-    private Camera cam;
+    [SerializeField] private Camera cam;
     [SerializeField] private LayerMask aimColLayermask;
 
     public Animator playerAnimator;
     private InputManager inputManager;
     #endregion
 
-    private void Start()
+
+    #region Built-In Methods
+    public override void OnNetworkSpawn()
     {
         inputManager = GetComponentInParent<InputManager>();
 
-        rateOfFire = rpmMult / RPM;
-
-        cam = GetComponentInParent<Camera>();
+        gameObject.SetActive(false);
     }
 
     private void Update()
     {
         Shoot();
     }
+    #endregion
 
+
+    #region Customs Methods
     private void Shoot()
     {
-        if (inputManager.CanSelect)
+        if (inputManager.CanSelect && IsOwner)
         {
-            if (!firstBullet)
-            {
-                firstBullet = true;
-                InstantiateBullet();
-            }
-
-            rateOfFire -= Time.deltaTime;
-
-            if (rateOfFire < 0)
-            {
-                rateOfFire = rpmMult / RPM;
-                InstantiateBullet();
-            }
-        }
-        else if (inputManager.CanSelect && firstBullet)
-        {
-            firstBullet = false;
-            rateOfFire = rpmMult / RPM;
+            InstantiateBullet();
         }
     }
 
@@ -71,4 +54,5 @@ public class PlayerShoot : MonoBehaviour
             raycastHit.collider.GetComponentInParent<StandTarget>().TargetHit();
         }
     }
+    #endregion
 }

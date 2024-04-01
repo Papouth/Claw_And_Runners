@@ -9,17 +9,19 @@ public class WeaponRunner : NetworkBehaviour
     private InputManager inputManager;
     [SerializeField] private GameObject hitCollider;
     private bool justStarted;
+    private PlayerInventory playerInventory;
 
 
     public override void OnNetworkSpawn()
     {
         inputManager = GetComponent<InputManager>();
+        playerInventory = GetComponent<PlayerInventory>();
     }
 
     private void Update()
     {
-        // Vérifier aussi que le runner à en main son baton
-        if (inputManager.CanSelect && IsOwner)
+        // Vérifier aussi que le runner à en main son baton et qu'il ne se trouve pas dans une activité
+        if (inputManager.CanSelect && IsOwner && !playerInventory.isSlot2 && !playerInventory.inActivity)
         {
             EnableColServerRpc();
         }
