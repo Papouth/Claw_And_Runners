@@ -30,6 +30,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    [Tooltip("FootSteps")]
+    [SerializeField] private float stepSize;
+    private float timeStep;
+
     private Vector3 velocity;
     private bool isGrounded;
 
@@ -43,6 +47,7 @@ public class PlayerController : NetworkBehaviour
 
     private UIManager canvas;
     private TeamSelection teamSelection;
+    private FootStepsSync footStepsSync;
 
     [SerializeField] private bool MathisDoitAnimer;
     #endregion
@@ -57,6 +62,10 @@ public class PlayerController : NetworkBehaviour
 
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
+
+        footStepsSync = GetComponentInChildren<FootStepsSync>();
+
+        timeStep = stepSize;
     }
 
     public void MathisAnim()
@@ -144,7 +153,27 @@ public class PlayerController : NetworkBehaviour
         float z = inputManager.Move.y;
         
         Vector3 move = transform.right * x + transform.forward * z;
-        
+
+        // SON FOOTSTEP
+        if (move.magnitude != 0 && isGrounded)
+        {
+            // STEP SIZE TIMER
+            if (timeStep > 0)
+            {
+                timeStep -= Time.deltaTime;
+            }
+            else if (timeStep <= 0)
+            {
+                footStepsSync.PlaySoundStep(Random.Range(0, footStepsSync.gameSounds.Length));
+                timeStep = stepSize;
+            }
+        }
+        else if (move.magnitude == 0 || !isGrounded)
+        {
+            timeStep = 0;
+            footStepsSync.source.Stop();
+        }
+
         controller.Move(move * speed * Time.deltaTime);
 
         // SAUT
