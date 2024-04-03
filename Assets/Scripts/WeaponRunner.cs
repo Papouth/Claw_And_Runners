@@ -6,11 +6,20 @@ using Unity.Netcode;
 
 public class WeaponRunner : NetworkBehaviour
 {
+    #region Variables
     private InputManager inputManager;
     [SerializeField] private GameObject hitCollider;
     private bool justStarted;
     private PlayerInventory playerInventory;
+    private AudioSync audioSync;
+    #endregion
 
+
+    #region Built-In Methods
+    private void Start()
+    {
+        audioSync = GetComponent<AudioSync>();
+    }
 
     public override void OnNetworkSpawn()
     {
@@ -24,6 +33,9 @@ public class WeaponRunner : NetworkBehaviour
         if (inputManager.CanSelect && IsOwner && !playerInventory.isSlot2 && !playerInventory.inActivity)
         {
             EnableColServerRpc();
+
+            // SON
+            audioSync.PlaySound(Random.Range(0, 5));
         }
         else if (!inputManager.CanSelect && IsOwner && !justStarted)
         {
@@ -31,7 +43,10 @@ public class WeaponRunner : NetworkBehaviour
             DisableColServerRpc();
         }
     }
+    #endregion
 
+
+    #region Customs Methods
     [ServerRpc]
     private void EnableColServerRpc()
     {
@@ -61,4 +76,5 @@ public class WeaponRunner : NetworkBehaviour
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;
     }
+    #endregion
 }

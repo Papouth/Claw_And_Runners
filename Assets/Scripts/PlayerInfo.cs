@@ -40,6 +40,7 @@ public class PlayerInfo : NetworkBehaviour
     public GameObject playerRunnerPrefab;
     private CharacterController CCPlayer;
     private PlayerInventory playerInventory;
+    private AudioSync audioSync;
     #endregion
 
 
@@ -47,6 +48,10 @@ public class PlayerInfo : NetworkBehaviour
     {
         prevCops = 0;
         prevRunners = 0;
+
+        // Mute temporaire le temps du spawn
+        audioSync = GetComponent<AudioSync>();
+        audioSync.source.mute = true;
     }
 
     public override void OnNetworkSpawn()
@@ -68,6 +73,9 @@ public class PlayerInfo : NetworkBehaviour
         CCPlayer = GetComponent<CharacterController>();
 
         playerInventory = GetComponent<PlayerInventory>();
+
+        // Unmute après le spawn
+        audioSync.source.mute = false;
     }
 
     private void Update()

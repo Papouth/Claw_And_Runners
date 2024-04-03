@@ -5,16 +5,21 @@ using Unity.Netcode;
 
 public class WeaponCop : NetworkBehaviour
 {
+    #region Variables
     private InputManager inputManager;
     [SerializeField] private GameObject hitCollider;
     private VirtualJail VJ;
     private bool justStarted;
     private PlayerInventory playerInventory;
+    private AudioSync audioSync;
+    #endregion
 
 
+    #region Built-In Methods
     private void Start()
     {
         VJ = GetComponent<VirtualJail>();
+        audioSync = GetComponent<AudioSync>();
     }
 
     public override void OnNetworkSpawn()
@@ -24,7 +29,6 @@ public class WeaponCop : NetworkBehaviour
         playerInventory = GetComponent<PlayerInventory>();
     }
 
-
     private void Update()
     {
         // Vérifier aussi que le policier à en main son baton et qu'il ne se trouve pas dans une activité
@@ -32,6 +36,9 @@ public class WeaponCop : NetworkBehaviour
         {
             EnableColServerRpc();
             Debug.Log("Je te tape pour te mettre en prison");
+
+            // SON
+            audioSync.PlaySound(Random.Range(0, 5));
         }
         else if (!inputManager.CanSelect && IsOwner && !justStarted)
         {
@@ -39,7 +46,10 @@ public class WeaponCop : NetworkBehaviour
             DisableColServerRpc();
         }
     }
+    #endregion
 
+
+    #region Customs Methods
     [ServerRpc]
     private void EnableColServerRpc()
     {
@@ -69,4 +79,5 @@ public class WeaponCop : NetworkBehaviour
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;
     }
+    #endregion
 }

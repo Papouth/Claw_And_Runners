@@ -316,7 +316,7 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 128
-  stepSize: 0.2
+  stepSize: 0.24
   forwardBackPosition:
     m_InternalValue: 0
   leftRightPosition:
@@ -444,7 +444,15 @@ MonoBehaviour:
   playerCam: {fileID: 3398312356306029447}
   listener: {fileID: 3783840796414409116}
   source: {fileID: 0}
-  gameSounds: []
+  gameSounds:
+  - {fileID: 8300000, guid: 445b4b81fec32614884eee3143205e15, type: 3}
+  - {fileID: 8300000, guid: aac033d289b92cc4da67fe2c38fac64c, type: 3}
+  - {fileID: 8300000, guid: 1443d757edc327d48ac0896e84682d26, type: 3}
+  - {fileID: 8300000, guid: 28454789b5819b648a02d74eeb27a0de, type: 3}
+  - {fileID: 8300000, guid: 0df3843f906d36242a11773248883e48, type: 3}
+  - {fileID: 8300000, guid: 48b2f588cc817464c8999a9c21c34ece, type: 3}
+  - {fileID: 8300000, guid: 28b76976ed772e64e9700f746464c8dc, type: 3}
+  - {fileID: 8300000, guid: 797d582568191ff42b969b33949cec5f, type: 3}
 --- !u!82 &5367549546280008564
 AudioSource:
   m_ObjectHideFlags: 0
