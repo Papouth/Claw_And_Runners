@@ -32,6 +32,7 @@ public class WeaponRunner : NetworkBehaviour
         // Vérifier aussi que le runner à en main son baton et qu'il ne se trouve pas dans une activité
         if (inputManager.CanSelect && IsOwner && !playerInventory.isSlot2 && !playerInventory.inActivity)
         {
+            inputManager.CanSelect = false;
             EnableColServerRpc();
 
             // SON

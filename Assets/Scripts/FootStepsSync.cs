@@ -7,7 +7,6 @@ public class FootStepsSync : AudioSync
 {
     public override void OnNetworkSpawn()
     {
-        //listener = playerCam.GetComponent<AudioListener>();
         source = GetComponent<AudioSource>();
 
         if (IsLocalPlayer) listener.enabled = true;

@@ -34,8 +34,8 @@ public class WeaponCop : NetworkBehaviour
         // Vérifier aussi que le policier à en main son baton et qu'il ne se trouve pas dans une activité
         if (inputManager.CanSelect && IsOwner && VJ.prisonOn && !playerInventory.isSlot2 && !playerInventory.inActivity)
         {
+            inputManager.CanSelect = false;
             EnableColServerRpc();
-            Debug.Log("Je te tape pour te mettre en prison");
 
             // SON
             audioSync.PlaySound(Random.Range(0, 5));

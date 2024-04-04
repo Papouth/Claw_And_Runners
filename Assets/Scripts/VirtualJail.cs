@@ -23,6 +23,7 @@ public class VirtualJail : NetworkBehaviour
     private BoxCollider bCol;
     private PlayerInfo PI;
     [SerializeField] private PlayerInventory playerInventory;
+    private bool rdmMtl;
     #endregion
 
     #region Built-In Methods
@@ -106,6 +107,11 @@ public class VirtualJail : NetworkBehaviour
             spheresList[a].GetComponent<SphereCollider>().enabled = false;
 
             bCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation, spheresList[a].transform).GetComponent<BoxCollider>();
+
+            // mtl
+            rdmMtl = !rdmMtl;
+            bCol.GetComponent<MeshRenderer>().enabled = rdmMtl;
+
             bCol.GetComponent<NetworkObject>().Spawn();
             bCol.enabled = true;
 
@@ -151,6 +157,10 @@ public class VirtualJail : NetworkBehaviour
                         spheresList[i].transform.LookAt(spheresList[i + 1].transform);
 
                         bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
+
+                        // mtl
+                        bCol.GetComponent<MeshRenderer>().enabled = false;
+
                         bCol.GetComponent<NetworkObject>().Spawn();
                         bCol.enabled = true;
 
@@ -169,6 +179,10 @@ public class VirtualJail : NetworkBehaviour
                         spheresList[i].transform.LookAt(spheresList[0].transform);
 
                         bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
+
+                        // mtl
+                        bCol.GetComponent<MeshRenderer>().enabled = false;
+
                         bCol.GetComponent<NetworkObject>().Spawn();
                         bCol.enabled = true;
 
