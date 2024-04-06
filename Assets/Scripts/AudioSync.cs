@@ -17,8 +17,6 @@ public class AudioSync : NetworkBehaviour
     #region Built-In Methods
     public virtual void Start()
     {
-        //playerCam = GetComponentInChildren<Camera>();
-        //listener = playerCam.GetComponent<AudioListener>();
         source = GetComponent<AudioSource>();
 
         if (IsLocalPlayer) listener.enabled = true;
