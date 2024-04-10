@@ -12,6 +12,7 @@ public class WeaponRunner : NetworkBehaviour
     private bool justStarted;
     private PlayerInventory playerInventory;
     private AudioSync audioSync;
+    private GameManager GM;
     #endregion
 
 
@@ -25,6 +26,7 @@ public class WeaponRunner : NetworkBehaviour
     {
         inputManager = GetComponent<InputManager>();
         playerInventory = GetComponent<PlayerInventory>();
+        GM = FindObjectOfType<GameManager>();
     }
 
     private void Update()
@@ -36,7 +38,7 @@ public class WeaponRunner : NetworkBehaviour
             EnableColServerRpc();
 
             // SON
-            audioSync.PlaySound(Random.Range(0, 5));
+            if (!GM.cheat) audioSync.PlaySound(Random.Range(0, 5));
         }
         else if (!inputManager.CanSelect && IsOwner && !justStarted)
         {
