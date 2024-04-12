@@ -305,7 +305,7 @@ MonoBehaviour:
   cameraCamDepth: {fileID: 7994672138061011651}
   playerSideArms:
   - {fileID: 8001027432903040806}
-  - {fileID: 6416280533681536144}
+  - {fileID: 7667359990345263500}
   minClamp: -60
   maxClamp: 60
   mouseSensi: 15
@@ -352,7 +352,10 @@ MonoBehaviour:
   isSlot2: 0
   isSlot2Used: 0
   skinChoosed: 0
+  animatorsReady: 0
   inActivity: 0
+  serverAnimator: {fileID: 0}
+  clientAnimator: {fileID: 0}
 --- !u!143 &7601244142997339044
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1054,10 +1057,6 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 3398312356306029447}
-    - target: {fileID: 4475314982330328982, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4735575257474459000, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334
@@ -1065,10 +1064,6 @@ PrefabInstance:
     - target: {fileID: 5086162656080698824, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_Name
       value: Maurice_BrasDetaches
-      objectReference: {fileID: 0}
-    - target: {fileID: 5086162656080698824, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5611059970100184946, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1187,10 +1182,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Michelle_BrasDetaches
       objectReference: {fileID: 0}
-    - target: {fileID: 9061698586791312604, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1206,8 +1197,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8541725912342373990, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
   m_PrefabInstance: {fileID: 5539167557556538807}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &6416280533681536144 stripped
+--- !u!1 &7667359990345263500 stripped
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 1572924695384289575, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+  m_CorrespondingSourceObject: {fileID: 2790257879680345147, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
   m_PrefabInstance: {fileID: 5539167557556538807}
   m_PrefabAsset: {fileID: 0}
