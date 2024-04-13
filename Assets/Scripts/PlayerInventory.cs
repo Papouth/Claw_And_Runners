@@ -9,13 +9,15 @@ public class PlayerInventory : NetworkBehaviour
     public bool isSlot2;
     public bool isSlot2Used;
     public bool skinChoosed;
-    private bool animatorsReady;
+    public bool animatorsReady;
     public bool inActivity; // vérifie si le joueur se trouve dans une activité
 
     private PlayerInfo PI;
     private InputManager inputManager;
-    private Animator serverAnimator;
-    private Animator clientAnimator;
+    public Animator serverAnimator;
+    public Animator clientAnimator;
+    private Animator[] animatorListC;
+    private Animator[] animatorListD;
     #endregion
 
 
@@ -29,7 +31,7 @@ public class PlayerInventory : NetworkBehaviour
 
     private void Update()
     {
-        if (!animatorsReady && skinChoosed)
+        if (!animatorsReady && skinChoosed && IsOwner)
         {
             animatorsReady = true;
 
@@ -37,13 +39,19 @@ public class PlayerInventory : NetworkBehaviour
             {
                 serverAnimator = PI.playerCopPrefab.GetComponent<Animator>();
 
-                clientAnimator = PI.playerCopPrefab.GetComponentInChildren<Animator>();
+                animatorListC = PI.playerCopPrefab.GetComponentsInChildren<Animator>();
+                clientAnimator = animatorListC[animatorListC.Length-1];
+
+                AnimatorCopsServerRpc();
             }
             else if (!PI.isCops)
             {
                 serverAnimator = PI.playerRunnerPrefab.GetComponent<Animator>();
-                                          
-                clientAnimator = PI.playerRunnerPrefab.GetComponentInChildren<Animator>();
+
+                animatorListD = PI.playerRunnerPrefab.GetComponentsInChildren<Animator>();
+                clientAnimator = animatorListD[animatorListD.Length-1];
+
+                AnimatorRunnersServerRpc();
             }
 
             // Slot 1 par défaut
@@ -133,6 +141,29 @@ public class PlayerInventory : NetworkBehaviour
     #endregion
 
     #region ServerRpc
+    [ServerRpc]
+    private void AnimatorCopsServerRpc()
+    {
+        serverAnimator = PI.playerCopPrefab.GetComponent<Animator>();
+
+        animatorListC = PI.playerCopPrefab.GetComponentsInChildren<Animator>();
+        clientAnimator = animatorListC[animatorListC.Length-1];
+
+        AnimatorCopsClientRpc();
+    }
+
+    [ServerRpc]
+    private void AnimatorRunnersServerRpc()
+    {
+        serverAnimator = PI.playerRunnerPrefab.GetComponent<Animator>();
+
+        animatorListD = PI.playerRunnerPrefab.GetComponentsInChildren<Animator>();
+        clientAnimator = animatorListD[animatorListD.Length-1];
+
+        AnimatorRunnersClientRpc();
+    }
+
+
     [ServerRpc(RequireOwnership = false)]
     private void ChangeSlotServerRpc(bool slot)
     {
@@ -181,6 +212,24 @@ public class PlayerInventory : NetworkBehaviour
             //serverAnimator.SetBool(blabla)
             //clientAnimator.SetBool(blabla)
         }
+    }
+
+    [ClientRpc]
+    private void AnimatorCopsClientRpc()
+    {
+        serverAnimator = PI.playerCopPrefab.GetComponent<Animator>();
+
+        animatorListC = PI.playerCopPrefab.GetComponentsInChildren<Animator>();
+        clientAnimator = animatorListC[animatorListC.Length-1];
+    }
+
+    [ClientRpc]
+    private void AnimatorRunnersClientRpc()
+    {
+        serverAnimator = PI.playerRunnerPrefab.GetComponent<Animator>();
+
+        animatorListD = PI.playerRunnerPrefab.GetComponentsInChildren<Animator>();
+        clientAnimator = animatorListD[animatorListD.Length-1];
     }
     #endregion
 }

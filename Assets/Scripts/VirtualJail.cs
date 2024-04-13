@@ -108,11 +108,11 @@ public class VirtualJail : NetworkBehaviour
 
             bCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation, spheresList[a].transform).GetComponent<BoxCollider>();
 
-            // mtl
+            bCol.GetComponent<NetworkObject>().Spawn();
+
             rdmMtl = !rdmMtl;
             bCol.GetComponent<MeshRenderer>().enabled = rdmMtl;
 
-            bCol.GetComponent<NetworkObject>().Spawn();
             bCol.enabled = true;
 
             bCol.transform.localScale = new Vector3(0.08f, 30, 0.08f);
