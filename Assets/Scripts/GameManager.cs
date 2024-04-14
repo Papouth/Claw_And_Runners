@@ -16,6 +16,9 @@ public class GameManager : NetworkBehaviour
     [SerializeField] private float timeRemaining;
     [SerializeField] private TextMeshProUGUI infoTime;
     private bool uiTimer;
+
+    [Header("Barreaux Pool")]
+    public GameObject[] barreaux;
     #endregion
 
     #region Built In Methods
