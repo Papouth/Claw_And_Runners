@@ -24,8 +24,6 @@ public class VirtualJail : NetworkBehaviour
     private PlayerInfo PI;
     [SerializeField] private PlayerInventory playerInventory;
     private bool rdmMtl;
-
-    private GameManager GM;
     #endregion
 
     #region Built-In Methods
@@ -34,8 +32,6 @@ public class VirtualJail : NetworkBehaviour
         inputManager = GetComponent<InputManager>();
         PI = GetComponent<PlayerInfo>();
         playerInventory = GetComponent<PlayerInventory>();
-
-        GM = FindObjectOfType<GameManager>();
     }
 
     private void Update()
@@ -108,21 +104,19 @@ public class VirtualJail : NetworkBehaviour
     {
         for (int a = 0; a < spheresList.Count; a++)
         {
-            //cloneBCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation); // A modif
+            cloneBCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation); 
 
-            cloneBCol = GM.barreaux[a];
-            cloneBCol.transform.position = spheresList[a].transform.position; 
-            cloneBCol.transform.rotation = spheresList[a].transform.rotation;
+            rdmMtl = !rdmMtl;
+            if (rdmMtl == false)
+            {
+                cloneBCol.GetComponentInChildren<MeshRenderer>().enabled = false;
+            }
 
-            //rdmMtl = !rdmMtl;
-            //if (rdmMtl == false)
-            //{
-            //    cloneBCol.GetComponentInChildren<MeshRenderer>().enabled = false;
-            //}
-
-            //cloneBCol.GetComponent<NetworkObject>().Spawn();
+            cloneBCol.GetComponent<NetworkObject>().Spawn();
 
             cloneBCol.transform.parent = cloneJail.transform;
+
+            Destroy(cloneBCol.GetComponent<NetworkObject>());
         }
 
         CheckSurface();
@@ -167,7 +161,7 @@ public class VirtualJail : NetworkBehaviour
 
                         cloneBCol.GetComponent<NetworkObject>().Spawn();
  
-                        cloneBCol.transform.localScale = new Vector3(0.08f, 40f, dist);
+                        cloneBCol.transform.localScale = new Vector3(0.16f, 40f, dist);
                         cloneBCol.transform.localPosition += new Vector3(dist / 2f, 0f, 0f);
                     }
                 }
@@ -187,7 +181,7 @@ public class VirtualJail : NetworkBehaviour
 
                         cloneBCol.GetComponent<NetworkObject>().Spawn();
 
-                        cloneBCol.transform.localScale = new Vector3(0.08f, 40f, dist);
+                        cloneBCol.transform.localScale = new Vector3(0.16f, 40f, dist);
                         cloneBCol.transform.localPosition += new Vector3(dist / 2f, 0f, 0f);
                     }
                 }
