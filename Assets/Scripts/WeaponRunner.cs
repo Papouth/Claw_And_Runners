@@ -35,6 +35,16 @@ public class WeaponRunner : NetworkBehaviour
         if (inputManager.CanSelect && IsOwner && !playerInventory.isSlot2 && !playerInventory.inActivity)
         {
             inputManager.CanSelect = false;
+
+            // ANIM
+            if (playerInventory.animatorsReady)
+            {
+                playerInventory.serverAnimator.SetTrigger("Attack");
+                playerInventory.clientAnimator.SetTrigger("Attack");
+
+                UpdateAnimServerRpc();
+            }
+
             EnableColServerRpc();
 
             // SON
@@ -44,12 +54,19 @@ public class WeaponRunner : NetworkBehaviour
         {
             justStarted = true;
             DisableColServerRpc();
+
+            // ANIM
+            if (playerInventory.animatorsReady)
+            {
+                playerInventory.serverAnimator.ResetTrigger("Attack");
+                playerInventory.clientAnimator.ResetTrigger("Attack");
+            }
         }
     }
     #endregion
 
 
-    #region Customs Methods
+    #region ServerRpc
     [ServerRpc]
     private void EnableColServerRpc()
     {
@@ -66,6 +83,18 @@ public class WeaponRunner : NetworkBehaviour
         inputManager.CanSelect = false;
     }
 
+    [ServerRpc]
+    public void UpdateAnimServerRpc()
+    {
+        playerInventory.serverAnimator.SetTrigger("Attack");
+        playerInventory.clientAnimator.SetTrigger("Attack");
+
+        UpdateAnimClientRpc();
+    }
+    #endregion
+
+
+    #region ClientRpc
     [ClientRpc]
     private void EnableColClientRpc()
     {
@@ -78,6 +107,12 @@ public class WeaponRunner : NetworkBehaviour
     {
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;
+    }
+
+    [ClientRpc]
+    private void UpdateAnimClientRpc()
+    {
+        playerInventory.clientAnimator.SetTrigger("Attack");
     }
     #endregion
 }

@@ -37,6 +37,16 @@ public class WeaponCop : NetworkBehaviour
         if (inputManager.CanSelect && IsOwner && VJ.prisonOn && !playerInventory.isSlot2 && !playerInventory.inActivity)
         {
             inputManager.CanSelect = false;
+
+            // ANIM
+            if (playerInventory.animatorsReady)
+            {
+                playerInventory.serverAnimator.SetTrigger("Attack");
+                playerInventory.clientAnimator.SetTrigger("Attack");
+
+                UpdateAnimServerRpc();
+            }
+
             EnableColServerRpc();
 
             // SON
@@ -46,12 +56,19 @@ public class WeaponCop : NetworkBehaviour
         {
             justStarted = true;
             DisableColServerRpc();
+
+            // ANIM
+            if (playerInventory.animatorsReady)
+            {
+                playerInventory.serverAnimator.ResetTrigger("Attack");
+                playerInventory.clientAnimator.ResetTrigger("Attack");
+            }
         }
     }
     #endregion
 
 
-    #region Customs Methods
+    #region ServerRpc
     [ServerRpc]
     private void EnableColServerRpc()
     {
@@ -68,6 +85,18 @@ public class WeaponCop : NetworkBehaviour
         inputManager.CanSelect = false;
     }
 
+    [ServerRpc]
+    public void UpdateAnimServerRpc()
+    {
+        playerInventory.serverAnimator.SetTrigger("Attack");
+        playerInventory.clientAnimator.SetTrigger("Attack");
+
+        UpdateAnimClientRpc();
+    }
+    #endregion
+
+
+    #region ClientRpc
     [ClientRpc]
     private void EnableColClientRpc()
     {
@@ -80,6 +109,12 @@ public class WeaponCop : NetworkBehaviour
     {
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;
+    }
+
+    [ClientRpc]
+    private void UpdateAnimClientRpc()
+    {
+        playerInventory.clientAnimator.SetTrigger("Attack");
     }
     #endregion
 }
