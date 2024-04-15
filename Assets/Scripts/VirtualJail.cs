@@ -115,8 +115,6 @@ public class VirtualJail : NetworkBehaviour
             cloneBCol.GetComponent<NetworkObject>().Spawn();
 
             cloneBCol.transform.parent = cloneJail.transform;
-
-            Destroy(cloneBCol.GetComponent<NetworkObject>());
         }
 
         CheckSurface();
