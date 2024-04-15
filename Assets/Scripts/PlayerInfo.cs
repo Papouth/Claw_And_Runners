@@ -186,7 +186,7 @@ public class PlayerInfo : NetworkBehaviour
             {
                 // Attribution du tag et des scripts
                 // Augmentation de la vitesse du policier
-                controller.speed += 2;
+                controller.speed += 1.35f;
 
                 if (TS.copsNamesList[0] == playerName)
                 {

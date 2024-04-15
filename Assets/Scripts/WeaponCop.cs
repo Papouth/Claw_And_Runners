@@ -5,16 +5,22 @@ using Unity.Netcode;
 
 public class WeaponCop : NetworkBehaviour
 {
+    #region Variables
     private InputManager inputManager;
     [SerializeField] private GameObject hitCollider;
     private VirtualJail VJ;
     private bool justStarted;
     private PlayerInventory playerInventory;
+    private AudioSync audioSync;
+    private GameManager GM;
+    #endregion
 
 
+    #region Built-In Methods
     private void Start()
     {
         VJ = GetComponent<VirtualJail>();
+        audioSync = GetComponent<AudioSync>();
     }
 
     public override void OnNetworkSpawn()
@@ -22,24 +28,47 @@ public class WeaponCop : NetworkBehaviour
         inputManager = GetComponent<InputManager>();
         VJ = GetComponent<VirtualJail>();
         playerInventory = GetComponent<PlayerInventory>();
+        GM = FindObjectOfType<GameManager>();
     }
-
 
     private void Update()
     {
         // Vérifier aussi que le policier à en main son baton et qu'il ne se trouve pas dans une activité
         if (inputManager.CanSelect && IsOwner && VJ.prisonOn && !playerInventory.isSlot2 && !playerInventory.inActivity)
         {
+            inputManager.CanSelect = false;
+
+            // ANIM
+            if (playerInventory.animatorsReady)
+            {
+                playerInventory.serverAnimator.SetTrigger("Attack");
+                playerInventory.clientAnimator.SetTrigger("Attack");
+
+                UpdateAnimServerRpc();
+            }
+
             EnableColServerRpc();
-            Debug.Log("Je te tape pour te mettre en prison");
+
+            // SON
+            if (!GM.cheat) audioSync.PlaySound(Random.Range(0, 5));
         }
         else if (!inputManager.CanSelect && IsOwner && !justStarted)
         {
             justStarted = true;
             DisableColServerRpc();
+
+            // ANIM
+            if (playerInventory.animatorsReady)
+            {
+                playerInventory.serverAnimator.ResetTrigger("Attack");
+                playerInventory.clientAnimator.ResetTrigger("Attack");
+            }
         }
     }
+    #endregion
 
+
+    #region ServerRpc
     [ServerRpc]
     private void EnableColServerRpc()
     {
@@ -56,6 +85,18 @@ public class WeaponCop : NetworkBehaviour
         inputManager.CanSelect = false;
     }
 
+    [ServerRpc]
+    public void UpdateAnimServerRpc()
+    {
+        playerInventory.serverAnimator.SetTrigger("Attack");
+        playerInventory.clientAnimator.SetTrigger("Attack");
+
+        UpdateAnimClientRpc();
+    }
+    #endregion
+
+
+    #region ClientRpc
     [ClientRpc]
     private void EnableColClientRpc()
     {
@@ -69,4 +110,11 @@ public class WeaponCop : NetworkBehaviour
         hitCollider.SetActive(false);
         inputManager.CanSelect = false;
     }
+
+    [ClientRpc]
+    private void UpdateAnimClientRpc()
+    {
+        playerInventory.clientAnimator.SetTrigger("Attack");
+    }
+    #endregion
 }

@@ -30,6 +30,10 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    [Tooltip("FootSteps")]
+    [SerializeField] private float stepSize;
+    private float timeStep;
+
     private Vector3 velocity;
     private bool isGrounded;
 
@@ -43,6 +47,9 @@ public class PlayerController : NetworkBehaviour
 
     private UIManager canvas;
     private TeamSelection teamSelection;
+    private FootStepsSync footStepsSync;
+    private PlayerInventory playerInventory;
+    private PlayerInfo PI;
 
     [SerializeField] private bool MathisDoitAnimer;
     #endregion
@@ -57,6 +64,12 @@ public class PlayerController : NetworkBehaviour
 
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
+
+        footStepsSync = GetComponentInChildren<FootStepsSync>();
+
+        playerInventory = GetComponent<PlayerInventory>();
+
+        timeStep = stepSize;
     }
 
     public void MathisAnim()
@@ -81,6 +94,9 @@ public class PlayerController : NetworkBehaviour
             }
 
             teamSelection = FindObjectOfType<TeamSelection>();
+
+            PI = GetComponent<PlayerInfo>();
+
 
             teamSelection.ShowHideUI();
         }
@@ -144,12 +160,67 @@ public class PlayerController : NetworkBehaviour
         float z = inputManager.Move.y;
         
         Vector3 move = transform.right * x + transform.forward * z;
+
+        // SON FOOTSTEP
+        if (move.magnitude != 0 && isGrounded)
+        {
+            // STEP SIZE TIMER
+            if (timeStep > 0)
+            {
+                timeStep -= Time.deltaTime;
+            }
+            else if (timeStep <= 0)
+            {
+                footStepsSync.PlaySoundStep(Random.Range(0, footStepsSync.gameSounds.Length));
+                timeStep = stepSize;
+            }
+        }
+        else if (move.magnitude == 0 || !isGrounded)
+        {
+            timeStep = 0;
+            footStepsSync.source.Stop();
+        }
         
+
+        // ANIMATION
+        if (move.magnitude > 0.1 && isGrounded)
+        {
+            if (playerInventory.animatorsReady)
+            {
+                // Animation de course
+                playerInventory.serverAnimator.SetInteger("IWR", 1);
+                playerInventory.clientAnimator.SetInteger("IWR", 1);
+
+                UpdateAnimServerRpc(1);
+            }
+        }
+        else if (move.magnitude <= 0.1 && isGrounded)
+        {
+            if (playerInventory.animatorsReady)
+            {
+                // Animation d'Idle
+                playerInventory.serverAnimator.SetInteger("IWR", 0);
+                playerInventory.clientAnimator.SetInteger("IWR", 0);
+
+                UpdateAnimServerRpc(0);
+            }
+        }
+
         controller.Move(move * speed * Time.deltaTime);
 
         // SAUT
         if (inputManager.CanJump && isGrounded)
         {
+            // Animation 
+            if (playerInventory.animatorsReady)
+            {
+                // Animation d'Idle
+                playerInventory.serverAnimator.SetInteger("IWR", 5);
+                playerInventory.clientAnimator.SetInteger("IWR", 5);
+
+                UpdateAnimServerRpc(5);
+            }
+
             inputManager.CanJump = false;
             velocity.y = Mathf.Sqrt(jump * -2f * gravity);
         }
@@ -172,13 +243,32 @@ public class PlayerController : NetworkBehaviour
             UpdateClientPositionServerRpc(z, x, velocity.y);
         }
     }
+    #endregion
 
+    #region ServerRpc
     [ServerRpc]
     public void UpdateClientPositionServerRpc(float forwardBackward, float leftRight, float upDown)
     {
         forwardBackPosition.Value = forwardBackward;
         leftRightPosition.Value = leftRight;
         upDownPosition.Value = upDown;
+    }
+
+    [ServerRpc]
+    public void UpdateAnimServerRpc(int animInt)
+    {
+        playerInventory.serverAnimator.SetInteger("IWR", animInt);
+        playerInventory.clientAnimator.SetInteger("IWR", animInt);
+
+        UpdateAnimClientRpc(animInt);
+    }
+    #endregion
+
+    #region ClientRpc
+    [ClientRpc]
+    private void UpdateAnimClientRpc(int animInt)
+    {
+        playerInventory.clientAnimator.SetInteger("IWR", animInt);
     }
     #endregion
 }

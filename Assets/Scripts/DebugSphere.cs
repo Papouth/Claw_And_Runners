@@ -7,7 +7,6 @@ public class DebugSphere : MonoBehaviour
     #region Variables
     private bool isValid;
     private Rigidbody rb;
-    private MeshRenderer mr;
     private SphereCollider sphereCollider;
     private float rad;
     private float speed;
@@ -19,7 +18,6 @@ public class DebugSphere : MonoBehaviour
     {
         speed = 4f;
         sphereCollider = GetComponent<SphereCollider>();
-        mr = GetComponent<MeshRenderer>();
         rb = GetComponent<Rigidbody>();
 
         rad = sphereCollider.radius;
@@ -50,7 +48,6 @@ public class DebugSphere : MonoBehaviour
     {
         isValid = true;
         rb.isKinematic = true;
-        mr.enabled = false;
         sphereCollider.enabled = false;
     }
 

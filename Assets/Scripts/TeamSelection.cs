@@ -49,7 +49,6 @@ public class TeamSelection : NetworkBehaviour
 
     [SerializeField] private LobbyManager LM;
     [HideInInspector] public bool createLobby;
-    private bool gameFullyStarted;
     private bool cursorState;
 
     [HideInInspector] public bool requireNameUpdate;
@@ -65,7 +64,8 @@ public class TeamSelection : NetworkBehaviour
 
     [HideInInspector] public bool selectionStarted;
 
-    private bool equilibrageOn;
+    [Header("Cheats")]
+    [SerializeField] private bool inDev;
     #endregion
 
 
@@ -334,7 +334,7 @@ public class TeamSelection : NetworkBehaviour
 
     private void CursorModification()
     {
-        if (gameFullyStarted && !cursorState)
+        if (readySelection && !cursorState && !inDev)
         {
             //Debug.Log("game started true");
             cursorState = true;

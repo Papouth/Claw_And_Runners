@@ -5,14 +5,28 @@ using Unity.Netcode;
 
 public class ReleasePlayer : NetworkBehaviour
 {
-    private int idPlayerReleased; 
+    #region Varaibles
+    private int idPlayerReleased;
+    private AudioSync audioSync;
+    #endregion
 
 
+    #region Built-In Methods
+    private void Start()
+    {
+        audioSync = GetComponentInParent<AudioSync>();
+    }
+    #endregion
+
+
+    #region Customs Methods
     private void OnTriggerEnter(Collider other)
     {
         // SI le joueur que je frappe à le layer capturé
         if (other.gameObject.layer == 10 && IsOwner)
         {
+            audioSync.PlaySound(7);
+
             idPlayerReleased = other.GetComponent<PlayerInfo>().playerId;
 
             // Layer 6 pour être un elfe libre
@@ -35,4 +49,5 @@ public class ReleasePlayer : NetworkBehaviour
     {
         if (IsServer) NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
     }
+    #endregion
 }

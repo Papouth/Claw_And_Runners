@@ -6,15 +6,29 @@ using Unity.Services.Lobbies.Models;
 
 public class CapturePlayer : NetworkBehaviour
 {
+    #region Variables
     [SerializeField] private GameObject zonz;
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     private int idPlayerCaptured;
+    private AudioSync audioSync;
+    #endregion
 
 
+    #region Built-In Methods
+    private void Start()
+    {
+        audioSync = GetComponentInParent<AudioSync>();
+    }
+    #endregion
+
+
+    #region Customs Methods
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("runners") && IsOwner)
         {
+            audioSync.PlaySound(6);
+
             idPlayerCaptured = other.GetComponent<PlayerInfo>().playerId;
 
             other.gameObject.layer = 10;
@@ -44,4 +58,5 @@ public class CapturePlayer : NetworkBehaviour
 
         //Debug.Log("CLIENT CAPTURE PLAYER");
     }
+    #endregion
 }
