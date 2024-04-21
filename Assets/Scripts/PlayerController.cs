@@ -30,6 +30,11 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    [SerializeField] private Transform ladderCheck;
+    [SerializeField] private float ladderDistance;
+    [SerializeField] private LayerMask ladderMask;
+    private bool isLadder;
+
     [Tooltip("FootSteps")]
     [SerializeField] private float stepSize;
     private float timeStep;
@@ -147,13 +152,18 @@ public class PlayerController : NetworkBehaviour
         // float z -> forward and backward
         // velocity.y -> up and down
 
-        // GROUN CHECK
+        // GROUND CHECK
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+
+        isLadder = Physics.CheckSphere(ladderCheck.position, ladderDistance, ladderMask);
 
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
+
+        if (isLadder && velocity.y < 0) velocity.y = -2f;
 
         // MOVEMENT
         float x = inputManager.Move.x;
@@ -226,7 +236,14 @@ public class PlayerController : NetworkBehaviour
         }
         else if (inputManager.CanJump && !isGrounded)
         {
+            //inputManager.CanJump = false;
+        }
+
+        // LADDER
+        if (inputManager.CanJump && isLadder)
+        {
             inputManager.CanJump = false;
+            velocity.y = Mathf.Sqrt(jump * -2f * gravity);
         }
 
         velocity.y += gravity * Time.deltaTime;
