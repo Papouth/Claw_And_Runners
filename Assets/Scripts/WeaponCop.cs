@@ -12,7 +12,6 @@ public class WeaponCop : NetworkBehaviour
     private bool justStarted;
     private PlayerInventory playerInventory;
     private AudioSync audioSync;
-    private GameManager GM;
     #endregion
 
 
@@ -28,7 +27,6 @@ public class WeaponCop : NetworkBehaviour
         inputManager = GetComponent<InputManager>();
         VJ = GetComponent<VirtualJail>();
         playerInventory = GetComponent<PlayerInventory>();
-        GM = FindObjectOfType<GameManager>();
     }
 
     private void Update()
@@ -50,7 +48,7 @@ public class WeaponCop : NetworkBehaviour
             EnableColServerRpc();
 
             // SON
-            if (!GM.cheat) audioSync.PlaySound(Random.Range(0, 5));
+            audioSync.PlaySound(Random.Range(0, 5));
         }
         else if (!inputManager.CanSelect && IsOwner && !justStarted)
         {

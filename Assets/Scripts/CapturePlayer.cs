@@ -11,6 +11,7 @@ public class CapturePlayer : NetworkBehaviour
     public NetworkVariable<Vector3> Position = new NetworkVariable<Vector3>();
     private int idPlayerCaptured;
     private AudioSync audioSync;
+    private GameManager GM;
     #endregion
 
 
@@ -18,6 +19,11 @@ public class CapturePlayer : NetworkBehaviour
     private void Start()
     {
         audioSync = GetComponentInParent<AudioSync>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        GM = FindObjectOfType<GameManager>();
     }
     #endregion
 
@@ -33,6 +39,9 @@ public class CapturePlayer : NetworkBehaviour
 
             other.gameObject.layer = 10;
 
+            // RPC Call GM
+            GMActionServerRpc();
+
             if (IsOwner) JailLayerServerRpc((ulong)idPlayerCaptured, 10);
 
             zonz = GameObject.FindWithTag("JailObject");
@@ -40,7 +49,9 @@ public class CapturePlayer : NetworkBehaviour
             //Debug.Log("Zou direction la zonz");
         }
     }
+    #endregion
 
+    #region Server RPC
     [ServerRpc]
     private void JailLayerServerRpc(ulong idPlayer, int layer)
     {
@@ -51,6 +62,17 @@ public class CapturePlayer : NetworkBehaviour
         JailLayerClientRpc(idPlayer, layer);
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void GMActionServerRpc()
+    {
+        GM.actualRunnersCaptured++;
+        GM.totalRunnersCaptured++;
+
+        if (GM.actualRunnersCaptured == GM.runnersLimitGM.Value) GM.CheckCopsWin();
+    }
+    #endregion
+
+    #region Client RPC
     [ClientRpc]
     private void JailLayerClientRpc(ulong idPlayer, int layer)
     {

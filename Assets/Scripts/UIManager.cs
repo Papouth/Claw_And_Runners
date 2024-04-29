@@ -15,9 +15,14 @@ public class UIManager : MonoBehaviour
     public GameObject panelCreateLobby;
     public GameObject panelInsideLobby;
     public GameObject camUI;
+    
+    [Header("Win Section")]
+    public GameObject panelEndGame;
+    public TextMeshProUGUI winText;
+
 
     [Header("Customization")]
-    [Tooltip("Les cases vides de base")][SerializeField] private Image[] casesImages = new Image[6];
+    [Tooltip("Les cases vides de base")] [SerializeField] private Image[] casesImages = new Image[6];
     [HideInInspector] public CaseInfo caseInfo;
     private Sprite baseSprite;
     private int N;
@@ -36,7 +41,7 @@ public class UIManager : MonoBehaviour
     private GameObject itemSelected;
     private Sprite itemSelectedSprite;
 
-    [Tooltip("Nom de la catégorie")][SerializeField] private List<string> typeNames;
+    [Tooltip("Nom de la catégorie")] [SerializeField] private List<string> typeNames;
     [SerializeField] private TextMeshProUGUI actualTypeName;
 
     [SerializeField] private Sprite[] sexeSprites = new Sprite[2]; // 0 = homme et 1 = femme // TYPE 0
@@ -60,7 +65,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Validation Right Panel")]
     [SerializeField] private List<Image> selectedItemsPictures = new List<Image>(8); // Image.Color à mettre en valeur si n'est pas définitevement validé par le joueur
-    [Tooltip("Contient les accessoires sauvegardé du joueur")][SerializeField] private List<GameObject> savedSelection;
+    [Tooltip("Contient les accessoires sauvegardé du joueur")] [SerializeField] private List<GameObject> savedSelection;
 
     private PlayerCustomInfo playerCustomInfo;
     #endregion
@@ -673,6 +678,7 @@ public class UIManager : MonoBehaviour
         panelLobbyMenu.SetActive(false);
         panelCreateLobby.SetActive(false);
         panelInsideLobby.SetActive(false);
+        panelEndGame.SetActive(false);
         camUI.SetActive(false);
     }
     #endregion
