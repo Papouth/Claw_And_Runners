@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 416785699351997794}
   - component: {fileID: 4475708049282112685}
   - component: {fileID: 127072128648723445}
-  - component: {fileID: 8294582914860649372}
+  - component: {fileID: 3838389272937404943}
   - component: {fileID: 2883660073154148482}
   - component: {fileID: 7601244142997339044}
   - component: {fileID: 4810945831852701589}
@@ -361,7 +361,7 @@ MonoBehaviour:
   upDownPosition:
     m_InternalValue: 0
   MathisDoitAnimer: 0
---- !u!114 &8294582914860649372
+--- !u!114 &3838389272937404943
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -373,7 +373,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eeb25ecfcbb3a8d448d27cd75787f1c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pistolPrefab: {fileID: 1618391657588684485}
+  inTrigger: 0
+  playerInActivity: 0
+  standTir: 0
+  pistolCopPrefab: {fileID: 1618391657588684485}
+  pistolRunnerPrefab: {fileID: 3351959761141333383}
 --- !u!114 &2883660073154148482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1094,6 +1098,10 @@ PrefabInstance:
       propertyPath: cam
       value: 
       objectReference: {fileID: 3398312356306029447}
+    - target: {fileID: 4475314982330328982, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
+      propertyPath: m_Name
+      value: Cops Pistol
+      objectReference: {fileID: 0}
     - target: {fileID: 4735575257474459000, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: GlobalObjectIdHash
       value: 951099334
@@ -1175,6 +1183,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1925714024633064803}
     m_Modifications:
+    - target: {fileID: 2159539757239071454, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6973609483602122881, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 3398312356306029447}
+    - target: {fileID: 7087432363495256112, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+      propertyPath: m_Name
+      value: Runners Pistol
+      objectReference: {fileID: 0}
     - target: {fileID: 8541725912342373990, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1224,6 +1244,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+--- !u!1 &3351959761141333383 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7087432363495256112, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+  m_PrefabInstance: {fileID: 5539167557556538807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &3539421737078518123 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9061698586791312604, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}

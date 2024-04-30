@@ -3,131 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 
-public class TriggerActivity : NetworkBehaviour
+public class TriggerActivity : MonoBehaviour
 {
     #region Variables
+    private PlayerActivity playerActivity;
+
     [SerializeField] private GameObject activityPrefab;
     [SerializeField] private bool stand2TirActivity;
-    private GameObject player;
-    private bool startActivity;
-    private bool interactActivity;
-    [SerializeField] private LayerMask playerLayer;
 
     private StandTir standTir;
-    private PlayerActivity activity;
-    private PlayerInventory playerInventory;
-    private InputManager inputManager;
-    private PlayerShoot playerShoot;
     #endregion
 
 
     #region Built-In Methods
-    public override void OnNetworkSpawn()
+    private void Start()
     {
+        // Assignation de l'activité trigger
         if (stand2TirActivity) standTir = activityPrefab.GetComponent<StandTir>();
     }
 
-    private void Update()
-    {
-        if (player != null)
-        {
-            if (inputManager.CanInteract && IsOwner)
-            {
-                inputManager.CanInteract = false;
-                Debug.Log("interact");
-                InteractActivity();
-            }
-        }
-    }
-
+    /// <summary>
+    /// Booléen en true de l'activité correspondante
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<PlayerInfo>())
+        if (other.GetComponent<PlayerActivity>())
         {
-            player = other.GetComponent<PlayerInfo>().gameObject;
+            Debug.Log("Trigger enter activity");
 
-            startActivity = true;
+            playerActivity = other.GetComponent<PlayerActivity>();
 
-            playerInventory = other.GetComponent<PlayerInventory>();
-            inputManager = other.GetComponent<InputManager>();
+            playerActivity.inTrigger = true;
 
-            if (stand2TirActivity) playerShoot = other.GetComponentInChildren<PlayerShoot>();
+            if (stand2TirActivity) playerActivity.standTir = true;
         }
     }
 
+    /// <summary>
+    /// Booléen activité correspondante en false + playerActivity = null
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
-        if (other.GetComponent<PlayerInfo>())
+        if (other.GetComponent<PlayerActivity>())
         {
-            if (other.GetComponent<PlayerInfo>().isCops) // On pourra le retirer plus tard quand le voleur pourra aussi faire les activités (pas d'anim atm)
-            {
-                Debug.Log("Je quitte l'activité");
+            Debug.Log("Trigger exit activity");
 
-                activity = other.GetComponent<PlayerActivity>();
+            playerActivity.inTrigger = false;
 
-                if (stand2TirActivity)
-                {
-                    activity.Pistol(false);
-                    playerShoot.playerAnimator.SetBool("PistolOn", false);
-                    playerShoot = null;
-                }
-
-                startActivity = false;
-                interactActivity = false;
-                playerInventory.inActivity = false;
-                player = null;
-                playerInventory = null;
-                inputManager = null;
-            }
-        }
-    }
-    #endregion
-
-
-    #region Customs Methods
-    private void InteractActivity()
-    {
-        if (startActivity && !interactActivity)
-        {
-            interactActivity = true;
-            playerInventory.inActivity = true;
-
-            if (stand2TirActivity)
-            {
-                Debug.Log("J'interragis avec le stand de tir");
-
-                // Reset activité
-                standTir.ResetActivity();
-
-                // Pour l'instant stand de tir dispo seulement pour le policier
-                if (player.GetComponent<PlayerInfo>().isCops)
-                {
-                    activity = player.GetComponent<PlayerActivity>();
-                    activity.Pistol(true);
-
-                    playerShoot.playerAnimator.SetBool("PistolOn", true);
-                    playerShoot = null;
-                }
-            }
-        }
-        else if (startActivity && interactActivity)
-        {
-            Debug.Log("Je quitte le stand de tir");
-
-            // Si on ré-interragi, alors on quitte l'activité
-            if (stand2TirActivity)
-            {
-                activity.Pistol(false);
-                playerShoot.playerAnimator.SetBool("PistolOn", false);
-                playerShoot = null;
-            }
-
-            startActivity = false;
-            interactActivity = false;
-            playerInventory.inActivity = false;
-            player = null;
-            playerInventory = null;
-            inputManager = null;
+            // Reset activité
+            if (stand2TirActivity) standTir.ResetActivity();
         }
     }
     #endregion
