@@ -12,6 +12,7 @@ public class PlayerShoot : NetworkBehaviour
 
     public Animator playerAnimator;
     private InputManager inputManager;
+    private PlayerActivity playerActivity;
     #endregion
 
 
@@ -21,6 +22,8 @@ public class PlayerShoot : NetworkBehaviour
         inputManager = GetComponentInParent<InputManager>();
 
         gameObject.SetActive(false);
+
+        playerActivity = GetComponentInParent<PlayerActivity>();
     }
 
     private void Update()
@@ -31,9 +34,12 @@ public class PlayerShoot : NetworkBehaviour
 
 
     #region Customs Methods
+    /// <summary>
+    /// Tir autorisé quand on se trouve dans l'activité de tir
+    /// </summary>
     private void Shoot()
     {
-        if (inputManager.CanSelect && IsOwner)
+        if (inputManager.CanSelect && IsOwner && playerActivity.playerInActivity && playerActivity.standTir)
         {
             InstantiateBullet();
         }
