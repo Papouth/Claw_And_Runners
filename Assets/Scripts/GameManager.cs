@@ -24,6 +24,7 @@ public class GameManager : NetworkBehaviour
     public NetworkVariable<int> runnersLimitGM;
     private bool winBool;
     private bool setValueLimit;
+    [HideInInspector] public GameObject panelShootingRange;
     #endregion
 
     #region Built In Methods
@@ -49,6 +50,9 @@ public class GameManager : NetworkBehaviour
         actualRunnersCaptured = 0;
         totalRunnersCaptured = 0;
         totalRunnersReleased = 0;
+
+        panelShootingRange = UIM.panelCrosshair;
+        panelShootingRange.SetActive(false);
     }
 
     private void Update()
@@ -56,7 +60,7 @@ public class GameManager : NetworkBehaviour
         // On vérifie que le décompte du start de la game est terminé
         if (TS.readySelection)
         {
-            if (!setValueLimit)
+            if (!setValueLimit && IsOwner)
             {
                 setValueLimit = true;
 

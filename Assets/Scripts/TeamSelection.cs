@@ -355,7 +355,7 @@ public class TeamSelection : NetworkBehaviour
         UITeamSelection.SetActive(true);
         if (!selectionStarted) selectionStarted = true;
 
-        if (IsOwner) NetworkParameter.GetPlayerOnSelection();        
+        if (IsOwner) NetworkParameter.GetPlayerOnSelection();
     }
 
     #region Team Selection
@@ -540,7 +540,6 @@ public class TeamSelection : NetworkBehaviour
 
         showTimer = true;
     }
-
     #endregion
 
 

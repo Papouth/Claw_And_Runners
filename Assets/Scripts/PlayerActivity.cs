@@ -11,6 +11,7 @@ public class PlayerActivity : NetworkBehaviour
     private PlayerInventory playerInventory;
     private PlayerShoot playerShoot;
     private PlayerInfo PI;
+    private GameManager GM;
 
 
     public bool inTrigger;
@@ -29,6 +30,8 @@ public class PlayerActivity : NetworkBehaviour
     #region Built-In Methods
     public override void OnNetworkSpawn()
     {
+        GM = FindObjectOfType<GameManager>();
+
         inputManager = GetComponent<InputManager>();
 
         playerInventory = GetComponent<PlayerInventory>();
@@ -36,6 +39,9 @@ public class PlayerActivity : NetworkBehaviour
         playerShoot = GetComponentInChildren<PlayerShoot>();
 
         PI = GetComponent<PlayerInfo>();
+
+        pistolCopPrefab.SetActive(false);
+        pistolRunnerPrefab.SetActive(false);
     }
 
     private void Update()
@@ -54,6 +60,9 @@ public class PlayerActivity : NetworkBehaviour
         {
             Debug.Log("Je quitte le stand de tir");
 
+            // On désactive le crosshair
+            GM.panelShootingRange.SetActive(false);
+
             // Bool player In Activity et standTir repassent en false
             playerInActivity = false;
             standTir = false;
@@ -67,6 +76,27 @@ public class PlayerActivity : NetworkBehaviour
             // On enlève le format d'activité pour l'inventaire
             playerInventory.inActivity = false;
         }
+    }
+
+    private void ForceLeaveActivity()
+    {
+        Debug.Log("Je quitte le stand de tir");
+
+        // On désactive le crosshair
+        GM.panelShootingRange.SetActive(false);
+
+        // Bool player In Activity et standTir repassent en false
+        playerInActivity = false;
+        standTir = false;
+
+        // On range le pistolet
+        Pistol(false);
+
+        // Fin animation pistolet
+        playerShoot.playerAnimator.SetBool("PistolOn", false);
+
+        // On enlève le format d'activité pour l'inventaire
+        playerInventory.inActivity = false;
     }
 
     private void InteractWithActivity()
@@ -117,8 +147,7 @@ public class PlayerActivity : NetworkBehaviour
         }
         else if (playerInActivity)
         {
-            // Si on ré-interragi, alors on quitte l'activité
-            LeaveActivity();
+            ForceLeaveActivity();
         }
     }
     #endregion
@@ -128,6 +157,9 @@ public class PlayerActivity : NetworkBehaviour
     private void ShootingRange()
     {
         Debug.Log("J'interragis avec le stand de tir");
+
+        // On active le crosshair
+        GM.panelShootingRange.SetActive(true);
 
         Pistol(true);
 

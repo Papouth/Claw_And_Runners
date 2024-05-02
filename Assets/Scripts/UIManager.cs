@@ -20,6 +20,8 @@ public class UIManager : MonoBehaviour
     public GameObject panelEndGame;
     public TextMeshProUGUI winText;
 
+    [Header("Shooting Range")]
+    public GameObject panelCrosshair;
 
     [Header("Customization")]
     [Tooltip("Les cases vides de base")] [SerializeField] private Image[] casesImages = new Image[6];
@@ -44,8 +46,8 @@ public class UIManager : MonoBehaviour
     [Tooltip("Nom de la catégorie")] [SerializeField] private List<string> typeNames;
     [SerializeField] private TextMeshProUGUI actualTypeName;
 
-    [SerializeField] private Sprite[] sexeSprites = new Sprite[2]; // 0 = homme et 1 = femme // TYPE 0
-    [SerializeField] private Sprite[] skinColorSprites; // TYPE 1
+    [SerializeField] private Sprite[] sexeSprites = new Sprite[2]; // 0 = homme et 1 = femme // TYPE 0 -> on change juste les presets entre les 3 persos de base
+    [SerializeField] private Sprite[] skinColorSprites; // TYPE 1 -> ça dégagera, faire attention à ce que ça pète rien
     [SerializeField] private Sprite[] legSprites; // TYPE 2
     [SerializeField] private Sprite[] bodySprites; // TYPE 3
     [SerializeField] private Sprite[] beardSprites; // TYPE 4
@@ -679,6 +681,7 @@ public class UIManager : MonoBehaviour
         panelCreateLobby.SetActive(false);
         panelInsideLobby.SetActive(false);
         panelEndGame.SetActive(false);
+        panelCrosshair.SetActive(false);
         camUI.SetActive(false);
     }
     #endregion

@@ -17,18 +17,21 @@ public class PlayerShoot : NetworkBehaviour
 
 
     #region Built-In Methods
-    public override void OnNetworkSpawn()
+    private void Start()
     {
         inputManager = GetComponentInParent<InputManager>();
-
-        gameObject.SetActive(false);
 
         playerActivity = GetComponentInParent<PlayerActivity>();
     }
 
     private void Update()
     {
-        Shoot();
+        if (IsOwner)
+        {
+            Debug.Log("Passe Update");
+
+            Shoot();
+        }
     }
     #endregion
 
@@ -39,15 +42,26 @@ public class PlayerShoot : NetworkBehaviour
     /// </summary>
     private void Shoot()
     {
-        if (inputManager.CanSelect && IsOwner && playerActivity.playerInActivity && playerActivity.standTir)
+        if (playerActivity.playerInActivity) Debug.Log("AAA : Player dans une activité");
+
+        if (playerActivity.standTir) Debug.Log("BBB : Player dans le stand de tir");
+
+        if (inputManager.CanSelect && playerActivity.playerInActivity && playerActivity.standTir)
         {
+            inputManager.CanSelect = false;
+
+            Debug.Log("Pre instantiate bullet");
+
             InstantiateBullet();
         }
     }
 
     private void InstantiateBullet()
     {
+        Debug.Log("Déclenchement animator");
+
         playerAnimator.SetTrigger("PistolShot");
+
         Debug.Log("Bang");
 
         // Raycast shoot
