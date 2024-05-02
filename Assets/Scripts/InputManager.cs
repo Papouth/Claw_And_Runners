@@ -79,7 +79,8 @@ public class InputManager : MonoBehaviour
 
     public void OnSelect()
     {
-        canSelect = !canSelect;
+        //canSelect = !canSelect;
+        canSelect = true;
     }
 
     public void OnSlot1()

@@ -54,7 +54,6 @@ public class PlayerController : NetworkBehaviour
     private TeamSelection teamSelection;
     private FootStepsSync footStepsSync;
     private PlayerInventory playerInventory;
-    private PlayerInfo PI;
 
     [SerializeField] private bool MathisDoitAnimer;
     #endregion
@@ -99,9 +98,6 @@ public class PlayerController : NetworkBehaviour
             }
 
             teamSelection = FindObjectOfType<TeamSelection>();
-
-            PI = GetComponent<PlayerInfo>();
-
 
             teamSelection.ShowHideUI();
         }
