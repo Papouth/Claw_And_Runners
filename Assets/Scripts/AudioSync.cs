@@ -23,10 +23,10 @@ public class AudioSync : NetworkBehaviour
         else listener.enabled = false;
     }
 
-    private void Update()
-    {
-        VolumeModifier();
-    }
+    //private void Update()
+    //{
+    //    VolumeModifier();
+    //}
     #endregion
 
 
