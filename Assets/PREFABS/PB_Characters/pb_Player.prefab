@@ -376,6 +376,7 @@ MonoBehaviour:
   inTrigger: 0
   playerInActivity: 0
   standTir: 0
+  piano: 0
   pistolCopPrefab: {fileID: 1618391657588684485}
   pistolRunnerPrefab: {fileID: 3351959761141333383}
 --- !u!114 &2883660073154148482
@@ -485,7 +486,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43f02a9267c67d64780e1e5f5ea5cc44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCam: {fileID: 3398312356306029447}
   listener: {fileID: 3783840796414409116}
   source: {fileID: 0}
   gameSounds:
@@ -885,7 +885,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ec6807d759c81e4f9d13245bac492dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCam: {fileID: 3398312356306029447}
   listener: {fileID: 3783840796414409116}
   source: {fileID: 0}
   gameSounds:
@@ -1104,7 +1103,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4475314982330328982, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4735575257474459000, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: GlobalObjectIdHash
@@ -1201,7 +1200,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7087432363495256112, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8541725912342373990, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: m_LocalPosition.x
