@@ -10,7 +10,7 @@ public class GameManager : NetworkBehaviour
     public static GameManager GM;
     public bool cheat;
     [SerializeField] private TeamSelection TS;
-    [SerializeField] private UIManager UIM;
+    public UIManager UIM;
 
     [Header("Timer")]
     [SerializeField] private GameObject panelTimer;

@@ -7,7 +7,6 @@ using Unity.Netcode;
 public class AudioSync : NetworkBehaviour
 {
     #region Variables
-    public Camera playerCam;
     public AudioListener listener;
     public AudioSource source;
     public AudioClip[] gameSounds;
@@ -41,7 +40,7 @@ public class AudioSync : NetworkBehaviour
     }
 
     /// <summary>
-    /// Sert à jouer un son
+    /// Sert à jouer un son en renseignant un id
     /// </summary>
     /// <param name="id"></param>
     public void PlaySound(int id)

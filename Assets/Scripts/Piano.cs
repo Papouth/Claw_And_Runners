@@ -25,8 +25,10 @@ public class Piano : NetworkBehaviour
     [SerializeField] private AudioClip[] notes;
     [SerializeField] private GameObject[] keys;
 
+    [HideInInspector] public bool asPlayer;
+
     private AudioSource audioSource;
-    
+    [HideInInspector] public PlayerActivity playerActivity;
     #endregion
 
 
@@ -48,11 +50,17 @@ public class Piano : NetworkBehaviour
 
     private void Update()
     {
-        PianoInputs();
+        if (asPlayer)
+        {
+            if (playerActivity.playerInActivity && playerActivity.piano)
+            {
+                PianoInputs();
 
-        SheetDisplay();
+                SheetDisplay();
 
-        Volume();
+                Volume();
+            }
+        } 
     }
     #endregion
 
@@ -68,13 +76,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                audioSource.PlayOneShot(notes[2]);
+                PlaySound(2);
+
                 keys[35].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            audioSource.PlayOneShot(notes[1]);
+            PlaySound(1);
+
             keys[39].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -84,13 +94,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                audioSource.PlayOneShot(notes[4]);
+                PlaySound(4);
+
                 keys[36].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            audioSource.PlayOneShot(notes[3]);
+            PlaySound(3);
+
             keys[38].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -100,13 +112,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                audioSource.PlayOneShot(notes[7]);
+                PlaySound(7);
+
                 keys[0].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            audioSource.PlayOneShot(notes[6]);
+            PlaySound(6);
+
             keys[6].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -116,13 +130,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha5))
             {
-                audioSource.PlayOneShot(notes[9]);
+                PlaySound(9);
+
                 keys[1].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            audioSource.PlayOneShot(notes[8]);
+            PlaySound(8);
+
             keys[4].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -132,13 +148,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha6))
             {
-                audioSource.PlayOneShot(notes[11]);
+                PlaySound(11);
+
                 keys[2].GetComponent<Animator>().Play("BlackRight");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            audioSource.PlayOneShot(notes[10]);
+            PlaySound(10);
+
             keys[5].GetComponent<Animator>().Play("WhiteMidRight");
         }
 
@@ -148,13 +166,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha8))
             {
-                audioSource.PlayOneShot(notes[14]);
+                PlaySound(14);
+
                 keys[50].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha8))
         {
-            audioSource.PlayOneShot(notes[13]);
+            PlaySound(13);
+
             keys[54].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -164,13 +184,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha9))
             {
-                audioSource.PlayOneShot(notes[16]);
+                PlaySound(16);
+
                 keys[51].GetComponent<Animator>().Play("BlackRight");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Alpha9))
         {
-            audioSource.PlayOneShot(notes[15]);
+            PlaySound(15);
+
             keys[53].GetComponent<Animator>().Play("WhiteMid");
         }
 
@@ -180,13 +202,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.A))
             {
-                audioSource.PlayOneShot(notes[45]);
+                PlaySound(45);
+
                 keys[21].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            audioSource.PlayOneShot(notes[44]);
+            PlaySound(44);
+
             keys[27].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -196,13 +220,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                audioSource.PlayOneShot(notes[55]);
+                PlaySound(55);
+
                 keys[22].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Z))
         {
-            audioSource.PlayOneShot(notes[54]);
+            PlaySound(54);
+
             keys[25].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -212,13 +238,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.E))
             {
-                audioSource.PlayOneShot(notes[25]);
+                PlaySound(25);
+
                 keys[23].GetComponent<Animator>().Play("BlackRight");
             }
         }
         else if (Input.GetKeyDown(KeyCode.E))
         {
-            audioSource.PlayOneShot(notes[24]);
+            PlaySound(24);
+
             keys[26].GetComponent<Animator>().Play("WhiteMidRight");
         }
 
@@ -228,13 +256,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.T))
             {
-                audioSource.PlayOneShot(notes[50]);
+                PlaySound(50);
+
                 keys[45].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.T))
         {
-            audioSource.PlayOneShot(notes[49]);
+            PlaySound(49);
+
             keys[49].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -244,13 +274,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Y))
             {
-                audioSource.PlayOneShot(notes[58]);
+                PlaySound(58);
+
                 keys[46].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.Y))
         {
-            audioSource.PlayOneShot(notes[57]);
+            PlaySound(57);
+
             keys[48].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -260,13 +292,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.I))
             {
-                audioSource.PlayOneShot(notes[32]);
+                PlaySound(32);
+
                 keys[14].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.I))
         {
-            audioSource.PlayOneShot(notes[31]);
+            PlaySound(31);
+
             keys[20].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -276,13 +310,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.O))
             {
-                audioSource.PlayOneShot(notes[41]);
+                PlaySound(41);
+
                 keys[15].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.O))
         {
-            audioSource.PlayOneShot(notes[40]);
+            PlaySound(40);
+
             keys[18].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -292,13 +328,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
-                audioSource.PlayOneShot(notes[43]);
+                PlaySound(43);
+
                 keys[16].GetComponent<Animator>().Play("BlackRight");
             }
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
-            audioSource.PlayOneShot(notes[42]);
+            PlaySound(42);
+
             keys[19].GetComponent<Animator>().Play("WhiteMidRight");
         }
 
@@ -308,13 +346,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.S))
             {
-                audioSource.PlayOneShot(notes[48]);
+                PlaySound(48);
+
                 keys[55].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            audioSource.PlayOneShot(notes[47]);
+            PlaySound(47);
+
             keys[59].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -324,13 +364,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
-                audioSource.PlayOneShot(notes[23]);
+                PlaySound(23);
+
                 keys[56].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            audioSource.PlayOneShot(notes[22]);
+            PlaySound(22);
+
             keys[58].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -340,13 +382,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.G))
             {
-                audioSource.PlayOneShot(notes[28]);
+                PlaySound(28);
+
                 keys[28].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.G))
         {
-            audioSource.PlayOneShot(notes[27]);
+            PlaySound(27);
+
             keys[34].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -356,13 +400,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.H))
             {
-                audioSource.PlayOneShot(notes[30]);
+                PlaySound(30);
+
                 keys[29].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.H))
         {
-            audioSource.PlayOneShot(notes[29]);
+            PlaySound(29);
+
             keys[32].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -372,13 +418,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.J))
             {
-                audioSource.PlayOneShot(notes[34]);
+                PlaySound(34);
+
                 keys[30].GetComponent<Animator>().Play("BlackRight");
             }
         }
         else if (Input.GetKeyDown(KeyCode.J))
         {
-            audioSource.PlayOneShot(notes[33]);
+            PlaySound(33);
+
             keys[33].GetComponent<Animator>().Play("WhiteMidRight");
         }
 
@@ -388,13 +436,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.L))
             {
-                audioSource.PlayOneShot(notes[37]);
+                PlaySound(37);
+
                 keys[40].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.L))
         {
-            audioSource.PlayOneShot(notes[36]);
+            PlaySound(36);
+
             keys[44].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -404,13 +454,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.W))
             {
-                audioSource.PlayOneShot(notes[60]);
+                PlaySound(60);
+
                 keys[41].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            audioSource.PlayOneShot(notes[59]);
+            PlaySound(59);
+
             keys[43].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -420,13 +472,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.C))
             {
-                audioSource.PlayOneShot(notes[21]);
+                PlaySound(21);
+
                 keys[7].GetComponent<Animator>().Play("BlackLeft");
             }
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            audioSource.PlayOneShot(notes[20]);
+            PlaySound(20);
+
             keys[13].GetComponent<Animator>().Play("WhiteLeft");
         }
 
@@ -436,13 +490,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.V))
             {
-                audioSource.PlayOneShot(notes[53]);
+                PlaySound(53);
+
                 keys[8].GetComponent<Animator>().Play("BlackMid");
             }
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            audioSource.PlayOneShot(notes[52]);
+            PlaySound(52);
+
             keys[11].GetComponent<Animator>().Play("WhiteMidLeft");
         }
 
@@ -452,13 +508,15 @@ public class Piano : NetworkBehaviour
         {
             if (Input.GetKeyDown(KeyCode.B))
             {
-                audioSource.PlayOneShot(notes[19]);
+                PlaySound(19);
+
                 keys[9].GetComponent<Animator>().Play("BlackRight");
             }
         }
         else if (Input.GetKeyDown(KeyCode.B))
         {
-            audioSource.PlayOneShot(notes[18]);
+            PlaySound(18);
+
             keys[12].GetComponent<Animator>().Play("WhiteMidRight");
         }
 
@@ -468,77 +526,88 @@ public class Piano : NetworkBehaviour
         // Key 3
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            audioSource.PlayOneShot(notes[5]);
+            PlaySound(5);
+
             keys[37].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key 7
         if (Input.GetKeyDown(KeyCode.Alpha7))
         {
-            audioSource.PlayOneShot(notes[12]);
+            PlaySound(12);
+
             keys[3].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key 0
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            audioSource.PlayOneShot(notes[0]);
+            PlaySound(0);
+
             keys[52].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key R
         if (Input.GetKeyDown(KeyCode.R))
         {
-            audioSource.PlayOneShot(notes[46]);
+            PlaySound(46);
+
             keys[24].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key U
         if (Input.GetKeyDown(KeyCode.U))
         {
-            audioSource.PlayOneShot(notes[51]);
+            PlaySound(51);
+
             keys[47].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key Q -
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            audioSource.PlayOneShot(notes[17]);
+            PlaySound(17);
+
             keys[17].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key F
         if (Input.GetKeyDown(KeyCode.F))
         {
-            audioSource.PlayOneShot(notes[26]);
+            PlaySound(26);
+
             keys[57].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key K
         if (Input.GetKeyDown(KeyCode.K))
         {
-            audioSource.PlayOneShot(notes[35]);
+            PlaySound(35);
+
             keys[31].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key X
         if (Input.GetKeyDown(KeyCode.X))
         {
-            audioSource.PlayOneShot(notes[56]);
+            PlaySound(56);
+
             keys[42].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key N
         if (Input.GetKeyDown(KeyCode.N))
         {
-            audioSource.PlayOneShot(notes[39]);
+            PlaySound(39);
+
             keys[10].GetComponent<Animator>().Play("WhiteRight");
         }
 
         // Key M
         if (Input.GetKeyDown(KeyCode.M))
         {
-            audioSource.PlayOneShot(notes[38]);
+            PlaySound(38);
+
             keys[60].GetComponent<Animator>().Play("White");
         }
 
@@ -618,7 +687,7 @@ public class Piano : NetworkBehaviour
     }
 
     /// <summary>
-    /// Increase or decrease pinao volume
+    /// Increase or decrease pinao volume | Localy effect only
     /// </summary>
     private void Volume()
     {
@@ -639,6 +708,40 @@ public class Piano : NetworkBehaviour
         {
             if (actualVolume >= 0.1f) actualVolume -= 0.1f;
         }
+    }
+    #endregion
+
+    #region Multiplayer Integration
+    /// <summary>
+    /// Sert à jouer un son en renseignant un id
+    /// </summary>
+    /// <param name="id"></param>
+    public void PlaySound(int id)
+    {
+        if (id >= 0 && id < notes.Length)
+        {
+            SoundIDServerRpc(id);
+        }
+    }
+
+    /// <summary>
+    /// Sert à envoyer au serveur l'ID du son
+    /// </summary>
+    /// <param name="id"></param>
+    [ServerRpc(RequireOwnership = false)]
+    public void SoundIDServerRpc(int id)
+    {
+        SoundIDClientRpc(id);
+    }
+
+    /// <summary>
+    /// Sert à envoyer au client l'ID du son
+    /// </summary>
+    /// <param name="id"></param>
+    [ClientRpc]
+    public void SoundIDClientRpc(int id)
+    {
+        audioSource.PlayOneShot(notes[id]);
     }
     #endregion
 }

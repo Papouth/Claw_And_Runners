@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
     [Header("Shooting Range")]
     public GameObject panelCrosshair;
 
+    [Header("Piano")]
+    public GameObject panelPiano;
+
     [Header("Customization")]
     [Tooltip("Les cases vides de base")] [SerializeField] private Image[] casesImages = new Image[6];
     [HideInInspector] public CaseInfo caseInfo;
@@ -682,6 +685,7 @@ public class UIManager : MonoBehaviour
         panelInsideLobby.SetActive(false);
         panelEndGame.SetActive(false);
         panelCrosshair.SetActive(false);
+        panelPiano.SetActive(false);
         camUI.SetActive(false);
     }
     #endregion
