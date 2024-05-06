@@ -1107,7 +1107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4735575257474459000, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 951099334
+      value: 826028182
       objectReference: {fileID: 0}
     - target: {fileID: 5086162656080698824, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_Name
@@ -1153,7 +1153,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4735575257474459000, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1188,7 +1189,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2159539757239071454, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: GlobalObjectIdHash
-      value: 951099334
+      value: 185082506
       objectReference: {fileID: 0}
     - target: {fileID: 6973609483602122881, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: cam
@@ -1246,7 +1247,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Michelle_BrasDetaches
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2159539757239071454, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
