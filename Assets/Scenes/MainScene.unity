@@ -29475,6 +29475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5355911ffbcf8947926231678d36317, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerActivity: {fileID: 0}
   activityPrefab: {fileID: 98942823224602996}
   stand2TirActivity: 0
   pianoActivity: 1
@@ -57601,6 +57602,63 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7387706064836869012, guid: 3efe7dd2edf0b7447a52c4ce95b670dc, type: 3}
+--- !u!1001 &1839606136
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6256232512208121526, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_Name
+      value: PB_Laugh Palace
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.051725
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -45.69
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: 6744504372565799948, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 51038e50dad020e40bbf41a480552fbf, type: 3}
 --- !u!1 &1841937249
 GameObject:
   m_ObjectHideFlags: 0
@@ -93076,6 +93134,8 @@ MonoBehaviour:
   - {fileID: 5009037778469104957}
   - {fileID: 4778074142409701739}
   - {fileID: 1676595845157901450}
+  asPlayer: 0
+  playerActivity: {fileID: 0}
 --- !u!23 &5991962840006626673
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -108659,3 +108719,4 @@ SceneRoots:
   - {fileID: 1003611368}
   - {fileID: 1053500810}
   - {fileID: 1622513680}
+  - {fileID: 1839606136}
