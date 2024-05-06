@@ -8,19 +8,20 @@ public class InputManager : MonoBehaviour
     #region Variables
     private Vector2 moveInput;
     private Vector2 mousePosition;
+    private Vector2 scrollMouse;
+
     private bool canJump;
     private bool canInteract;
     private bool canSelect;
-
-    private float scrollMouse;
+    private bool takeSlot1;
+    private bool takeSlot2;
     #endregion
 
 
     #region Bool Functions
     public Vector2 Move => moveInput;
     public Vector2 Look => mousePosition;
-
-    public float ScrollMouse => scrollMouse;
+    public Vector2 ScrollMouse => scrollMouse;
 
     public bool CanJump
     {
@@ -37,6 +38,18 @@ public class InputManager : MonoBehaviour
     {
         get { return canSelect; }
         set { canSelect = value; }
+    }
+
+    public bool TakeSlot1
+    {
+        get { return takeSlot1; }
+        set { takeSlot1 = value; }
+    }
+
+    public bool TakeSlot2
+    {
+        get { return takeSlot2; }
+        set { takeSlot2 = value; }
     }
     #endregion
 
@@ -69,19 +82,31 @@ public class InputManager : MonoBehaviour
         canSelect = !canSelect;
     }
 
-    private void OnScroll(InputValue value)
+    public void OnSlot1()
     {
-        if (value.Get<float>() >= 1)
+        takeSlot1 = true;
+    }
+
+    public void OnSlot2()
+    {
+        takeSlot2 = true;
+    }
+
+    public void OnNextSlot(InputValue value)
+    {
+        scrollMouse = value.Get<Vector2>();
+
+        if (scrollMouse.y >= 1)
         {
-            scrollMouse = 1;
+            scrollMouse.y = 1;
         }
-        else if (value.Get<float>() <= -1)
+        else if (scrollMouse.y <= -1)
         {
-            scrollMouse = -1;
+            scrollMouse.y = -1;
         }
         else
         {
-            scrollMouse = 0;
+            scrollMouse.y = 0;
         }
     }
     #endregion
