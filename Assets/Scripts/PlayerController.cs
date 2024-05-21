@@ -30,6 +30,15 @@ public class PlayerController : NetworkBehaviour
     [SerializeField] private float groundDistance = 0.4f;
     [SerializeField] private LayerMask groundMask;
 
+    [SerializeField] private Transform ladderCheck;
+    [SerializeField] private float ladderDistance;
+    [SerializeField] private LayerMask ladderMask;
+    private bool isLadder;
+
+    [Tooltip("FootSteps")]
+    [SerializeField] private float stepSize;
+    private float timeStep;
+
     private Vector3 velocity;
     private bool isGrounded;
 
@@ -43,6 +52,8 @@ public class PlayerController : NetworkBehaviour
 
     private UIManager canvas;
     private TeamSelection teamSelection;
+    private FootStepsSync footStepsSync;
+    private PlayerInventory playerInventory;
 
     [SerializeField] private bool MathisDoitAnimer;
     #endregion
@@ -57,6 +68,12 @@ public class PlayerController : NetworkBehaviour
 
         inputManager = GetComponent<InputManager>();
         controller = GetComponent<CharacterController>();
+
+        footStepsSync = GetComponentInChildren<FootStepsSync>();
+
+        playerInventory = GetComponent<PlayerInventory>();
+
+        timeStep = stepSize;
     }
 
     public void MathisAnim()
@@ -131,31 +148,98 @@ public class PlayerController : NetworkBehaviour
         // float z -> forward and backward
         // velocity.y -> up and down
 
-        // GROUN CHECK
+        // GROUND CHECK
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+
+        isLadder = Physics.CheckSphere(ladderCheck.position, ladderDistance, ladderMask);
 
         if (isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
         }
 
+        if (isLadder && velocity.y < 0) velocity.y = -2f;
+
         // MOVEMENT
         float x = inputManager.Move.x;
         float z = inputManager.Move.y;
         
         Vector3 move = transform.right * x + transform.forward * z;
+
+        // SON FOOTSTEP
+        if (move.magnitude != 0 && isGrounded)
+        {
+            // STEP SIZE TIMER
+            if (timeStep > 0)
+            {
+                timeStep -= Time.deltaTime;
+            }
+            else if (timeStep <= 0)
+            {
+                footStepsSync.PlaySoundStep(Random.Range(0, footStepsSync.gameSounds.Length));
+                timeStep = stepSize;
+            }
+        }
+        else if (move.magnitude == 0 || !isGrounded)
+        {
+            timeStep = 0;
+            footStepsSync.source.Stop();
+        }
         
+
+        // ANIMATION
+        if (move.magnitude > 0.1 && isGrounded)
+        {
+            if (playerInventory.animatorsReady)
+            {
+                // Animation de course
+                playerInventory.serverAnimator.SetInteger("IWR", 1);
+                playerInventory.clientAnimator.SetInteger("IWR", 1);
+
+                UpdateAnimServerRpc(1);
+            }
+        }
+        else if (move.magnitude <= 0.1 && isGrounded)
+        {
+            if (playerInventory.animatorsReady)
+            {
+                // Animation d'Idle
+                playerInventory.serverAnimator.SetInteger("IWR", 0);
+                playerInventory.clientAnimator.SetInteger("IWR", 0);
+
+                UpdateAnimServerRpc(0);
+            }
+        }
+
         controller.Move(move * speed * Time.deltaTime);
 
         // SAUT
         if (inputManager.CanJump && isGrounded)
         {
+            // Animation 
+            if (playerInventory.animatorsReady)
+            {
+                // Animation d'Idle
+                playerInventory.serverAnimator.SetInteger("IWR", 5);
+                playerInventory.clientAnimator.SetInteger("IWR", 5);
+
+                UpdateAnimServerRpc(5);
+            }
+
             inputManager.CanJump = false;
             velocity.y = Mathf.Sqrt(jump * -2f * gravity);
         }
         else if (inputManager.CanJump && !isGrounded)
         {
+            //inputManager.CanJump = false;
+        }
+
+        // LADDER
+        if (inputManager.CanJump && isLadder)
+        {
             inputManager.CanJump = false;
+            velocity.y = Mathf.Sqrt(jump * -2f * gravity);
         }
 
         velocity.y += gravity * Time.deltaTime;
@@ -172,13 +256,32 @@ public class PlayerController : NetworkBehaviour
             UpdateClientPositionServerRpc(z, x, velocity.y);
         }
     }
+    #endregion
 
+    #region ServerRpc
     [ServerRpc]
     public void UpdateClientPositionServerRpc(float forwardBackward, float leftRight, float upDown)
     {
         forwardBackPosition.Value = forwardBackward;
         leftRightPosition.Value = leftRight;
         upDownPosition.Value = upDown;
+    }
+
+    [ServerRpc]
+    public void UpdateAnimServerRpc(int animInt)
+    {
+        playerInventory.serverAnimator.SetInteger("IWR", animInt);
+        playerInventory.clientAnimator.SetInteger("IWR", animInt);
+
+        UpdateAnimClientRpc(animInt);
+    }
+    #endregion
+
+    #region ClientRpc
+    [ClientRpc]
+    private void UpdateAnimClientRpc(int animInt)
+    {
+        playerInventory.clientAnimator.SetInteger("IWR", animInt);
     }
     #endregion
 }

@@ -5,23 +5,48 @@ using Unity.Netcode;
 
 public class ReleasePlayer : NetworkBehaviour
 {
-    private int idPlayerReleased; 
+    #region Varaibles
+    private int idPlayerReleased;
+    private AudioSync audioSync;
+    private GameManager GM;
+    #endregion
 
 
+    #region Built-In Methods
+    private void Start()
+    {
+        audioSync = GetComponentInParent<AudioSync>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        GM = FindObjectOfType<GameManager>();
+    }
+    #endregion
+
+
+    #region Customs Methods
     private void OnTriggerEnter(Collider other)
     {
         // SI le joueur que je frappe à le layer capturé
         if (other.gameObject.layer == 10 && IsOwner)
         {
+            audioSync.PlaySound(7);
+
             idPlayerReleased = other.GetComponent<PlayerInfo>().playerId;
 
             // Layer 6 pour être un elfe libre
             other.gameObject.layer = 6;
 
+            // RPC Call GM
+            GMActionServerRpc();
+
             if (IsOwner) ReleaseLayerServerRpc((ulong)idPlayerReleased, 6);
         }
     }
+    #endregion
 
+    #region Server RPC
     [ServerRpc]
     private void ReleaseLayerServerRpc(ulong idPlayer, int layer)
     {
@@ -30,9 +55,20 @@ public class ReleasePlayer : NetworkBehaviour
         ReleaseLayerClientRpc(idPlayer, layer);
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void GMActionServerRpc()
+    {
+        GM.actualRunnersCaptured--;
+        GM.totalRunnersReleased++;
+    }
+    #endregion
+
+
+    #region Client RPC
     [ClientRpc]
     private void ReleaseLayerClientRpc(ulong idPlayer, int layer)
     {
         if (IsServer) NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
     }
+    #endregion
 }

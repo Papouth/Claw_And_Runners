@@ -1,97 +1,78 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
 public class TriggerActivity : MonoBehaviour
 {
+    #region Variables
+    [HideInInspector] public PlayerActivity playerActivity;
+
     [SerializeField] private GameObject activityPrefab;
-
     [SerializeField] private bool stand2TirActivity;
+    [SerializeField] private bool pianoActivity;
+
     private StandTir standTir;
-
-    private PlayerActivity activity;
-    private GameObject player;
-    private bool startActivity;
-    private bool interactActivity;
+    private Piano piano;
+    #endregion
 
 
-    private void Awake()
+    #region Built-In Methods
+    private void Start()
     {
+        // Assignation de l'activité trigger
         if (stand2TirActivity) standTir = activityPrefab.GetComponent<StandTir>();
+
+        if (pianoActivity) piano = activityPrefab.GetComponent<Piano>();
     }
 
-    private void Update()
-    {
-        if (player != null)
-        {
-            if (player.GetComponent<InputManager>().CanInteract)
-            {
-                player.GetComponent<InputManager>().CanInteract = false;
-                Debug.Log("interact");
-                InteractActivity();
-            }
-        }
-    }
-
+    /// <summary>
+    /// Booléen en true de l'activité correspondante
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
-        //Debug.Log(other.name);
-
-        if (other.gameObject.CompareTag("Player"))
+        if (other.GetComponent<PlayerActivity>())
         {
-            Debug.Log(other.name + " here");
+            Debug.Log("Trigger enter activity");
 
-            player = other.gameObject;
-            startActivity = true;
+            playerActivity = other.GetComponent<PlayerActivity>();
+
+            playerActivity.inTrigger = true;
+
+            if (stand2TirActivity) playerActivity.standTir = true;
+
+            if (pianoActivity)
+            {
+                playerActivity.piano = true;
+
+                piano.playerActivity = playerActivity;
+                piano.asPlayer = true;
+            }
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            Debug.Log(other.name + " stay");
-
-            player = other.gameObject;
-            startActivity = true;
-        }
-    }
-
+    /// <summary>
+    /// Booléen activité correspondante en false + playerActivity = null
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.GetComponent<PlayerActivity>())
         {
-            if (other.GetComponent<PlayerInfo>().isCops)
-            {
-                activity = other.GetComponent<PlayerActivity>();
-                activity.Pistol(false);
+            Debug.Log("Trigger exit activity");
 
-                other.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", false);
-
-                startActivity = false;
-                interactActivity = false;
-            }
-        }
-    }
-
-    private void InteractActivity()
-    {
-        if (startActivity && !interactActivity)
-        {
-            interactActivity = true;
+            playerActivity.inTrigger = false;
 
             // Reset activité
-            standTir.ResetActivity();
+            if (stand2TirActivity) standTir.ResetActivity();
 
-            // Pour l'instant stand de tir dispo seulement pour le policier
-            if (player.GetComponent<PlayerInfo>().isCops)
+            if (pianoActivity)
             {
-                activity = player.GetComponent<PlayerActivity>();
-                activity.Pistol(true);
-
-                player.GetComponentInChildren<PlayerShoot>().playerAnimator.SetBool("PistolOn", true);
+                piano.asPlayer = false;
+                piano.playerActivity = null;
             }
         }
-        
     }
+    #endregion
 }

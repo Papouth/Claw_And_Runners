@@ -1,64 +1,67 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Netcode;
 
-public class PlayerShoot : MonoBehaviour
+public class PlayerShoot : NetworkBehaviour
 {
     #region Variables
-    [SerializeField] private float RPM;
-    private float rpmMult = 60;
-    private float rateOfFire;
-    private bool firstBullet;
     private Ray ray;
-    private Camera cam;
+    [SerializeField] private Camera cam;
     [SerializeField] private LayerMask aimColLayermask;
 
     public Animator playerAnimator;
     private InputManager inputManager;
+    private PlayerActivity playerActivity;
     #endregion
 
+
+    #region Built-In Methods
     private void Start()
     {
         inputManager = GetComponentInParent<InputManager>();
 
-        rateOfFire = rpmMult / RPM;
-
-        cam = GetComponentInParent<Camera>();
+        playerActivity = GetComponentInParent<PlayerActivity>();
     }
 
     private void Update()
     {
-        Shoot();
-    }
+        if (IsOwner)
+        {
+            Debug.Log("Passe Update");
 
+            Shoot();
+        }
+    }
+    #endregion
+
+
+    #region Customs Methods
+    /// <summary>
+    /// Tir autorisé quand on se trouve dans l'activité de tir
+    /// </summary>
     private void Shoot()
     {
-        if (inputManager.CanSelect)
-        {
-            if (!firstBullet)
-            {
-                firstBullet = true;
-                InstantiateBullet();
-            }
+        if (playerActivity.playerInActivity) Debug.Log("AAA : Player dans une activité");
 
-            rateOfFire -= Time.deltaTime;
+        if (playerActivity.standTir) Debug.Log("BBB : Player dans le stand de tir");
 
-            if (rateOfFire < 0)
-            {
-                rateOfFire = rpmMult / RPM;
-                InstantiateBullet();
-            }
-        }
-        else if (inputManager.CanSelect && firstBullet)
+        if (inputManager.CanSelect && playerActivity.playerInActivity && playerActivity.standTir)
         {
-            firstBullet = false;
-            rateOfFire = rpmMult / RPM;
+            inputManager.CanSelect = false;
+
+            Debug.Log("Pre instantiate bullet");
+
+            InstantiateBullet();
         }
     }
 
     private void InstantiateBullet()
     {
+        Debug.Log("Déclenchement animator");
+
         playerAnimator.SetTrigger("PistolShot");
+
         Debug.Log("Bang");
 
         // Raycast shoot
@@ -71,4 +74,5 @@ public class PlayerShoot : MonoBehaviour
             raycastHit.collider.GetComponentInParent<StandTarget>().TargetHit();
         }
     }
+    #endregion
 }

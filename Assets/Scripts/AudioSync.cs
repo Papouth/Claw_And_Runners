@@ -6,27 +6,33 @@ using Unity.Netcode;
 [RequireComponent(typeof(AudioSource))]
 public class AudioSync : NetworkBehaviour
 {
-    private Camera playerCam;
-    private AudioListener listener;
-    private AudioSource source;
-    [SerializeField] private AudioClip[] gameSounds;
+    #region Variables
+    public AudioListener listener;
+    public AudioSource source;
+    public AudioClip[] gameSounds;
+    #endregion
 
 
-    private void Start()
+    #region Built-In Methods
+    public virtual void Start()
     {
-        playerCam = GetComponentInChildren<Camera>();
-        listener = playerCam.GetComponent<AudioListener>();
         source = GetComponent<AudioSource>();
 
         if (IsLocalPlayer) listener.enabled = true;
         else listener.enabled = false;
     }
 
-    private void Update()
-    {
-        VolumeModifier();
-    }
+    //private void Update()
+    //{
+    //    VolumeModifier();
+    //}
+    #endregion
 
+
+    #region Customs Methods
+    /// <summary>
+    /// Paramètre rajoutable plus tard
+    /// </summary>
     private void VolumeModifier()
     {
         //if (Input.GetKeyDown(KeyCode.B)) AudioListener.volume -= 0.1f;
@@ -34,7 +40,7 @@ public class AudioSync : NetworkBehaviour
     }
 
     /// <summary>
-    /// Sert à jouer un son
+    /// Sert à jouer un son en renseignant un id
     /// </summary>
     /// <param name="id"></param>
     public void PlaySound(int id)
@@ -64,4 +70,5 @@ public class AudioSync : NetworkBehaviour
     {
         source.PlayOneShot(gameSounds[id]);
     }
+    #endregion
 }

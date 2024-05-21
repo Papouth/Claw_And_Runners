@@ -20,8 +20,10 @@ public class VirtualJail : NetworkBehaviour
     public bool prisonOn;
     private InputManager inputManager;
     [SerializeField] private GameObject boxColObj;
-    private BoxCollider bCol;
+    private GameObject cloneBCol;
     private PlayerInfo PI;
+    [SerializeField] private PlayerInventory playerInventory;
+    private bool rdmMtl;
     #endregion
 
     #region Built-In Methods
@@ -29,13 +31,14 @@ public class VirtualJail : NetworkBehaviour
     {
         inputManager = GetComponent<InputManager>();
         PI = GetComponent<PlayerInfo>();
+        playerInventory = GetComponent<PlayerInventory>();
     }
 
     private void Update()
     {
         if (inputManager.CanSelect)
         {
-            PutAJail();
+            if (playerInventory.isSlot2 && !playerInventory.inActivity) PutAJail();
 
             inputManager.CanSelect = false;
         }
@@ -47,7 +50,7 @@ public class VirtualJail : NetworkBehaviour
     // Déclenchement de la pose de la prison pour le flic
     private void PutAJail()
     {
-        // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu
+        // Rajout check en main du poseur de prison + après que le joueur soit TP à sa position initiale de jeu et qu'il n'est pas dans une activité
         if (IsOwner && !prisonOn && PI.tsReadySelection)
         {
             //Debug.Log("je pose une prison");
@@ -101,16 +104,17 @@ public class VirtualJail : NetworkBehaviour
     {
         for (int a = 0; a < spheresList.Count; a++)
         {
-            spheresList[a].GetComponent<SphereCollider>().enabled = false;
+            cloneBCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation); 
 
-            bCol = Instantiate(boxColObj, spheresList[a].transform.position, spheresList[a].transform.rotation, spheresList[a].transform).GetComponent<BoxCollider>();
-            bCol.GetComponent<NetworkObject>().Spawn();
-            bCol.enabled = true;
+            rdmMtl = !rdmMtl;
+            if (rdmMtl == false)
+            {
+                cloneBCol.GetComponentInChildren<MeshRenderer>().enabled = false;
+            }
 
-            bCol.transform.localScale = new Vector3(0.08f, 30, 0.08f);
+            cloneBCol.GetComponent<NetworkObject>().Spawn();
 
-            bCol.transform.gameObject.layer = 13;
-            bCol.transform.parent = spheresList[a].transform;
+            cloneBCol.transform.parent = cloneJail.transform;
         }
 
         CheckSurface();
@@ -148,13 +152,15 @@ public class VirtualJail : NetworkBehaviour
                         // Le Vecteur Forward est dirigé vers la sphère suivante
                         spheresList[i].transform.LookAt(spheresList[i + 1].transform);
 
-                        bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
-                        bCol.GetComponent<NetworkObject>().Spawn();
-                        bCol.enabled = true;
+                        cloneBCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation);
 
+                        // mtl
+                        cloneBCol.GetComponentInChildren<MeshRenderer>().enabled = false;
 
-                        bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
-                        bCol.transform.localPosition += new Vector3(dist/2f, 0f, 0f);
+                        cloneBCol.GetComponent<NetworkObject>().Spawn();
+ 
+                        cloneBCol.transform.localScale = new Vector3(0.16f, 40f, dist);
+                        cloneBCol.transform.localPosition += new Vector3(dist / 2f, 0f, 0f);
                     }
                 }
                 else if (i == spheresList.Count - 1)
@@ -166,14 +172,22 @@ public class VirtualJail : NetworkBehaviour
                         // Le Vecteur Forward est dirigé vers la sphère suivante
                         spheresList[i].transform.LookAt(spheresList[0].transform);
 
-                        bCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation, spheresList[i].transform).GetComponent<BoxCollider>();
-                        bCol.GetComponent<NetworkObject>().Spawn();
-                        bCol.enabled = true;
+                        cloneBCol = Instantiate(boxColObj, spheresList[i].transform.position, spheresList[i].transform.rotation);
 
-                        bCol.transform.localScale = new Vector3(0.08f, 30f, dist);
-                        bCol.transform.localPosition += new Vector3(dist/2f, 0f, 0f);
+                        // mtl
+                        cloneBCol.GetComponentInChildren<MeshRenderer>().enabled = false;
+
+                        cloneBCol.GetComponent<NetworkObject>().Spawn();
+
+                        cloneBCol.transform.localScale = new Vector3(0.16f, 40f, dist);
+                        cloneBCol.transform.localPosition += new Vector3(dist / 2f, 0f, 0f);
                     }
                 }
+            }
+
+            for (int i = 0; i < spheresList.Count; i++)
+            {
+                Destroy(spheresList[i].gameObject);
             }
         }
     }
