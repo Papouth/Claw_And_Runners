@@ -68,6 +68,7 @@ public class GameManager : NetworkBehaviour
             }
 
             Timer();
+            Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + runnersLimitGM.Value + " runners total");
         }
     }
     #endregion
@@ -114,7 +115,7 @@ public class GameManager : NetworkBehaviour
 
     public void CheckCopsWin()
     {
-        if (actualRunnersCaptured == TS.runnersLimit.Value)
+        if (actualRunnersCaptured == runnersLimitGM.Value)
         {
             // Victoire / Défaite
             UIM.panelEndGame.SetActive(true);
@@ -122,7 +123,7 @@ public class GameManager : NetworkBehaviour
             // RPC Call PanelEndGame
             DisplayPanelEndGameServerRpc();
 
-            Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + TS.runnersLimit.Value + " runners total");
+            Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + runnersLimitGM.Value + " runners total");
 
             UIM.winText.text = "Le policier a capturé tout le monde !";
 
