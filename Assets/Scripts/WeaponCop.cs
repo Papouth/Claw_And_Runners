@@ -71,7 +71,7 @@ public class WeaponCop : NetworkBehaviour
     private void EnableColServerRpc()
     {
         hitCollider.SetActive(true);
-        Invoke("DisableColServerRpc", 0.5f);
+        Invoke("DisableColServerRpc", 0.03f);
 
         EnableColClientRpc();
     }
@@ -99,7 +99,7 @@ public class WeaponCop : NetworkBehaviour
     private void EnableColClientRpc()
     {
         hitCollider.SetActive(true);
-        Invoke("DisableColClientRpc", 0.5f);
+        Invoke("DisableColClientRpc", 0.03f);
     }
 
     [ClientRpc]

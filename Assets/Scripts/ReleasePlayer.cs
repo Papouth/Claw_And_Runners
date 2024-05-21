@@ -39,7 +39,7 @@ public class ReleasePlayer : NetworkBehaviour
             other.gameObject.layer = 6;
 
             // RPC Call GM
-            GMActionServerRpc();
+            GMRPActionServerRpc();
 
             if (IsOwner) ReleaseLayerServerRpc((ulong)idPlayerReleased, 6);
         }
@@ -56,7 +56,7 @@ public class ReleasePlayer : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void GMActionServerRpc()
+    private void GMRPActionServerRpc()
     {
         GM.actualRunnersCaptured--;
         GM.totalRunnersReleased++;

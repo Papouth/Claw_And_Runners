@@ -33,6 +33,9 @@ public class CapturePlayer : NetworkBehaviour
     {
         if (other.gameObject.CompareTag("runners") && IsOwner)
         {
+            Debug.Log("Passe Dans le trigger enter de capture");
+
+
             audioSync.PlaySound(6);
 
             idPlayerCaptured = other.GetComponent<PlayerInfo>().playerId;
@@ -40,7 +43,7 @@ public class CapturePlayer : NetworkBehaviour
             other.gameObject.layer = 10;
 
             // RPC Call GM
-            GMActionServerRpc();
+            GMCPActionServerRpc();
 
             if (IsOwner) JailLayerServerRpc((ulong)idPlayerCaptured, 10);
 
@@ -63,10 +66,14 @@ public class CapturePlayer : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void GMActionServerRpc()
+    private void GMCPActionServerRpc()
     {
+        Debug.Log("Passe une fois");
+
         GM.actualRunnersCaptured++;
         GM.totalRunnersCaptured++;
+
+        Debug.Log(GM.actualRunnersCaptured + " nombre de runners capturé");
 
         if (GM.actualRunnersCaptured == GM.runnersLimitGM.Value) GM.CheckCopsWin();
     }
