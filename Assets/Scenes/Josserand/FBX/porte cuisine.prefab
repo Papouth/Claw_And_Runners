@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2409414033403650708
+--- !u!1 &3871346757610941974
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 696209100734636936}
-  - component: {fileID: 6068022174095520532}
-  - component: {fileID: 4805481448582493911}
+  - component: {fileID: 1888055919199323368}
   m_Layer: 0
   m_Name: porte cuisine
   m_TagString: Untagged
@@ -18,13 +16,48 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &696209100734636936
+--- !u!4 &1888055919199323368
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2409414033403650708}
+  m_GameObject: {fileID: 3871346757610941974}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1376771071457756817}
+  - {fileID: 5761223582637512690}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4800338245008559250
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1376771071457756817}
+  - component: {fileID: 593063826569846881}
+  - component: {fileID: 4479374981931729930}
+  m_Layer: 0
+  m_Name: encadrement_porte_manoir
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1376771071457756817
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4800338245008559250}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -33,21 +66,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1888055919199323368}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6068022174095520532
+--- !u!33 &593063826569846881
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2409414033403650708}
-  m_Mesh: {fileID: -3977248515334627216, guid: 9fd8f7ef3456b044cb8367d541b71aab, type: 3}
---- !u!23 &4805481448582493911
+  m_GameObject: {fileID: 4800338245008559250}
+  m_Mesh: {fileID: 8280086395364964241, guid: 2da1e3d630c4fd140b7e839fdb018565, type: 3}
+--- !u!23 &4479374981931729930
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2409414033403650708}
+  m_GameObject: {fileID: 4800338245008559250}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -83,7 +116,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &3871346757610941974
+--- !u!1 &7662425498405164327
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,56 +124,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1888055919199323368}
+  - component: {fileID: 5761223582637512690}
+  - component: {fileID: 2522687074112272173}
+  - component: {fileID: 7142491755259029566}
   m_Layer: 0
-  m_Name: porte cuisine
+  m_Name: porte_manoir
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1888055919199323368
+--- !u!4 &5761223582637512690
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3871346757610941974}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 7706966218696470803}
-  - {fileID: 696209100734636936}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8079026936321282324
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7706966218696470803}
-  - component: {fileID: 5947730050976749836}
-  - component: {fileID: 4863438297395136520}
-  m_Layer: 0
-  m_Name: encadrement porte cuisine
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7706966218696470803
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8079026936321282324}
+  m_GameObject: {fileID: 7662425498405164327}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
@@ -149,21 +149,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1888055919199323368}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &5947730050976749836
+--- !u!33 &2522687074112272173
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8079026936321282324}
-  m_Mesh: {fileID: -300244193874385336, guid: 9fd8f7ef3456b044cb8367d541b71aab, type: 3}
---- !u!23 &4863438297395136520
+  m_GameObject: {fileID: 7662425498405164327}
+  m_Mesh: {fileID: 4155620172400021370, guid: 2da1e3d630c4fd140b7e839fdb018565, type: 3}
+--- !u!23 &7142491755259029566
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8079026936321282324}
+  m_GameObject: {fileID: 7662425498405164327}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
