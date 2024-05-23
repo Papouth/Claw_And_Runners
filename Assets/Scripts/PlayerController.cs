@@ -164,7 +164,7 @@ public class PlayerController : NetworkBehaviour
         // MOVEMENT
         float x = inputManager.Move.x;
         float z = inputManager.Move.y;
-        
+
         Vector3 move = transform.right * x + transform.forward * z;
 
         // SON FOOTSTEP
@@ -186,7 +186,7 @@ public class PlayerController : NetworkBehaviour
             timeStep = 0;
             footStepsSync.source.Stop();
         }
-        
+
 
         // ANIMATION
         if (move.magnitude > 0.1 && isGrounded)
