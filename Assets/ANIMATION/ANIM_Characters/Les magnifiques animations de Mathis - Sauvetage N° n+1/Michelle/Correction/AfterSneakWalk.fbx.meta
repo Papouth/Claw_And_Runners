@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5da10a13276d018419196abccda2249b
+guid: 0e7e52edbb0ea0b4ea17f9a549925589
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -19,15 +19,12 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'MarcheDiscrete' has import animation warnings
+    animationImportWarnings: "\nClip 'root|AfterSneakWalk' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'spine_01.x' has translation animation that
       will be discarded.\n\t'c_middle1.l' has translation animation that will be
       discarded.\n\t'c_pinky1.l' has translation animation that will be discarded.\n\t'c_ring1.l'
-      has translation animation that will be discarded.\n\t'c_middle1.r' has translation
-      animation that will be discarded.\n\t'c_pinky1.r' has translation animation
-      that will be discarded.\n\t'c_ring1.r' has translation animation that will
-      be discarded.\n"
+      has translation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -41,18 +38,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: MarcheDiscrete
-      takeName: MarcheDiscrete
-      internalID: -1540567881694552430
+      name: root|AfterSneakWalk
+      takeName: root|AfterSneakWalk
+      internalID: 184416594276911986
       firstFrame: 0
-      lastFrame: 67
+      lastFrame: 156
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
