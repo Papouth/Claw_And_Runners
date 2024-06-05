@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5da10a13276d018419196abccda2249b
+guid: ddf3e252a7637464f8dd20657bc4c88b
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -19,15 +19,10 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'MarcheDiscrete' has import animation warnings
+    animationImportWarnings: "\nClip 'root|GlissementHand' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'spine_01.x' has translation animation that
-      will be discarded.\n\t'c_middle1.l' has translation animation that will be
-      discarded.\n\t'c_pinky1.l' has translation animation that will be discarded.\n\t'c_ring1.l'
-      has translation animation that will be discarded.\n\t'c_middle1.r' has translation
-      animation that will be discarded.\n\t'c_pinky1.r' has translation animation
-      that will be discarded.\n\t'c_ring1.r' has translation animation that will
-      be discarded.\n"
+      to improve retargeting quality.\n\t'forearm_stretch.r' has scale animation
+      that will be discarded.\n\t'hand.r' has scale animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -41,26 +36,26 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: MarcheDiscrete
-      takeName: MarcheDiscrete
-      internalID: -1540567881694552430
+      name: GlissementHand
+      takeName: root|GlissementHand
+      internalID: 2597804250581582050
       firstFrame: 0
-      lastFrame: 67
+      lastFrame: 225
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 0
-      keepOriginalPositionY: 0
+      keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
-      heightFromFeet: 1
+      heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
