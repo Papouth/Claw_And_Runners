@@ -12,6 +12,11 @@ public class TriggerActivity : MonoBehaviour
     [SerializeField] private bool stand2TirActivity;
     [SerializeField] private bool pianoActivity;
 
+    // Porte
+    [SerializeField] private bool porteOption;
+    [SerializeField] private float timerCloseDoor;
+    private Animator porteAnimator;
+
     private StandTir standTir;
     private Piano piano;
     #endregion
@@ -24,6 +29,13 @@ public class TriggerActivity : MonoBehaviour
         if (stand2TirActivity) standTir = activityPrefab.GetComponent<StandTir>();
 
         if (pianoActivity) piano = activityPrefab.GetComponent<Piano>();
+
+        if (porteOption) porteAnimator = activityPrefab.GetComponent<Animator>();
+    }
+
+    private void Update()
+    {
+        if (playerActivity != null) DoorScript();
     }
 
     /// <summary>
@@ -34,6 +46,17 @@ public class TriggerActivity : MonoBehaviour
     {
         if (other.GetComponent<PlayerActivity>())
         {
+            if (porteOption)
+            {
+                playerActivity = other.GetComponent<PlayerActivity>();
+
+                playerActivity.porte = true;
+
+                playerActivity.inTrigger = true;
+
+                return;
+            }
+
             Debug.Log("Trigger enter activity");
 
             playerActivity = other.GetComponent<PlayerActivity>();
@@ -60,6 +83,15 @@ public class TriggerActivity : MonoBehaviour
     {
         if (other.GetComponent<PlayerActivity>())
         {
+            if (porteOption)
+            {
+                playerActivity.porte = false;
+
+                playerActivity.inTrigger = false;
+
+                return;
+            }
+
             Debug.Log("Trigger exit activity");
 
             playerActivity.inTrigger = false;
@@ -73,6 +105,32 @@ public class TriggerActivity : MonoBehaviour
                 piano.playerActivity = null;
             }
         }
+    }
+    #endregion
+
+    #region Customs Methods
+    private void DoorScript()
+    {
+        if (porteOption && playerActivity.porte)
+        {
+            // On ouvre la porte
+            playerActivity.doorIsOpen = true;
+
+            // Animation ouverture de la porte
+            if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", true);
+
+            // Déclenchement du timer avant la fermeture
+            Invoke("CloseDoor", timerCloseDoor);
+        }
+    }
+
+    private void CloseDoor()
+    {
+        // On ferme la porte
+        playerActivity.doorIsOpen = false;
+
+        // Animation fermeture de la porte
+        if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", false);
     }
     #endregion
 }
