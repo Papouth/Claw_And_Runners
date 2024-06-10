@@ -16,7 +16,9 @@ public class TriggerActivity : MonoBehaviour
     [SerializeField] private bool porteOption;
     [SerializeField] private float timerCloseDoor;
     private Animator porteAnimator;
-    [SerializeField] private bool thisDoorOnly;
+    private bool thisDoorOnly;
+    [SerializeField] private AudioClip[] doorSounds; // close et open
+    private AudioSource audioSource;
 
     private StandTir standTir;
     private Piano piano;
@@ -126,6 +128,8 @@ public class TriggerActivity : MonoBehaviour
 
             OpenDoorServerRpc();
 
+            PlaySound(1);
+
             // Déclenchement du timer avant la fermeture
             Invoke("CloseDoor", timerCloseDoor);
         }
@@ -134,6 +138,8 @@ public class TriggerActivity : MonoBehaviour
     private void CloseDoor()
     {
         CloseDoorServerRpc();
+
+        PlaySound(0);
 
         // On ferme la porte
         playerActivity.doorIsOpen = false;
@@ -197,6 +203,41 @@ public class TriggerActivity : MonoBehaviour
 
         // Animation fermeture de la porte
         if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", false);
+    }
+    #endregion
+
+
+    #region Sounds Management
+    /// <summary>
+    /// Sert à jouer un son en renseignant un id
+    /// </summary>
+    /// <param name="id"></param>
+    public void PlaySound(int id)
+    {
+        if (id >= 0 && id < doorSounds.Length)
+        {
+            SoundIDServerRpc(id);
+        }
+    }
+
+    /// <summary>
+    /// Sert à envoyer au serveur l'ID du son
+    /// </summary>
+    /// <param name="id"></param>
+    [ServerRpc(RequireOwnership = false)]
+    public void SoundIDServerRpc(int id)
+    {
+        SoundIDClientRpc(id);
+    }
+
+    /// <summary>
+    /// Sert à envoyer au client l'ID du son
+    /// </summary>
+    /// <param name="id"></param>
+    [ClientRpc]
+    public void SoundIDClientRpc(int id)
+    {
+        audioSource.PlayOneShot(doorSounds[id]);
     }
     #endregion
 }
