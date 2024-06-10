@@ -23,6 +23,8 @@ public class PlayerActivity : NetworkBehaviour
     [HideInInspector] public bool standTir;
     [HideInInspector] public bool piano;
 
+    [HideInInspector] public bool porte;
+    [HideInInspector] public bool doorIsOpen;
 
     [Header("Stand de Tir")]
     [SerializeField] private GameObject pistolCopPrefab;
@@ -143,7 +145,8 @@ public class PlayerActivity : NetworkBehaviour
 
             Debug.Log("interact");
 
-            InteractActivity();
+            if (porte) OpenDoor();
+            else InteractActivity();
         }
     }
 
@@ -208,6 +211,12 @@ public class PlayerActivity : NetworkBehaviour
         Debug.Log("J'interragis avec le piano");
 
         GM.UIM.panelPiano.SetActive(true);
+    }
+
+    private void OpenDoor()
+    {
+        // On récupère la bonne porte et on l'ouvre
+        if (!doorIsOpen) doorIsOpen = true;
     }
     #endregion
 }
