@@ -16,6 +16,7 @@ public class TriggerActivity : MonoBehaviour
     [SerializeField] private bool porteOption;
     [SerializeField] private float timerCloseDoor;
     private Animator porteAnimator;
+    [SerializeField] private bool thisDoorOnly;
 
     private StandTir standTir;
     private Piano piano;
@@ -54,6 +55,8 @@ public class TriggerActivity : MonoBehaviour
 
                 playerActivity.inTrigger = true;
 
+                thisDoorOnly = true;
+
                 return;
             }
 
@@ -89,6 +92,8 @@ public class TriggerActivity : MonoBehaviour
 
                 playerActivity.inTrigger = false;
 
+                thisDoorOnly = false;
+
                 return;
             }
 
@@ -111,7 +116,7 @@ public class TriggerActivity : MonoBehaviour
     #region Customs Methods
     private void DoorScript()
     {
-        if (porteOption && playerActivity.porte)
+        if (porteOption && playerActivity.porte && thisDoorOnly)
         {
             // On ouvre la porte
             playerActivity.doorIsOpen = true;
@@ -119,12 +124,73 @@ public class TriggerActivity : MonoBehaviour
             // Animation ouverture de la porte
             if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", true);
 
+            OpenDoorServerRpc();
+
             // Déclenchement du timer avant la fermeture
             Invoke("CloseDoor", timerCloseDoor);
         }
     }
 
     private void CloseDoor()
+    {
+        CloseDoorServerRpc();
+
+        // On ferme la porte
+        playerActivity.doorIsOpen = false;
+
+        // Animation fermeture de la porte
+        if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", false);
+    }
+    #endregion
+
+
+    #region ServerRpc
+    [ServerRpc]
+    public void OpenDoorServerRpc()
+    {
+        OpenDoorClientRpc();
+
+        // On ouvre la porte
+        playerActivity.doorIsOpen = true;
+
+        // Animation ouverture de la porte
+        if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", true);
+
+        // Déclenchement du timer avant la fermeture
+        Invoke("CloseDoor", timerCloseDoor);
+    }
+
+    [ServerRpc]
+    public void CloseDoorServerRpc()
+    {
+        CloseDoorClientRpc();
+
+        // On ferme la porte
+        playerActivity.doorIsOpen = false;
+
+        // Animation fermeture de la porte
+        if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", false);
+    }
+    #endregion
+
+
+    #region ClientRpc
+    [ClientRpc]
+    private void OpenDoorClientRpc()
+    {
+        // On ouvre la porte
+        playerActivity.doorIsOpen = true;
+
+        // Animation ouverture de la porte
+        if (porteAnimator != null) porteAnimator.SetBool("OpenDoor", true);
+
+        // Déclenchement du timer avant la fermeture
+        Invoke("CloseDoor", timerCloseDoor);
+    }
+
+
+    [ClientRpc]
+    private void CloseDoorClientRpc()
     {
         // On ferme la porte
         playerActivity.doorIsOpen = false;
