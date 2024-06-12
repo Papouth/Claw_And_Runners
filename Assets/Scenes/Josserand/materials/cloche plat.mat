@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: cloche plat
-  m_Shader: {fileID: -6465566751694194690, guid: 9a4a86032f75f714fbe0635a2c247046, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 697b6254369a6a943a98260ff70303bd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -29,13 +29,21 @@ Material:
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 1
-  m_CustomRenderQueue: 2445
+  m_CustomRenderQueue: 1995
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - MainTex:
+        m_Texture: {fileID: 2800000, guid: 0c1f596a9b9043a48ab9223e93086f3c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Mask_R_Emission:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 0c1f596a9b9043a48ab9223e93086f3c, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -122,6 +130,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Brightness_Rim: 2.41
+    - Rim_Power: 0.1
+    - Toon_Ramp_Offset: 0.5
+    - Toon_Ramp_Smoothness: 0.284
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -174,8 +186,9 @@ Material:
     - _outline_thickness: 0.1
     - _thickness: 0
     m_Colors:
+    - Toon_Ramp_Tint: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
-    - _Color: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 1}
+    - _Color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
     - _EmissionColor: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
