@@ -29,6 +29,7 @@ Material:
   - _EMISSION
   - _METALLICSPECGLOSSMAP
   - _NORMALMAP
+  - _RECEIVE_SHADOWS_OFF
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
@@ -120,8 +121,8 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
-    - _ReceiveShadows: 1
-    - _Smoothness: 0.5
+    - _ReceiveShadows: 0
+    - _Smoothness: 0.537
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -130,8 +131,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - _BaseColor: {r: 0.8301887, g: 0.57611257, b: 0.11356357, a: 1}
-    - _Color: {r: 0.8301887, g: 0.57611257, b: 0.11356357, a: 1}
+    - _BaseColor: {r: 0.6509434, g: 0.38405865, b: 0.18115878, a: 1}
+    - _Color: {r: 0.6509434, g: 0.38405865, b: 0.18115878, a: 1}
     - _EmissionColor: {r: 31.592997, g: 19.673353, b: 7.898249, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
