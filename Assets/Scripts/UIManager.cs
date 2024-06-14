@@ -20,9 +20,6 @@ public class UIManager : MonoBehaviour
     public GameObject panelEndGame;
     public TextMeshProUGUI winText;
 
-    [Header("Shooting Range")]
-    public GameObject panelCrosshair;
-
     [Header("Piano")]
     public GameObject panelPiano;
 
@@ -684,7 +681,6 @@ public class UIManager : MonoBehaviour
         panelCreateLobby.SetActive(false);
         panelInsideLobby.SetActive(false);
         panelEndGame.SetActive(false);
-        panelCrosshair.SetActive(false);
         panelPiano.SetActive(false);
         camUI.SetActive(false);
     }
