@@ -22,36 +22,12 @@ public class NetworkParameter : MonoBehaviour
     // Les noms des joueurs classé et sauvegardé
     public static List<string> PlayersNamesIdentified = new List<string>();
 
-    public static int counterClient = 0;
-
     public static int lastIdSave;
     public static GameObject playerGO;
 
     [HideInInspector] public static PlayerInfo[] myPlayersGo;
-
     #endregion
 
-    private void Awake()
-    {
-        clientCount = 0;
-    }
-
-    #region Old
-    public void StartHostButton()
-    {
-        NetworkManager.Singleton.StartHost();
-    }
-
-    public void StartClientButton()
-    {
-        NetworkManager.Singleton.StartClient();
-    }
-
-    public void StarServerButton()
-    {
-        NetworkManager.Singleton.StartServer();
-    }
-    #endregion
 
     /// <summary>
     /// Si le nom du joueur n'est pas encore sauvegardé, la fonction s'éxécute
@@ -83,6 +59,5 @@ public class NetworkParameter : MonoBehaviour
     public static void GetPlayerOnSelection()
     {
         myPlayersGo = FindObjectsOfType<PlayerInfo>();
-        //Debug.Log("Found " + myPlayersGo.Length + " with PlayerInfo script attached");
     }
 }
