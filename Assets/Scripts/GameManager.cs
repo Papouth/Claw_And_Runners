@@ -64,7 +64,7 @@ public class GameManager : NetworkBehaviour
             }
 
             Timer();
-            Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + runnersLimitGM.Value + " runners total");
+            //Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + runnersLimitGM.Value + " runners total");
         }
     }
     #endregion
