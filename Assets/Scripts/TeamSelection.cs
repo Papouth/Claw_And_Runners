@@ -13,6 +13,7 @@ public class TeamSelection : NetworkBehaviour
 {
     #region Variables
     [SerializeField] private GameObject UITeamSelection;
+    public GameObject UILoadingScreen;
 
     // Team Selection Max Player Number
     public NetworkVariable<int> copsLimit;
@@ -87,6 +88,7 @@ public class TeamSelection : NetworkBehaviour
         LM = FindObjectOfType<LobbyManager>();
 
         UITeamSelection.SetActive(false);
+        UILoadingScreen.SetActive(false);
         panelTimer.SetActive(false);
 
         for (int i = 0; i < copsFondText.Count; i++)
@@ -152,6 +154,7 @@ public class TeamSelection : NetworkBehaviour
 
                 // On retire l'UI de sélection d'équipe
                 UITeamSelection.SetActive(false);
+                UILoadingScreen.SetActive(false);
                 selectionStarted = false;
             }
         }
@@ -353,6 +356,7 @@ public class TeamSelection : NetworkBehaviour
     public void ShowHideUI()
     {
         UITeamSelection.SetActive(true);
+        UILoadingScreen.SetActive(false);
         if (!selectionStarted) selectionStarted = true;
 
         if (IsOwner) NetworkParameter.GetPlayerOnSelection();

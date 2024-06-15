@@ -98,7 +98,7 @@ public class PlayerController : NetworkBehaviour
         {
             teamSelection = FindObjectOfType<TeamSelection>();
 
-            teamSelection.ShowHideUI();
+            teamSelection.UILoadingScreen.SetActive(true);
         }
     }
 
