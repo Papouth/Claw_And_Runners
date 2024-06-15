@@ -34,6 +34,7 @@ public class PlayerInfo : NetworkBehaviour
 
     private Transform spawnCops;
     private Transform spawnRunners;
+    private GameObject[] spawnsRunners;
 
     private PlayerController controller;
     public GameObject playerCopPrefab;
@@ -43,6 +44,7 @@ public class PlayerInfo : NetworkBehaviour
     #endregion
 
 
+    #region Built-In Methods
     private void Start()
     {
         prevCops = 0;
@@ -132,13 +134,14 @@ public class PlayerInfo : NetworkBehaviour
             Invoke("StatusPlayer", 1f);
         }
     }
+    #endregion
 
+
+    #region Customs Methods
     private void SetPlayerInJail()
     {
         if (gameObject.layer == 10 && !playerInJail)
         {
-            //Debug.Log("PLayer info pour aller en prison");
-
             playerInJail = true;
 
             // On Désactive arme du joueur
@@ -284,7 +287,10 @@ public class PlayerInfo : NetworkBehaviour
                 // Spawn du joueur à la position SpawnRunners
                 CCPlayer.enabled = false;
 
-                spawnRunners = GameObject.FindWithTag("SpawnRunners").transform;
+                spawnsRunners = GameObject.FindGameObjectsWithTag("SpawnRunners");
+                spawnRunners = spawnsRunners[Random.Range(0, spawnsRunners.Length)].transform;
+
+
                 float rand = Random.Range(0f, 2f);
                 gameObject.transform.position = new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand);
                 SpawnPlayerServerRpc(new Vector3(spawnRunners.position.x + rand, spawnRunners.position.y, spawnRunners.position.z + rand));
@@ -296,6 +302,8 @@ public class PlayerInfo : NetworkBehaviour
             }
         }
     }
+    #endregion
+
 
     #region ServerRpc
     [ServerRpc(RequireOwnership = false)]
@@ -339,12 +347,10 @@ public class PlayerInfo : NetworkBehaviour
         isCopsInt = playerIsCopsInt;
         isCops = playerIsCops;
 
-        //Debug.Log("Passe TEST serverInfoClientRpc");
 
         if (playerIsCops)
         {
             gameObject.tag = "cops";
-            //Debug.Log("playerInfo TEST tag Cops");
 
             playerCopPrefab.SetActive(true);
 
@@ -354,7 +360,6 @@ public class PlayerInfo : NetworkBehaviour
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
-            //Debug.Log("playerInfo TEST tag Runners");
 
             playerRunnerPrefab.SetActive(true);
 
@@ -420,7 +425,6 @@ public class PlayerInfo : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SendClientIDServerRpc(ulong clientId)
     {
-        //Debug.Log("Client ayant cliqué a l'ID : " + clientId);
         playerId = (int)clientId;
         NetworkParameter.lastIdSave = playerId;
     }
@@ -477,7 +481,7 @@ public class PlayerInfo : NetworkBehaviour
         if (playerIsCops)
         {
             gameObject.tag = "cops";
-            //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Cops");
+
             playerCopPrefab.SetActive(true);
 
             // On désactive les autres skins
@@ -486,7 +490,7 @@ public class PlayerInfo : NetworkBehaviour
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
-            //Debug.Log(TS.copsNamesList[0] + "playerInfo tag Runners");
+
             playerRunnerPrefab.SetActive(true);
 
             // On désactive les autres skins

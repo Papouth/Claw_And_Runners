@@ -374,12 +374,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inTrigger: 0
   playerInActivity: 0
-  standTir: 0
   piano: 0
   porte: 0
   doorIsOpen: 0
-  pistolCopPrefab: {fileID: 0}
-  pistolRunnerPrefab: {fileID: 0}
 --- !u!114 &2883660073154148482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1113,6 +1110,10 @@ PrefabInstance:
     - target: {fileID: 5086162656080698824, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_Name
       value: Maurice_BrasDetaches
+      objectReference: {fileID: 0}
+    - target: {fileID: 5086162656080698824, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5611059970100184946, guid: 34fee97af37516e4c8145530c7b5bf53, type: 3}
       propertyPath: m_LocalPosition.x
