@@ -94,6 +94,12 @@ public class PlayerController : NetworkBehaviour
 
             teamSelection.ShowHideUI();
         }
+        else if (IsOwner)
+        {
+            teamSelection = FindObjectOfType<TeamSelection>();
+
+            teamSelection.ShowHideUI();
+        }
     }
 
     void Update()
