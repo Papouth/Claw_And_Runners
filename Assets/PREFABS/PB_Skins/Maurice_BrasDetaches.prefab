@@ -1182,7 +1182,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6314084477313844949}
   - component: {fileID: 883058741780049960}
-  - component: {fileID: 8984418993690698099}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Bas
   m_TagString: Untagged
@@ -1198,12 +1197,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1616439370923569668}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5611059970100184946}
+  m_Father: {fileID: 756110594291552379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &883058741780049960
 SkinnedMeshRenderer:
@@ -1324,18 +1323,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.000020310283, y: -0.4339223, z: 0.0064425766}
     m_Extent: {x: 0.29429573, y: 0.623229, z: 0.27119088}
   m_DirtyAABB: 0
---- !u!114 &8984418993690698099
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1616439370923569668}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1684683046522741244
 GameObject:
   m_ObjectHideFlags: 0
@@ -2904,6 +2891,54 @@ Transform:
   - {fileID: 5744113952206963049}
   m_Father: {fileID: 4476820052896455963}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4959363692865451968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 756110594291552379}
+  - component: {fileID: 879652896044114757}
+  m_Layer: 0
+  m_Name: ServerSided Skin 0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &756110594291552379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959363692865451968}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6314084477313844949}
+  - {fileID: 7533410949514746447}
+  - {fileID: 5639668096778456044}
+  - {fileID: 7235154129379642178}
+  m_Father: {fileID: 5611059970100184946}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &879652896044114757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4959363692865451968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4959877915751495237
 GameObject:
   m_ObjectHideFlags: 0
@@ -2980,6 +3015,7 @@ GameObject:
   - component: {fileID: 5611059970100184946}
   - component: {fileID: 155988065857679507}
   - component: {fileID: 8774825851941621527}
+  - component: {fileID: 1520841570695671261}
   m_Layer: 0
   m_Name: Maurice_BrasDetaches
   m_TagString: Untagged
@@ -3001,10 +3037,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8066953200657505689}
-  - {fileID: 6314084477313844949}
-  - {fileID: 7533410949514746447}
-  - {fileID: 5639668096778456044}
-  - {fileID: 7235154129379642178}
+  - {fileID: 756110594291552379}
   - {fileID: 6338324221374715883}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3043,6 +3076,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1520841570695671261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5086162656080698824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &5145206373450534517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3055,7 +3108,7 @@ GameObject:
   - component: {fileID: 7847967314753963104}
   m_Layer: 8
   m_Name: Maurice_PlayerSide
-  m_TagString: Untagged
+  m_TagString: PlayerSide
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3461,7 +3514,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5639668096778456044}
   - component: {fileID: 912045346976980562}
-  - component: {fileID: 2351153027337992998}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Haut
   m_TagString: Untagged
@@ -3477,12 +3529,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6101034101590450659}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5611059970100184946}
+  m_Father: {fileID: 756110594291552379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &912045346976980562
 SkinnedMeshRenderer:
@@ -3603,18 +3655,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0000007748604, y: 0.41012076, z: 0.064169854}
     m_Extent: {x: 0.40057957, y: 0.3313708, z: 0.27370864}
   m_DirtyAABB: 0
---- !u!114 &2351153027337992998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6101034101590450659}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6147953306346661986
 GameObject:
   m_ObjectHideFlags: 0
@@ -3815,7 +3855,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7235154129379642178}
   - component: {fileID: 3612339040973105917}
-  - component: {fileID: 2436945116489122014}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Tete
   m_TagString: Untagged
@@ -3831,12 +3870,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6412743572150560167}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5611059970100184946}
+  m_Father: {fileID: 756110594291552379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &3612339040973105917
 SkinnedMeshRenderer:
@@ -3993,18 +4032,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.021665141, y: 0.8046932, z: 0.098830976}
     m_Extent: {x: 0.14828925, y: 0.17146695, z: 0.14099014}
   m_DirtyAABB: 0
---- !u!114 &2436945116489122014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6412743572150560167}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6425125083744618922
 GameObject:
   m_ObjectHideFlags: 0
@@ -4625,7 +4652,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7533410949514746447}
   - component: {fileID: 2242927287030225112}
-  - component: {fileID: 2604572953223888904}
   m_Layer: 0
   m_Name: CM_Maurice_SkinBase_Bras
   m_TagString: Untagged
@@ -4641,12 +4667,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7577761221120129219}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5611059970100184946}
+  m_Father: {fileID: 756110594291552379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &2242927287030225112
 SkinnedMeshRenderer:
@@ -4767,18 +4793,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0000005066395, y: 0.17527163, z: -0.0078358725}
     m_Extent: {x: 0.59787905, y: 0.32857692, z: 0.13641047}
   m_DirtyAABB: 0
---- !u!114 &2604572953223888904
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7577761221120129219}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f1e9439cccf530478b02f681d57154a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &7624144626120506274
 GameObject:
   m_ObjectHideFlags: 0
