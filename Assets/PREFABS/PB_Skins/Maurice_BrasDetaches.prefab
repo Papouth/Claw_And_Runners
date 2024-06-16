@@ -809,7 +809,7 @@ GameObject:
   - component: {fileID: 8489912343689718809}
   - component: {fileID: 6337852397616714771}
   m_Layer: 8
-  m_Name: ARMS PlayerSide
+  m_Name: ARMS PlayerSide Skin 0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3015,7 +3015,6 @@ GameObject:
   - component: {fileID: 5611059970100184946}
   - component: {fileID: 155988065857679507}
   - component: {fileID: 8774825851941621527}
-  - component: {fileID: 1520841570695671261}
   m_Layer: 0
   m_Name: Maurice_BrasDetaches
   m_TagString: Untagged
@@ -3076,26 +3075,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &1520841570695671261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5086162656080698824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &5145206373450534517
 GameObject:
   m_ObjectHideFlags: 0
@@ -3107,7 +3086,7 @@ GameObject:
   - component: {fileID: 8066953200657505689}
   - component: {fileID: 7847967314753963104}
   m_Layer: 8
-  m_Name: Maurice_PlayerSide
+  m_Name: Maurice_PlayerSide Skin 0
   m_TagString: PlayerSide
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

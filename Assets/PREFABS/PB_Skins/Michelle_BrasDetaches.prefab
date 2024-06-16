@@ -1201,7 +1201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3932338347513843975}
   m_Layer: 0
-  m_Name: Michelle_rig
+  m_Name: Michelle_root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1582,7 +1582,7 @@ GameObject:
   - component: {fileID: 3311039004365078145}
   - component: {fileID: 2179653933240278525}
   m_Layer: 8
-  m_Name: Michelle_ PlayerSide
+  m_Name: Michelle_PlayerSide Skin 0
   m_TagString: PlayerSide
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2749,7 +2749,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7920454039789865440}
   m_Layer: 8
-  m_Name: Michelle_rig
+  m_Name: Michelle_root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5029,7 +5029,6 @@ GameObject:
   - component: {fileID: 8541725912342373990}
   - component: {fileID: 399295944295960935}
   - component: {fileID: 3223560473102802203}
-  - component: {fileID: 875974475402966303}
   m_Layer: 0
   m_Name: Michelle_BrasDetaches
   m_TagString: Untagged
@@ -5090,26 +5089,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &875974475402966303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9061698586791312604}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1 &9084148768757883783
 GameObject:
   m_ObjectHideFlags: 0
