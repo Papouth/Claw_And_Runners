@@ -37,8 +37,16 @@ public class PlayerInfo : NetworkBehaviour
     private GameObject[] spawnsRunners;
 
     private PlayerController controller;
+
+    // Skin Attribution
     public GameObject playerCopPrefab;
+    public GameObject[] skinsMauricePrefabs;
+
     public GameObject playerRunnerPrefab;
+    public GameObject[] skinsMichellePrefabs;
+    public GameObject[] skinsMichaelPrefabs;
+    public GameObject[] skinsMarcelPrefabs;
+
     private CharacterController CCPlayer;
     private PlayerInventory playerInventory;
     #endregion
