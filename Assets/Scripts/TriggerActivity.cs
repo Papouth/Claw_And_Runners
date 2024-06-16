@@ -9,7 +9,6 @@ public class TriggerActivity : MonoBehaviour
     [HideInInspector] public PlayerActivity playerActivity;
 
     [SerializeField] private GameObject activityPrefab;
-    [SerializeField] private bool stand2TirActivity;
     [SerializeField] private bool pianoActivity;
 
     // Porte
@@ -20,7 +19,6 @@ public class TriggerActivity : MonoBehaviour
     [SerializeField] private AudioClip[] doorSounds; // close et open
     private AudioSource audioSource;
 
-    private StandTir standTir;
     private Piano piano;
     #endregion
 
@@ -29,8 +27,6 @@ public class TriggerActivity : MonoBehaviour
     private void Start()
     {
         // Assignation de l'activité trigger
-        if (stand2TirActivity) standTir = activityPrefab.GetComponent<StandTir>();
-
         if (pianoActivity) piano = activityPrefab.GetComponent<Piano>();
 
         if (porteOption) porteAnimator = activityPrefab.GetComponent<Animator>();
@@ -68,8 +64,6 @@ public class TriggerActivity : MonoBehaviour
 
             playerActivity.inTrigger = true;
 
-            if (stand2TirActivity) playerActivity.standTir = true;
-
             if (pianoActivity)
             {
                 playerActivity.piano = true;
@@ -102,9 +96,6 @@ public class TriggerActivity : MonoBehaviour
             Debug.Log("Trigger exit activity");
 
             playerActivity.inTrigger = false;
-
-            // Reset activité
-            if (stand2TirActivity) standTir.ResetActivity();
 
             if (pianoActivity)
             {
