@@ -14,6 +14,7 @@ public class NetworkParameter : MonoBehaviour
 {
     #region Variables
     public int clientCount;
+    public int runnersCounter;
     // Les noms des joueurs dans le lobby
     public static List<string> PlayersNames = new List<string>();
 

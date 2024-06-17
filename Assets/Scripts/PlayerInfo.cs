@@ -39,6 +39,8 @@ public class PlayerInfo : NetworkBehaviour
     private PlayerController controller;
 
     // Skin Attribution
+    private int randSkinNumber;
+
     public GameObject playerCopPrefab;
     public GameObject[] skinsMauricePrefabs;
 
@@ -49,6 +51,7 @@ public class PlayerInfo : NetworkBehaviour
 
     private CharacterController CCPlayer;
     private PlayerInventory playerInventory;
+    private NetworkParameter NP;
     #endregion
 
 
@@ -57,6 +60,8 @@ public class PlayerInfo : NetworkBehaviour
     {
         prevCops = 0;
         prevRunners = 0;
+
+        randSkinNumber = Random.Range(0, 3);
     }
 
     public override void OnNetworkSpawn()
@@ -78,6 +83,8 @@ public class PlayerInfo : NetworkBehaviour
         CCPlayer = GetComponent<CharacterController>();
 
         playerInventory = GetComponent<PlayerInventory>();
+
+        NP = NetworkManager.GetComponent<NetworkParameter>();
     }
 
     private void Update()
@@ -220,15 +227,29 @@ public class PlayerInfo : NetworkBehaviour
                 WC.enabled = true;
                 captureCol.SetActive(false);
 
+
+                for (int i = 0; i < skinsMauricePrefabs.Length; i++)
+                {
+                    skinsMauricePrefabs[i].SetActive(false);
+                }
+
+                playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
                 playerCopPrefab.SetActive(true);
+
                 // On désactive les autres skins
-                playerRunnerPrefab.SetActive(false);
+                //playerRunnerPrefab.SetActive(false);
+                for (int i = 0; i < skinsMichellePrefabs.Length; i++)
+                {
+                    skinsMichellePrefabs[i].SetActive(false);
+                    skinsMichaelPrefabs[i].SetActive(false);
+                    skinsMarcelPrefabs[i].SetActive(false);
+                }
+
 
                 for (int i = 0; i < playerCopPrefab.transform.childCount; i++)
                 {
                     if (playerCopPrefab.transform.GetChild(i).GetComponent<DoNotDisplayThisToPlayer>()) playerCopPrefab.transform.GetChild(i).gameObject.SetActive(false);
                 }
-
 
                 RoleReleaseServerRpc(true);
 
@@ -275,9 +296,36 @@ public class PlayerInfo : NetworkBehaviour
                 // On gère l'arme du joueur selon son rôle
                 WC.enabled = false;
 
+
+                for (int i = 0; i < skinsMichellePrefabs.Length; i++)
+                {
+                    skinsMichellePrefabs[i].SetActive(false);
+                    skinsMichaelPrefabs[i].SetActive(false);
+                    skinsMarcelPrefabs[i].SetActive(false);
+
+                    skinsMauricePrefabs[i].SetActive(false);
+                }
+
+                if (NP.runnersCounter == 0)
+                {
+                    // Michelle Skin
+                    playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+                }
+                else if (NP.runnersCounter == 1)
+                {
+                    // Michael Skin
+                    playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+                }
+                else if (NP.runnersCounter == 2)
+                {
+                    // Marcel Skin
+                    playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+                }
                 playerRunnerPrefab.SetActive(true);
+                NP.runnersCounter++;
+
                 // On désactive les autres skins
-                playerCopPrefab.SetActive(false);
+                //playerCopPrefab.SetActive(false);
 
                 for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
                 {
@@ -360,19 +408,58 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
+            //playerCopPrefab.SetActive(true);
+            // On désactive les autres skins
+            //playerRunnerPrefab.SetActive(false);
+
+            for (int i = 0; i < skinsMauricePrefabs.Length; i++)
+            {
+                skinsMauricePrefabs[i].SetActive(false);
+            }
+
+            playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
             playerCopPrefab.SetActive(true);
 
-            // On désactive les autres skins
-            playerRunnerPrefab.SetActive(false);
+            for (int i = 0; i < skinsMichellePrefabs.Length; i++)
+            {
+                skinsMichellePrefabs[i].SetActive(false);
+                skinsMichaelPrefabs[i].SetActive(false);
+                skinsMarcelPrefabs[i].SetActive(false);
+            }
         }
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
 
-            playerRunnerPrefab.SetActive(true);
-
+            //playerRunnerPrefab.SetActive(true);
             // On désactive les autres skins
-            playerCopPrefab.SetActive(false);
+            //playerCopPrefab.SetActive(false);
+
+            for (int i = 0; i < skinsMichellePrefabs.Length; i++)
+            {
+                skinsMichellePrefabs[i].SetActive(false);
+                skinsMichaelPrefabs[i].SetActive(false);
+                skinsMarcelPrefabs[i].SetActive(false);
+
+                skinsMauricePrefabs[i].SetActive(false);
+            }
+
+            if (NP.runnersCounter == 0)
+            {
+                // Michelle Skin
+                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+            }
+            else if (NP.runnersCounter == 1)
+            {
+                // Michael Skin
+                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+            }
+            else if (NP.runnersCounter == 2)
+            {
+                // Marcel Skin
+                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+            }
+            playerRunnerPrefab.SetActive(true);
         }
 
         UpdateServerInfoClientRpc(isCops, isCopsInt);
@@ -490,19 +577,59 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
+            //playerCopPrefab.SetActive(true);
+            // On désactive les autres skins
+            //playerRunnerPrefab.SetActive(false);
+
+            for (int i = 0; i < skinsMauricePrefabs.Length; i++)
+            {
+                skinsMauricePrefabs[i].SetActive(false);
+            }
+
+            playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
             playerCopPrefab.SetActive(true);
 
-            // On désactive les autres skins
-            playerRunnerPrefab.SetActive(false);
+
+            for (int i = 0; i < skinsMichellePrefabs.Length; i++)
+            {
+                skinsMichellePrefabs[i].SetActive(false);
+                skinsMichaelPrefabs[i].SetActive(false);
+                skinsMarcelPrefabs[i].SetActive(false);
+            }
         }
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
 
             playerRunnerPrefab.SetActive(true);
-
             // On désactive les autres skins
-            playerCopPrefab.SetActive(false);
+            //playerCopPrefab.SetActive(false);
+
+            for (int i = 0; i < skinsMichellePrefabs.Length; i++)
+            {
+                skinsMichellePrefabs[i].SetActive(false);
+                skinsMichaelPrefabs[i].SetActive(false);
+                skinsMarcelPrefabs[i].SetActive(false);
+
+                skinsMauricePrefabs[i].SetActive(false);
+            }
+
+            if (NP.runnersCounter == 0)
+            {
+                // Michelle Skin
+                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+            }
+            else if (NP.runnersCounter == 1)
+            {
+                // Michael Skin
+                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+            }
+            else if (NP.runnersCounter == 2)
+            {
+                // Marcel Skin
+                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+            }
+            playerRunnerPrefab.SetActive(true);
         }
     }
 
