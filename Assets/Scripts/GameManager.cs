@@ -93,7 +93,9 @@ public class GameManager : NetworkBehaviour
             // Si le policier a capturer tt le monde
             if (actualRunnersCaptured == TS.runnersLimit.Value)
             {
-                UIM.winText.text = "Le policier a capturé tout le monde !";
+                //UIM.winText.text = "Le policier a capturé tout le monde !";
+                UIM.copWin.SetActive(true);
+                UIM.runnersWin.SetActive(false);
 
                 // RPC Call Cops Win
                 DisplayTextCopsWinServerRpc();
@@ -101,7 +103,9 @@ public class GameManager : NetworkBehaviour
             else if (actualRunnersCaptured < TS.runnersLimit.Value)
             {
                 // Si les voleurs ne se sont pas tous fait capturer
-                UIM.winText.text = "Les voleurs ont remporté la partie !";
+                //UIM.winText.text = "Les voleurs ont remporté la partie !";
+                UIM.copWin.SetActive(false);
+                UIM.runnersWin.SetActive(true);
 
                 // RPC Call Runners Win
                 DisplayTextRunnersWinServerRpc();
@@ -121,7 +125,9 @@ public class GameManager : NetworkBehaviour
 
             Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + runnersLimitGM.Value + " runners total");
 
-            UIM.winText.text = "Le policier a capturé tout le monde !";
+            //UIM.winText.text = "Le policier a capturé tout le monde !";
+            UIM.copWin.SetActive(true);
+            UIM.runnersWin.SetActive(false);
 
             // RPC Call Cops Win
             DisplayTextCopsWinServerRpc();
@@ -184,7 +190,9 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void DisplayTextCopsWinServerRpc()
     {
-        UIM.winText.text = "Le policier a capturé tout le monde !";
+        //UIM.winText.text = "Le policier a capturé tout le monde !";
+        UIM.copWin.SetActive(true);
+        UIM.runnersWin.SetActive(false);
 
         DisplayTextCopsWinClientRpc();
     }
@@ -192,7 +200,9 @@ public class GameManager : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void DisplayTextRunnersWinServerRpc()
     {
-        UIM.winText.text = "Les voleurs ont remporté la partie !";
+        //UIM.winText.text = "Les voleurs ont remporté la partie !";
+        UIM.copWin.SetActive(false);
+        UIM.runnersWin.SetActive(true);
 
         DisplayTextRunnersWinClientRpc();
     }
@@ -227,13 +237,17 @@ public class GameManager : NetworkBehaviour
     [ClientRpc]
     private void DisplayTextCopsWinClientRpc()
     {
-        UIM.winText.text = "Le policier a capturé tout le monde !";
+        //UIM.winText.text = "Le policier a capturé tout le monde !";
+        UIM.copWin.SetActive(true);
+        UIM.runnersWin.SetActive(false);
     }
 
     [ClientRpc]
     private void DisplayTextRunnersWinClientRpc()
     {
-        UIM.winText.text = "Les voleurs ont remporté la partie !";
+        //UIM.winText.text = "Les voleurs ont remporté la partie !";
+        UIM.copWin.SetActive(false);
+        UIM.runnersWin.SetActive(true);
     }
     #endregion
 }

@@ -236,15 +236,12 @@ public class PlayerInfo : NetworkBehaviour
                 playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
                 playerCopPrefab.SetActive(true);
 
-                // On désactive les autres skins
-                //playerRunnerPrefab.SetActive(false);
                 for (int i = 0; i < skinsMichellePrefabs.Length; i++)
                 {
                     skinsMichellePrefabs[i].SetActive(false);
                     skinsMichaelPrefabs[i].SetActive(false);
                     skinsMarcelPrefabs[i].SetActive(false);
                 }
-
 
                 for (int i = 0; i < playerCopPrefab.transform.childCount; i++)
                 {
@@ -323,9 +320,6 @@ public class PlayerInfo : NetworkBehaviour
                 }
                 playerRunnerPrefab.SetActive(true);
                 NP.runnersCounter++;
-
-                // On désactive les autres skins
-                //playerCopPrefab.SetActive(false);
 
                 for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
                 {
@@ -408,10 +402,6 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
-            //playerCopPrefab.SetActive(true);
-            // On désactive les autres skins
-            //playerRunnerPrefab.SetActive(false);
-
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
                 skinsMauricePrefabs[i].SetActive(false);
@@ -430,10 +420,6 @@ public class PlayerInfo : NetworkBehaviour
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
-
-            //playerRunnerPrefab.SetActive(true);
-            // On désactive les autres skins
-            //playerCopPrefab.SetActive(false);
 
             for (int i = 0; i < skinsMichellePrefabs.Length; i++)
             {
@@ -577,10 +563,6 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
-            //playerCopPrefab.SetActive(true);
-            // On désactive les autres skins
-            //playerRunnerPrefab.SetActive(false);
-
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
                 skinsMauricePrefabs[i].SetActive(false);
@@ -600,10 +582,6 @@ public class PlayerInfo : NetworkBehaviour
         else if (!playerIsCops)
         {
             gameObject.tag = "runners";
-
-            playerRunnerPrefab.SetActive(true);
-            // On désactive les autres skins
-            //playerCopPrefab.SetActive(false);
 
             for (int i = 0; i < skinsMichellePrefabs.Length; i++)
             {
