@@ -18,7 +18,8 @@ public class UIManager : MonoBehaviour
     
     [Header("Win Section")]
     public GameObject panelEndGame;
-    public TextMeshProUGUI winText;
+    public GameObject copWin;
+    public GameObject runnersWin;
 
     [Header("Piano")]
     public GameObject panelPiano;
