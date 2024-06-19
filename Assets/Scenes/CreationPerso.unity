@@ -11494,6 +11494,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de46568410909fa428346b7da254c378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelCustomization: {fileID: 0}
+  panelLobbyMenu: {fileID: 0}
+  panelCreateLobby: {fileID: 0}
+  panelInsideLobby: {fileID: 0}
+  camUI: {fileID: 0}
+  panelEndGame: {fileID: 0}
+  copWin: {fileID: 0}
+  runnersWin: {fileID: 0}
+  panelPiano: {fileID: 0}
   casesImages:
   - {fileID: 1883755924}
   - {fileID: 1241856334}
@@ -12364,13 +12373,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lobbyName: Default Lobby
   maxPlayers: 4
+  playerName: 
   IDText: {fileID: 1712822851}
   namePlaceHolder: {fileID: 1498583851}
   lobbyNamePlaceHolder: {fileID: 427459992}
   lobbyNameText: {fileID: 1002183407}
   lobbyCodeDisplay: {fileID: 1103153668}
-  lobbyStateText: {fileID: 1259040230}
-  maxPlayersInLobbyText: {fileID: 165819067}
+  cadenas: []
+  cadenasBase: []
+  cadenasColor: []
+  imageNumber: []
+  spritesNumber: []
+  spritesNumberColor: []
   insideLobbyName: {fileID: 1384597328}
   actualPlayersInsideLobby: {fileID: 443233692}
   maxPlayersInsideLobby: {fileID: 1506412865}
@@ -12398,22 +12412,10 @@ MonoBehaviour:
   - DaftyPunky
   bttnLobbyDisplayer: {fileID: 5504548342332914886, guid: e340476d24d3b854aaa2d0c2172f280e, type: 3}
   canvas: {fileID: 1448617736}
-  copsNumberTxt: {fileID: 1173727428}
-  copsMaxNumberTxt: {fileID: 380458296}
-  copsPlayerNameTxt: []
-  copsPlayerNameTMPro:
-  - {fileID: 1682793816}
-  - {fileID: 567030381}
-  runnersNumberTxt: {fileID: 1646852926}
-  runnersMaxNumberTxt: {fileID: 183759130}
-  runnersPlayerNameTxt: []
-  runnersPlayerNameTMPro:
-  - {fileID: 227405113}
-  - {fileID: 68515426}
-  - {fileID: 1760176999}
-  - {fileID: 1634405460}
-  - {fileID: 1573329585}
-  - {fileID: 550083421}
+  gameStarted: 0
+  startBttn: {fileID: 0}
+  camUIMenu: {fileID: 0}
+  teamSelection: {fileID: 0}
 --- !u!1 &1555119113
 GameObject:
   m_ObjectHideFlags: 0
@@ -16605,6 +16607,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2142467202}
   - component: {fileID: 2142467203}
+  - component: {fileID: 2142467204}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -16639,6 +16642,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dbee77a5e95bed4d8257f7ff3ca24b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cheat: 0
+  TS: {fileID: 0}
+  UIM: {fileID: 0}
+  panelTimer: {fileID: 0}
+  timeRemaining: 0
+  infoTime: {fileID: 0}
+  actualRunnersCaptured: 0
+  totalRunnersCaptured: 0
+  totalRunnersReleased: 0
+  runnersLimitGM:
+    m_InternalValue: 0
+--- !u!114 &2142467204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2142467201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 3374124818
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &2147165860
 GameObject:
   m_ObjectHideFlags: 0

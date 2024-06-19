@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Lustre_cuisine
-  m_Shader: {fileID: -6465566751694194690, guid: 9a4a86032f75f714fbe0635a2c247046, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 697b6254369a6a943a98260ff70303bd, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -23,6 +23,14 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - MainTex:
+        m_Texture: {fileID: 2800000, guid: 1c33881a352b1ca49b46a8a9c53c3bd8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Mask_R_Emission:
+        m_Texture: {fileID: 2800000, guid: 346a3e904e6b78a4cb26a6f143f353a9, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 1c33881a352b1ca49b46a8a9c53c3bd8, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -89,6 +97,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - Brightness_Rim: 2.46
+    - Rim_Power: 0.21
+    - Toon_Ramp_Offset: 0.423
+    - Toon_Ramp_Smoothness: 0.26
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -124,8 +136,9 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Toon_Ramp_Tint: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+    - _Color: {r: 0.7830189, g: 0.7830189, b: 0.7830189, a: 1}
     - _EmissionColor: {r: 0.07446837, g: 0.022027416, b: 0.103773594, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

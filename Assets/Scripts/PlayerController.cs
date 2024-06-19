@@ -54,8 +54,6 @@ public class PlayerController : NetworkBehaviour
     private TeamSelection teamSelection;
     private FootStepsSync footStepsSync;
     private PlayerInventory playerInventory;
-
-    [SerializeField] private bool MathisDoitAnimer;
     #endregion
 
 
@@ -74,11 +72,6 @@ public class PlayerController : NetworkBehaviour
         playerInventory = GetComponent<PlayerInventory>();
 
         timeStep = stepSize;
-    }
-
-    public void MathisAnim()
-    {
-        MathisDoitAnimer = true;
     }
 
     public override void OnNetworkSpawn()
@@ -101,6 +94,12 @@ public class PlayerController : NetworkBehaviour
 
             teamSelection.ShowHideUI();
         }
+        else if (IsOwner)
+        {
+            teamSelection = FindObjectOfType<TeamSelection>();
+
+            teamSelection.UILoadingScreen.SetActive(true);
+        }
     }
 
     void Update()
@@ -108,15 +107,11 @@ public class PlayerController : NetworkBehaviour
         if (IsServer && !IsOwner) UpdateServer();
 
         if (IsOwner) MoveClient();
-
-        if (MathisDoitAnimer) MoveClient();
     }
 
     private void LateUpdate()
     {
         if (IsOwner) CamMovement();
-
-        if (MathisDoitAnimer) CamMovement();
     }
 
     private void UpdateServer()
