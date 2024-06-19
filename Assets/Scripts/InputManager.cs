@@ -15,6 +15,7 @@ public class InputManager : MonoBehaviour
     private bool canSelect;
     private bool canSlot1;
     private bool canSlot2;
+    private bool canPrison;
     #endregion
 
 
@@ -38,6 +39,12 @@ public class InputManager : MonoBehaviour
     {
         get { return canSelect; }
         set { canSelect = value; }
+    }
+
+    public bool CanPrison
+    {
+        get { return canPrison; }
+        set { canPrison = value; }
     }
 
     public bool CanSlot1
@@ -81,6 +88,11 @@ public class InputManager : MonoBehaviour
     {
         //canSelect = !canSelect;
         canSelect = true;
+    }
+
+    public void OnPrison()
+    {
+        canPrison = true;
     }
 
     public void OnSlot1()

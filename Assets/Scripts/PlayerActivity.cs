@@ -9,7 +9,6 @@ public class PlayerActivity : NetworkBehaviour
     [Header("Settings")]
     private InputManager inputManager;
     private PlayerInventory playerInventory;
-    private PlayerInfo PI;
     private GameManager GM;
     private CharacterController CC;
 
@@ -37,8 +36,6 @@ public class PlayerActivity : NetworkBehaviour
         inputManager = GetComponent<InputManager>();
 
         playerInventory = GetComponent<PlayerInventory>();
-
-        PI = GetComponent<PlayerInfo>();
     }
 
     private void Update()
