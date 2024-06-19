@@ -6,8 +6,8 @@ using Unity.Netcode;
 public class PlayerInventory : NetworkBehaviour
 {
     #region Variables
-    public bool isSlot2;
-    public bool isSlot2Used;
+    //public bool isSlot2;
+    //public bool isSlot2Used;
     public bool skinChoosed;
     public bool animatorsReady;
     public bool inActivity; // vérifie si le joueur se trouve dans une activité
@@ -55,89 +55,90 @@ public class PlayerInventory : NetworkBehaviour
             }
 
             // Slot 1 par défaut
-            isSlot2 = false;
+            //isSlot2 = false;
             //serverAnimator.SetBool(blabla)
             //clientAnimator.SetBool(blabla)
         }
 
-        if (skinChoosed && animatorsReady) ChangeSlot();
+        //if (skinChoosed && animatorsReady) ChangeSlot();
     }
     #endregion
 
+
     #region Customs Methods
-    public void ChangeSlot()
-    {
-        if (inputManager.CanSlot1 && isSlot2 && IsOwner)
-        {
-            //Debug.Log("Baton");
-
-            // Switch pour le Slot 1
-            inputManager.CanSlot1 = false;
-            isSlot2 = false;
-
-
-            // On prend l'objet du slot 1
-            //serverAnimator.SetBool(blabla)
-            //clientAnimator.SetBool(blabla)
-
-
-            ChangeSlotServerRpc(isSlot2);
-        }
-        else if (inputManager.CanSlot2 && !isSlot2 && !isSlot2Used && IsOwner)
-        {
-            //Debug.Log("Pouvoir");
-
-            // Switch pour le Slot 2
-            inputManager.CanSlot2 = false;
-            isSlot2 = true;
-
-
-            // On prend l'objet du slot 2
-            //serverAnimator.SetBool(blabla)
-            //clientAnimator.SetBool(blabla)
-
-
-            ChangeSlotServerRpc(isSlot2);
-        }
-
-        if (inputManager.CanSlot1) inputManager.CanSlot1 = false;
-        else if (inputManager.CanSlot2) inputManager.CanSlot2 = false;
-
-        if (inputManager.ScrollMouse.y != 0 && IsOwner)
-        {
-            // Switch sur l'autre Slot
-            if (isSlot2)
-            {
-                //Debug.Log("Baton molette");
-
-                // Switch pour le slot 1
-                isSlot2 = false;
-
-
-                // On prend l'objet du slot 1
-                //serverAnimator.SetBool(blabla)
-                //clientAnimator.SetBool(blabla)
-
-
-                ChangeSlotServerRpc(isSlot2);
-            }
-            else if (!isSlot2 && !isSlot2Used)
-            {
-                //Debug.Log("Pouvoir molette");
-
-                // Switch pour le slot 2
-                isSlot2 = true;
-
-
-                // On prend l'objet du slot 2
-                //serverAnimator.SetBool(blabla)
-                //clientAnimator.SetBool(blabla)
-
-
-                ChangeSlotServerRpc(isSlot2);
-            }
-        }
-    }
+    //public void ChangeSlot()
+    //{
+    //    if (inputManager.CanSlot1 && isSlot2 && IsOwner)
+    //    {
+    //        //Debug.Log("Baton");
+    //
+    //        // Switch pour le Slot 1
+    //        inputManager.CanSlot1 = false;
+    //        isSlot2 = false;
+    //
+    //
+    //        // On prend l'objet du slot 1
+    //        //serverAnimator.SetBool(blabla)
+    //        //clientAnimator.SetBool(blabla)
+    //
+    //
+    //        ChangeSlotServerRpc(isSlot2);
+    //    }
+    //    else if (inputManager.CanSlot2 && !isSlot2 && !isSlot2Used && IsOwner)
+    //    {
+    //        //Debug.Log("Pouvoir");
+    //
+    //        // Switch pour le Slot 2
+    //        inputManager.CanSlot2 = false;
+    //        isSlot2 = true;
+    //
+    //
+    //        // On prend l'objet du slot 2
+    //        //serverAnimator.SetBool(blabla)
+    //        //clientAnimator.SetBool(blabla)
+    //
+    //
+    //        ChangeSlotServerRpc(isSlot2);
+    //    }
+    //
+    //    if (inputManager.CanSlot1) inputManager.CanSlot1 = false;
+    //    else if (inputManager.CanSlot2) inputManager.CanSlot2 = false;
+    //
+    //    if (inputManager.ScrollMouse.y != 0 && IsOwner)
+    //    {
+    //        // Switch sur l'autre Slot
+    //        if (isSlot2)
+    //        {
+    //            //Debug.Log("Baton molette");
+    //
+    //            // Switch pour le slot 1
+    //            isSlot2 = false;
+    //
+    //
+    //            // On prend l'objet du slot 1
+    //            //serverAnimator.SetBool(blabla)
+    //            //clientAnimator.SetBool(blabla)
+    //
+    //
+    //            ChangeSlotServerRpc(isSlot2);
+    //        }
+    //        else if (!isSlot2 && !isSlot2Used)
+    //        {
+    //            //Debug.Log("Pouvoir molette");
+    //
+    //            // Switch pour le slot 2
+    //            isSlot2 = true;
+    //
+    //
+    //            // On prend l'objet du slot 2
+    //            //serverAnimator.SetBool(blabla)
+    //            //clientAnimator.SetBool(blabla)
+    //
+    //
+    //            ChangeSlotServerRpc(isSlot2);
+    //        }
+    //    }
+    //}
     #endregion
 
     #region ServerRpc
@@ -164,55 +165,55 @@ public class PlayerInventory : NetworkBehaviour
     }
 
 
-    [ServerRpc(RequireOwnership = false)]
-    private void ChangeSlotServerRpc(bool slot)
-    {
-        if (slot)
-        {
-            // Switch pour le slot 2
-
-            // On prend l'objet du slot 2
-            //serverAnimator.SetBool(blabla)
-            //clientAnimator.SetBool(blabla)
-        }
-        else if (!slot)
-        {
-            // Switch pour le slot 1
-
-            // On prend l'objet du slot 1
-            //serverAnimator.SetBool(blabla)
-            //clientAnimator.SetBool(blabla)
-        }
-
-        ChangeSlotClientRpc(slot);
-    }
+    //[ServerRpc(RequireOwnership = false)]
+    //private void ChangeSlotServerRpc(bool slot)
+    //{
+    //    if (slot)
+    //    {
+    //        // Switch pour le slot 2
+    //
+    //        // On prend l'objet du slot 2
+    //        //serverAnimator.SetBool(blabla)
+    //        //clientAnimator.SetBool(blabla)
+    //    }
+    //    else if (!slot)
+    //    {
+    //        // Switch pour le slot 1
+    //
+    //        // On prend l'objet du slot 1
+    //        //serverAnimator.SetBool(blabla)
+    //        //clientAnimator.SetBool(blabla)
+    //    }
+    //
+    //    ChangeSlotClientRpc(slot);
+    //}
     #endregion
 
     #region ClientRpc
-    [ClientRpc]
-    private void ChangeSlotClientRpc(bool stateSlot)
-    {
-        if (stateSlot)
-        {
-            //Debug.Log("Pouvoir ClientRpc");
-
-            // Switch pour le slot 2
-
-            // On prend l'objet du slot 2
-            //serverAnimator.SetBool(blabla)
-            //clientAnimator.SetBool(blabla)
-        }
-        else if (!stateSlot)
-        {
-            //Debug.Log("Baton ClientRpc");
-
-            // Switch pour le slot 1
-
-            // On prend l'objet du slot 1
-            //serverAnimator.SetBool(blabla)
-            //clientAnimator.SetBool(blabla)
-        }
-    }
+    //[ClientRpc]
+    //private void ChangeSlotClientRpc(bool stateSlot)
+    //{
+    //    if (stateSlot)
+    //    {
+    //        //Debug.Log("Pouvoir ClientRpc");
+    //
+    //        // Switch pour le slot 2
+    //
+    //        // On prend l'objet du slot 2
+    //        //serverAnimator.SetBool(blabla)
+    //        //clientAnimator.SetBool(blabla)
+    //    }
+    //    else if (!stateSlot)
+    //    {
+    //        //Debug.Log("Baton ClientRpc");
+    //
+    //        // Switch pour le slot 1
+    //
+    //        // On prend l'objet du slot 1
+    //        //serverAnimator.SetBool(blabla)
+    //        //clientAnimator.SetBool(blabla)
+    //    }
+    //}
 
     [ClientRpc]
     private void AnimatorCopsClientRpc()

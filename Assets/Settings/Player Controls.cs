@@ -98,6 +98,15 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Prison"",
+                    ""type"": ""Button"",
+                    ""id"": ""652f0024-fe31-47c9-8f55-189df549391c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +241,17 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""action"": ""NextSlot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e947426b-5407-4468-bd7d-1010f5c7bc4c"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Prison"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +268,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_Player_Slot1 = m_Player.FindAction("Slot1", throwIfNotFound: true);
         m_Player_Slot2 = m_Player.FindAction("Slot2", throwIfNotFound: true);
         m_Player_NextSlot = m_Player.FindAction("NextSlot", throwIfNotFound: true);
+        m_Player_Prison = m_Player.FindAction("Prison", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -317,6 +338,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Slot1;
     private readonly InputAction m_Player_Slot2;
     private readonly InputAction m_Player_NextSlot;
+    private readonly InputAction m_Player_Prison;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -329,6 +351,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Slot1 => m_Wrapper.m_Player_Slot1;
         public InputAction @Slot2 => m_Wrapper.m_Player_Slot2;
         public InputAction @NextSlot => m_Wrapper.m_Player_NextSlot;
+        public InputAction @Prison => m_Wrapper.m_Player_Prison;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -362,6 +385,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @NextSlot.started += instance.OnNextSlot;
             @NextSlot.performed += instance.OnNextSlot;
             @NextSlot.canceled += instance.OnNextSlot;
+            @Prison.started += instance.OnPrison;
+            @Prison.performed += instance.OnPrison;
+            @Prison.canceled += instance.OnPrison;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -390,6 +416,9 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @NextSlot.started -= instance.OnNextSlot;
             @NextSlot.performed -= instance.OnNextSlot;
             @NextSlot.canceled -= instance.OnNextSlot;
+            @Prison.started -= instance.OnPrison;
+            @Prison.performed -= instance.OnPrison;
+            @Prison.canceled -= instance.OnPrison;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -417,5 +446,6 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnSlot1(InputAction.CallbackContext context);
         void OnSlot2(InputAction.CallbackContext context);
         void OnNextSlot(InputAction.CallbackContext context);
+        void OnPrison(InputAction.CallbackContext context);
     }
 }
