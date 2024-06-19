@@ -32,7 +32,7 @@ public class WeaponCop : NetworkBehaviour
     private void Update()
     {
         // Vérifier aussi que le policier à en main son baton et qu'il ne se trouve pas dans une activité
-        if (inputManager.CanSelect && IsOwner && VJ.prisonOn /*&& !playerInventory.isSlot2 */&& !playerInventory.inActivity)
+        if (inputManager.CanSelect && IsOwner && VJ.prisonOn && !playerInventory.inActivity)
         {
             inputManager.CanSelect = false;
 

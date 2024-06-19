@@ -39,9 +39,7 @@ public class PlayerInfo : NetworkBehaviour
     private PlayerController controller;
 
     // Skin Attribution
-    //private int randSkinNumber;
-    public NetworkVariable<int> randSkinNumber;
-    public NetworkVariable<int> runnersCounter;
+    private int randNum;
 
     public GameObject playerCopPrefab;
     public GameObject[] skinsMauricePrefabs;
@@ -53,7 +51,6 @@ public class PlayerInfo : NetworkBehaviour
 
     private CharacterController CCPlayer;
     private PlayerInventory playerInventory;
-    private NetworkParameter NP;
     #endregion
 
 
@@ -66,15 +63,6 @@ public class PlayerInfo : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        randSkinNumber = new NetworkVariable<int>();
-        runnersCounter = new NetworkVariable<int>();
-
-        randSkinNumber.OnValueChanged += OnrandSkinNumberChanged;
-        runnersCounter.OnValueChanged += OnrunnersCounterChanged;
-
-
-        randSkinNumber.Value = Random.Range(0, 3);
-
         TS = FindObjectOfType<TeamSelection>();
 
         LM = FindObjectOfType<LobbyManager>();
@@ -92,8 +80,6 @@ public class PlayerInfo : NetworkBehaviour
         CCPlayer = GetComponent<CharacterController>();
 
         playerInventory = GetComponent<PlayerInventory>();
-
-        NP = NetworkManager.GetComponent<NetworkParameter>();
     }
 
     private void Update()
@@ -102,6 +88,13 @@ public class PlayerInfo : NetworkBehaviour
         if (Input.GetMouseButtonDown(0) && IsOwner && TS.selectionStarted)
         {
             SendClientIDFunction();
+
+            // Random skin number attribution to each player
+            var num = Random.Range(0, 3);
+            randNum = num;
+
+            // RPC CALL
+            NumeroSkinServerRpc(num);
         }
 
         if (IsOwner && !equilibrageOn)
@@ -162,16 +155,6 @@ public class PlayerInfo : NetworkBehaviour
 
 
     #region Customs Methods
-    private void OnrandSkinNumberChanged(int previous, int current)
-    {
-        //Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
-    }
-
-    private void OnrunnersCounterChanged(int previous, int current)
-    {
-        //Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
-    }
-
     private void SetPlayerInJail()
     {
         if (gameObject.layer == 10 && !playerInJail)
@@ -236,7 +219,7 @@ public class PlayerInfo : NetworkBehaviour
 
                 gameObject.tag = "cops";
 
-                playerCopPrefab = skinsMauricePrefabs[randSkinNumber.Value];
+                playerCopPrefab = skinsMauricePrefabs[randNum];
 
                 InfoServerRpc(true, 1);
 
@@ -324,24 +307,24 @@ public class PlayerInfo : NetworkBehaviour
                     skinsMauricePrefabs[i].SetActive(false);
                 }
 
-                if (/*NP.runnersCounter == 0*/runnersCounter.Value == 0)
+                if (TS.runnersCounter.Value == 0)
                 {
                     // Michelle Skin
-                    playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber.Value];
+                    playerRunnerPrefab = skinsMichellePrefabs[randNum];
                 }
-                else if (/*NP.runnersCounter == 1*/runnersCounter.Value == 1)
+                else if (TS.runnersCounter.Value == 1)
                 {
                     // Michael Skin
-                    playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber.Value];
+                    playerRunnerPrefab = skinsMichaelPrefabs[randNum];
                 }
-                else if (/*NP.runnersCounter == 2*/runnersCounter.Value == 2)
+                else if (TS.runnersCounter.Value == 2)
                 {
                     // Marcel Skin
-                    playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber.Value];
+                    playerRunnerPrefab = skinsMarcelPrefabs[randNum];
                 }
                 playerRunnerPrefab.SetActive(true);
-                //NP.runnersCounter++;
-                runnersCounter.Value++;
+
+                TS.runnersCounter.Value++;
 
                 for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
                 {
@@ -424,7 +407,7 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
-            playerCopPrefab = skinsMauricePrefabs[randSkinNumber.Value];
+            playerCopPrefab = skinsMauricePrefabs[randNum];
 
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
@@ -453,20 +436,20 @@ public class PlayerInfo : NetworkBehaviour
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            if (/*NP.runnersCounter == 0*/runnersCounter.Value == 0)
+            if (TS.runnersCounter.Value == 0)
             {
                 // Michelle Skin
-                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber.Value];
+                playerRunnerPrefab = skinsMichellePrefabs[randNum];
             }
-            else if (/*NP.runnersCounter == 1*/runnersCounter.Value == 1)
+            else if (TS.runnersCounter.Value == 1)
             {
                 // Michael Skin
-                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber.Value];
+                playerRunnerPrefab = skinsMichaelPrefabs[randNum];
             }
-            else if (/*NP.runnersCounter == 2*/runnersCounter.Value == 2)
+            else if (TS.runnersCounter.Value == 2)
             {
                 // Marcel Skin
-                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber.Value];
+                playerRunnerPrefab = skinsMarcelPrefabs[randNum];
             }
             playerRunnerPrefab.SetActive(true);
         }
@@ -532,6 +515,14 @@ public class PlayerInfo : NetworkBehaviour
         playerId = (int)clientId;
         NetworkParameter.lastIdSave = playerId;
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void NumeroSkinServerRpc(int numero)
+    {
+        randNum = numero;
+
+        NumeroSkinClientRpc(numero);
+    }
     #endregion
 
     public void SendClientIDFunction()
@@ -540,6 +531,12 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     #region ClientRpc
+    [ClientRpc]
+    private void NumeroSkinClientRpc(int numero)
+    {
+        randNum = numero;
+    }
+
     [ClientRpc]
     private void SpawnPlayerClientRpc(Vector3 spawnPos)
     {
@@ -586,7 +583,7 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
-            playerCopPrefab = skinsMauricePrefabs[randSkinNumber.Value];
+            playerCopPrefab = skinsMauricePrefabs[randNum];
 
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
@@ -615,20 +612,20 @@ public class PlayerInfo : NetworkBehaviour
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            if (/*NP.runnersCounter == 0*/runnersCounter.Value == 0)
+            if (TS.runnersCounter.Value == 0)
             {
                 // Michelle Skin
-                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber.Value];
+                playerRunnerPrefab = skinsMichellePrefabs[randNum];
             }
-            else if (/*NP.runnersCounter == 1*/runnersCounter.Value == 1)
+            else if (TS.runnersCounter.Value == 1)
             {
                 // Michael Skin
-                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber.Value];
+                playerRunnerPrefab = skinsMichaelPrefabs[randNum];
             }
-            else if (/*NP.runnersCounter == 2*/runnersCounter.Value == 2)
+            else if (TS.runnersCounter.Value == 2)
             {
                 // Marcel Skin
-                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber.Value];
+                playerRunnerPrefab = skinsMarcelPrefabs[randNum];
             }
             playerRunnerPrefab.SetActive(true);
         }

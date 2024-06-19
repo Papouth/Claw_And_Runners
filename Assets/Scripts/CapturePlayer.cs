@@ -12,6 +12,7 @@ public class CapturePlayer : NetworkBehaviour
     private int idPlayerCaptured;
     private AudioSync audioSync;
     private GameManager GM;
+    private VirtualJail VJ;
     #endregion
 
 
@@ -24,6 +25,8 @@ public class CapturePlayer : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         GM = FindObjectOfType<GameManager>();
+
+        VJ = GetComponentInParent<VirtualJail>();
     }
     #endregion
 
@@ -31,10 +34,9 @@ public class CapturePlayer : NetworkBehaviour
     #region Customs Methods
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("runners") && IsOwner)
+        if (other.gameObject.CompareTag("runners") && IsOwner && VJ.prisonOn)
         {
             Debug.Log("Passe Dans le trigger enter de capture");
-
 
             audioSync.PlaySound(6);
 
@@ -48,8 +50,6 @@ public class CapturePlayer : NetworkBehaviour
             if (IsOwner) JailLayerServerRpc((ulong)idPlayerCaptured, 10);
 
             zonz = GameObject.FindWithTag("JailObject");
-
-            //Debug.Log("Zou direction la zonz");
         }
     }
     #endregion
@@ -59,8 +59,6 @@ public class CapturePlayer : NetworkBehaviour
     private void JailLayerServerRpc(ulong idPlayer, int layer)
     {
         NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
-
-        //Debug.Log("SERVER CAPTURE PLAYER");
 
         JailLayerClientRpc(idPlayer, layer);
     }
@@ -84,8 +82,6 @@ public class CapturePlayer : NetworkBehaviour
     private void JailLayerClientRpc(ulong idPlayer, int layer)
     {
         if (IsServer) NetworkManager.ConnectedClients[idPlayer].PlayerObject.gameObject.layer = layer;
-
-        //Debug.Log("CLIENT CAPTURE PLAYER");
     }
     #endregion
 }
