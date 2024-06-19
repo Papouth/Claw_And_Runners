@@ -67,8 +67,11 @@ public class PlayerInfo : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         randSkinNumber = new NetworkVariable<int>();
+        runnersCounter = new NetworkVariable<int>();
 
         randSkinNumber.OnValueChanged += OnrandSkinNumberChanged;
+        runnersCounter.OnValueChanged += OnrunnersCounterChanged;
+
 
         randSkinNumber.Value = Random.Range(0, 3);
 
@@ -160,6 +163,11 @@ public class PlayerInfo : NetworkBehaviour
 
     #region Customs Methods
     private void OnrandSkinNumberChanged(int previous, int current)
+    {
+        //Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+    }
+
+    private void OnrunnersCounterChanged(int previous, int current)
     {
         //Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
     }
