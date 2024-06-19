@@ -36,13 +36,6 @@ public class VirtualJail : NetworkBehaviour
 
     private void Update()
     {
-        //if (inputManager.CanSelect)
-        //{
-        //    if (playerInventory.isSlot2 && !playerInventory.inActivity) PutAJail();
-        //
-        //    inputManager.CanSelect = false;
-        //}
-
         if (inputManager.CanPrison && !playerInventory.inActivity) PutAJail();
     }
     #endregion

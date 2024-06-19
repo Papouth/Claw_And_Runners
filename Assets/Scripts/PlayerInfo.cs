@@ -39,7 +39,9 @@ public class PlayerInfo : NetworkBehaviour
     private PlayerController controller;
 
     // Skin Attribution
-    private int randSkinNumber;
+    //private int randSkinNumber;
+    public NetworkVariable<int> randSkinNumber;
+    public NetworkVariable<int> runnersCounter;
 
     public GameObject playerCopPrefab;
     public GameObject[] skinsMauricePrefabs;
@@ -60,12 +62,16 @@ public class PlayerInfo : NetworkBehaviour
     {
         prevCops = 0;
         prevRunners = 0;
-
-        randSkinNumber = Random.Range(0, 3);
     }
 
     public override void OnNetworkSpawn()
     {
+        randSkinNumber = new NetworkVariable<int>();
+
+        randSkinNumber.OnValueChanged += OnrandSkinNumberChanged;
+
+        randSkinNumber.Value = Random.Range(0, 3);
+
         TS = FindObjectOfType<TeamSelection>();
 
         LM = FindObjectOfType<LobbyManager>();
@@ -153,6 +159,11 @@ public class PlayerInfo : NetworkBehaviour
 
 
     #region Customs Methods
+    private void OnrandSkinNumberChanged(int previous, int current)
+    {
+        //Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+    }
+
     private void SetPlayerInJail()
     {
         if (gameObject.layer == 10 && !playerInJail)
@@ -217,6 +228,8 @@ public class PlayerInfo : NetworkBehaviour
 
                 gameObject.tag = "cops";
 
+                playerCopPrefab = skinsMauricePrefabs[randSkinNumber.Value];
+
                 InfoServerRpc(true, 1);
 
                 // On gère l'arme du joueur selon son rôle
@@ -233,7 +246,7 @@ public class PlayerInfo : NetworkBehaviour
                     skinsMauricePrefabs[i].SetActive(false);
                 }
 
-                playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
+                //playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
                 playerCopPrefab.SetActive(true);
 
                 for (int i = 0; i < skinsMichellePrefabs.Length; i++)
@@ -303,23 +316,24 @@ public class PlayerInfo : NetworkBehaviour
                     skinsMauricePrefabs[i].SetActive(false);
                 }
 
-                if (NP.runnersCounter == 0)
+                if (/*NP.runnersCounter == 0*/runnersCounter.Value == 0)
                 {
                     // Michelle Skin
-                    playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+                    playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber.Value];
                 }
-                else if (NP.runnersCounter == 1)
+                else if (/*NP.runnersCounter == 1*/runnersCounter.Value == 1)
                 {
                     // Michael Skin
-                    playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+                    playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber.Value];
                 }
-                else if (NP.runnersCounter == 2)
+                else if (/*NP.runnersCounter == 2*/runnersCounter.Value == 2)
                 {
                     // Marcel Skin
-                    playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+                    playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber.Value];
                 }
                 playerRunnerPrefab.SetActive(true);
-                NP.runnersCounter++;
+                //NP.runnersCounter++;
+                runnersCounter.Value++;
 
                 for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
                 {
@@ -402,12 +416,13 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
+            playerCopPrefab = skinsMauricePrefabs[randSkinNumber.Value];
+
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
             playerCopPrefab.SetActive(true);
 
             for (int i = 0; i < skinsMichellePrefabs.Length; i++)
@@ -430,20 +445,20 @@ public class PlayerInfo : NetworkBehaviour
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            if (NP.runnersCounter == 0)
+            if (/*NP.runnersCounter == 0*/runnersCounter.Value == 0)
             {
                 // Michelle Skin
-                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber.Value];
             }
-            else if (NP.runnersCounter == 1)
+            else if (/*NP.runnersCounter == 1*/runnersCounter.Value == 1)
             {
                 // Michael Skin
-                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber.Value];
             }
-            else if (NP.runnersCounter == 2)
+            else if (/*NP.runnersCounter == 2*/runnersCounter.Value == 2)
             {
                 // Marcel Skin
-                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber.Value];
             }
             playerRunnerPrefab.SetActive(true);
         }
@@ -563,14 +578,14 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
+            playerCopPrefab = skinsMauricePrefabs[randSkinNumber.Value];
+
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
             playerCopPrefab.SetActive(true);
-
 
             for (int i = 0; i < skinsMichellePrefabs.Length; i++)
             {
@@ -592,20 +607,20 @@ public class PlayerInfo : NetworkBehaviour
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            if (NP.runnersCounter == 0)
+            if (/*NP.runnersCounter == 0*/runnersCounter.Value == 0)
             {
                 // Michelle Skin
-                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber.Value];
             }
-            else if (NP.runnersCounter == 1)
+            else if (/*NP.runnersCounter == 1*/runnersCounter.Value == 1)
             {
                 // Michael Skin
-                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber.Value];
             }
-            else if (NP.runnersCounter == 2)
+            else if (/*NP.runnersCounter == 2*/runnersCounter.Value == 2)
             {
                 // Marcel Skin
-                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber.Value];
             }
             playerRunnerPrefab.SetActive(true);
         }
