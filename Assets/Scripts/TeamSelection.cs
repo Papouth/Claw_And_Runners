@@ -65,6 +65,9 @@ public class TeamSelection : NetworkBehaviour
 
     [HideInInspector] public bool selectionStarted;
 
+    // Sert à connaitre le nombre de runners dans la partie à un instant T
+    public NetworkVariable<int> runnersCounter;
+
     [Header("Cheats")]
     [SerializeField] private bool inDev;
     #endregion
@@ -81,6 +84,10 @@ public class TeamSelection : NetworkBehaviour
 
         runnersNamesList = new NetworkList<FixedString32Bytes>();
         copsNamesList = new NetworkList<FixedString32Bytes>();
+
+        runnersCounter = new NetworkVariable<int>();
+
+        runnersCounter.OnValueChanged += OnrunnersCounterChanged;
     }
 
     private void Start()
@@ -129,6 +136,11 @@ public class TeamSelection : NetworkBehaviour
 
 
     #region Customs Methods
+    private void OnrunnersCounterChanged(int previous, int current)
+    {
+        //Debug.Log("Changement de variable copsLimit, précédente valeur : " + previous + " |  nouvelle valeur : " + current);
+    }
+
 
     /// <summary>
     /// Permet de lancer la partie après le choix des équipes
