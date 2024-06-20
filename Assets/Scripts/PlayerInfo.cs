@@ -49,6 +49,8 @@ public class PlayerInfo : NetworkBehaviour
     public GameObject[] skinsMichaelPrefabs;
     public GameObject[] skinsMarcelPrefabs;
 
+    public GameObject[] batsMaurice;
+
     private CharacterController CCPlayer;
     private PlayerInventory playerInventory;
     #endregion
@@ -221,6 +223,11 @@ public class PlayerInfo : NetworkBehaviour
 
                 playerCopPrefab = skinsMauricePrefabs[randNum];
 
+                for (int i = 0; i < batsMaurice.Length; i++)
+                {
+                    batsMaurice[i].SetActive(false);
+                }
+
                 InfoServerRpc(true, 1);
 
                 // On gère l'arme du joueur selon son rôle
@@ -324,7 +331,7 @@ public class PlayerInfo : NetworkBehaviour
                 }
                 playerRunnerPrefab.SetActive(true);
 
-                TS.runnersCounter.Value++;
+                if (IsServer) TS.runnersCounter.Value++;
 
                 for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
                 {
