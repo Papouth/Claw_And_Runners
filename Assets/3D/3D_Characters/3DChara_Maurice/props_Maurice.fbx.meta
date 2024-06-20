@@ -520,28 +520,28 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: CM_Maurice(Clone)
+    - name: props_Maurice(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: CM_Maurice_SkinBase_Bas
-      parentName: CM_Maurice(Clone)
+      parentName: props_Maurice(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: CM_Maurice_SkinBase_Haut
-      parentName: CM_Maurice(Clone)
+      parentName: props_Maurice(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: CM_Maurice_SkinBase_Tete
-      parentName: CM_Maurice(Clone)
+      parentName: props_Maurice(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: Maurice_root
-      parentName: CM_Maurice(Clone)
+      parentName: props_Maurice(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
@@ -883,7 +883,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: root.x
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
