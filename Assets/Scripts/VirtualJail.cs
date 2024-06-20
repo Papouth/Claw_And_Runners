@@ -125,7 +125,7 @@ public class VirtualJail : NetworkBehaviour
 
         if (distance <= 0.8f || distance2 <= 0.8f)
         {
-            Debug.Log("mur trop rapproché");
+            //Debug.Log("mur trop rapproché");
 
             spheresList.Clear();
             Destroy(cloneJail);

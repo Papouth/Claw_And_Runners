@@ -39,7 +39,7 @@ public class DebugSphere : MonoBehaviour
     {
         if (!Physics.Raycast(transform.position, Vector3.down, rad * 2f) && !isValid)
         {
-            Debug.Log("hors sol");
+            //Debug.Log("hors sol");
             StopMotion();
         }
     }

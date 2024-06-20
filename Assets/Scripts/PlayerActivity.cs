@@ -63,7 +63,7 @@ public class PlayerActivity : NetworkBehaviour
     {
         if (!inTrigger && playerInActivity && piano)
         {
-            Debug.Log("Je quitte le piano");
+            //Debug.Log("Je quitte le piano");
 
             // On retire UI du piano
             GM.UIM.panelPiano.SetActive(false);
@@ -79,7 +79,7 @@ public class PlayerActivity : NetworkBehaviour
 
     private void ForceLeaveActivity()
     {
-        Debug.Log("Je quitte l'activité");
+        //Debug.Log("Je quitte l'activité");
 
         // On retire UI du piano
         GM.UIM.panelPiano.SetActive(false);
@@ -99,7 +99,7 @@ public class PlayerActivity : NetworkBehaviour
             // Start Current Activity Triggered
             inputManager.CanInteract = false;
 
-            Debug.Log("interact");
+            //Debug.Log("interact");
 
             if (porte) OpenDoor();
             else InteractActivity();
@@ -125,7 +125,7 @@ public class PlayerActivity : NetworkBehaviour
     #region Activity
     private void PianoManoir()
     {
-        Debug.Log("J'interragis avec le piano");
+        //Debug.Log("J'interragis avec le piano");
 
         GM.UIM.panelPiano.SetActive(true);
     }

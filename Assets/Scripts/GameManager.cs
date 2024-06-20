@@ -88,7 +88,7 @@ public class GameManager : NetworkBehaviour
             // RPC Call PanelEndGame
             DisplayPanelEndGameServerRpc();
 
-            Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + TS.runnersLimit.Value + " runners total");
+            //Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + TS.runnersLimit.Value + " runners total");
 
             // Si le policier a capturer tt le monde
             if (actualRunnersCaptured == TS.runnersLimit.Value)
@@ -123,7 +123,7 @@ public class GameManager : NetworkBehaviour
             // RPC Call PanelEndGame
             DisplayPanelEndGameServerRpc();
 
-            Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + runnersLimitGM.Value + " runners total");
+            //Debug.Log("Il y a " + actualRunnersCaptured + " de runners capturé sur les " + runnersLimitGM.Value + " runners total");
 
             //UIM.winText.text = "Le policier a capturé tout le monde !";
             UIM.copWin.SetActive(true);

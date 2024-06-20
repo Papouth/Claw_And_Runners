@@ -35,7 +35,7 @@ public class RelayManager : MonoBehaviour
 
             NetworkManager.Singleton.StartHost();
 
-            Debug.Log("Le code relay : " + joinCode);
+            //Debug.Log("Le code relay : " + joinCode);
             return joinCode;
         }
         catch (RelayServiceException e)
@@ -50,7 +50,7 @@ public class RelayManager : MonoBehaviour
     {
         try
         {
-            Debug.Log("Joining Relay with " + joinCode);
+            //Debug.Log("Joining Relay with " + joinCode);
 
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
