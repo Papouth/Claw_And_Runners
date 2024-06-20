@@ -39,7 +39,7 @@ public class PlayerInfo : NetworkBehaviour
     private PlayerController controller;
 
     // Skin Attribution
-    private int randSkinNumber;
+    private int randNum;
 
     public GameObject playerCopPrefab;
     public GameObject[] skinsMauricePrefabs;
@@ -49,9 +49,10 @@ public class PlayerInfo : NetworkBehaviour
     public GameObject[] skinsMichaelPrefabs;
     public GameObject[] skinsMarcelPrefabs;
 
+    public GameObject[] batsMaurice;
+
     private CharacterController CCPlayer;
     private PlayerInventory playerInventory;
-    private NetworkParameter NP;
     #endregion
 
 
@@ -60,8 +61,6 @@ public class PlayerInfo : NetworkBehaviour
     {
         prevCops = 0;
         prevRunners = 0;
-
-        randSkinNumber = Random.Range(0, 3);
     }
 
     public override void OnNetworkSpawn()
@@ -83,8 +82,6 @@ public class PlayerInfo : NetworkBehaviour
         CCPlayer = GetComponent<CharacterController>();
 
         playerInventory = GetComponent<PlayerInventory>();
-
-        NP = NetworkManager.GetComponent<NetworkParameter>();
     }
 
     private void Update()
@@ -93,6 +90,13 @@ public class PlayerInfo : NetworkBehaviour
         if (Input.GetMouseButtonDown(0) && IsOwner && TS.selectionStarted)
         {
             SendClientIDFunction();
+
+            // Random skin number attribution to each player
+            var num = Random.Range(0, 3);
+            randNum = num;
+
+            // RPC CALL
+            NumeroSkinServerRpc(num);
         }
 
         if (IsOwner && !equilibrageOn)
@@ -217,6 +221,13 @@ public class PlayerInfo : NetworkBehaviour
 
                 gameObject.tag = "cops";
 
+                playerCopPrefab = skinsMauricePrefabs[randNum];
+
+                for (int i = 0; i < batsMaurice.Length; i++)
+                {
+                    batsMaurice[i].SetActive(false);
+                }
+
                 InfoServerRpc(true, 1);
 
                 // On gère l'arme du joueur selon son rôle
@@ -233,7 +244,7 @@ public class PlayerInfo : NetworkBehaviour
                     skinsMauricePrefabs[i].SetActive(false);
                 }
 
-                playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
+                //playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
                 playerCopPrefab.SetActive(true);
 
                 for (int i = 0; i < skinsMichellePrefabs.Length; i++)
@@ -303,23 +314,24 @@ public class PlayerInfo : NetworkBehaviour
                     skinsMauricePrefabs[i].SetActive(false);
                 }
 
-                if (NP.runnersCounter == 0)
+                if (TS.runnersCounter.Value == 0)
                 {
                     // Michelle Skin
-                    playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+                    playerRunnerPrefab = skinsMichellePrefabs[randNum];
                 }
-                else if (NP.runnersCounter == 1)
+                else if (TS.runnersCounter.Value == 1)
                 {
                     // Michael Skin
-                    playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+                    playerRunnerPrefab = skinsMichaelPrefabs[randNum];
                 }
-                else if (NP.runnersCounter == 2)
+                else if (TS.runnersCounter.Value == 2)
                 {
                     // Marcel Skin
-                    playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+                    playerRunnerPrefab = skinsMarcelPrefabs[randNum];
                 }
                 playerRunnerPrefab.SetActive(true);
-                NP.runnersCounter++;
+
+                if (IsServer) TS.runnersCounter.Value++;
 
                 for (int i = 0; i < playerRunnerPrefab.transform.childCount; i++)
                 {
@@ -402,12 +414,13 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
+            playerCopPrefab = skinsMauricePrefabs[randNum];
+
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
             playerCopPrefab.SetActive(true);
 
             for (int i = 0; i < skinsMichellePrefabs.Length; i++)
@@ -430,20 +443,20 @@ public class PlayerInfo : NetworkBehaviour
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            if (NP.runnersCounter == 0)
+            if (TS.runnersCounter.Value == 0)
             {
                 // Michelle Skin
-                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichellePrefabs[randNum];
             }
-            else if (NP.runnersCounter == 1)
+            else if (TS.runnersCounter.Value == 1)
             {
                 // Michael Skin
-                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichaelPrefabs[randNum];
             }
-            else if (NP.runnersCounter == 2)
+            else if (TS.runnersCounter.Value == 2)
             {
                 // Marcel Skin
-                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMarcelPrefabs[randNum];
             }
             playerRunnerPrefab.SetActive(true);
         }
@@ -509,6 +522,14 @@ public class PlayerInfo : NetworkBehaviour
         playerId = (int)clientId;
         NetworkParameter.lastIdSave = playerId;
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void NumeroSkinServerRpc(int numero)
+    {
+        randNum = numero;
+
+        NumeroSkinClientRpc(numero);
+    }
     #endregion
 
     public void SendClientIDFunction()
@@ -517,6 +538,12 @@ public class PlayerInfo : NetworkBehaviour
     }
 
     #region ClientRpc
+    [ClientRpc]
+    private void NumeroSkinClientRpc(int numero)
+    {
+        randNum = numero;
+    }
+
     [ClientRpc]
     private void SpawnPlayerClientRpc(Vector3 spawnPos)
     {
@@ -563,14 +590,14 @@ public class PlayerInfo : NetworkBehaviour
         {
             gameObject.tag = "cops";
 
+            playerCopPrefab = skinsMauricePrefabs[randNum];
+
             for (int i = 0; i < skinsMauricePrefabs.Length; i++)
             {
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            playerCopPrefab = skinsMauricePrefabs[randSkinNumber];
             playerCopPrefab.SetActive(true);
-
 
             for (int i = 0; i < skinsMichellePrefabs.Length; i++)
             {
@@ -592,20 +619,20 @@ public class PlayerInfo : NetworkBehaviour
                 skinsMauricePrefabs[i].SetActive(false);
             }
 
-            if (NP.runnersCounter == 0)
+            if (TS.runnersCounter.Value == 0)
             {
                 // Michelle Skin
-                playerRunnerPrefab = skinsMichellePrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichellePrefabs[randNum];
             }
-            else if (NP.runnersCounter == 1)
+            else if (TS.runnersCounter.Value == 1)
             {
                 // Michael Skin
-                playerRunnerPrefab = skinsMichaelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMichaelPrefabs[randNum];
             }
-            else if (NP.runnersCounter == 2)
+            else if (TS.runnersCounter.Value == 2)
             {
                 // Marcel Skin
-                playerRunnerPrefab = skinsMarcelPrefabs[randSkinNumber];
+                playerRunnerPrefab = skinsMarcelPrefabs[randNum];
             }
             playerRunnerPrefab.SetActive(true);
         }
