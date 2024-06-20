@@ -98,7 +98,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void BackToMenu()
     {
-        Debug.Log("En avant Marty, retournons vers le menu !");
+        //Debug.Log("En avant Marty, retournons vers le menu !");
     }
 
     private void Init()

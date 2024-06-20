@@ -36,7 +36,7 @@ public class CapturePlayer : NetworkBehaviour
     {
         if (other.gameObject.CompareTag("runners") && IsOwner && VJ.prisonOn)
         {
-            Debug.Log("Passe Dans le trigger enter de capture");
+            //Debug.Log("Passe Dans le trigger enter de capture");
 
             audioSync.PlaySound(6);
 
@@ -66,12 +66,12 @@ public class CapturePlayer : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void GMCPActionServerRpc()
     {
-        Debug.Log("Passe une fois");
+        //Debug.Log("Passe une fois");
 
         GM.actualRunnersCaptured++;
         GM.totalRunnersCaptured++;
 
-        Debug.Log(GM.actualRunnersCaptured + " nombre de runners capturé");
+        //Debug.Log(GM.actualRunnersCaptured + " nombre de runners capturé");
 
         if (GM.actualRunnersCaptured == GM.runnersLimitGM.Value) GM.CheckCopsWin();
     }

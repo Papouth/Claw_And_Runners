@@ -203,7 +203,7 @@ public class TeamSelection : NetworkBehaviour
     {
         copsNamesList.Add(playerNameCops);
 
-        Debug.Log("dernier nom sauvegardé : " + playerNameCops.ToString());
+        //Debug.Log("dernier nom sauvegardé : " + playerNameCops.ToString());
 
         NetworkParameter.SavePlayerInfo(playerNameCops.ToString());
     }
@@ -274,7 +274,7 @@ public class TeamSelection : NetworkBehaviour
     {
         runnersNamesList.Add(playerNameRunners);
 
-        Debug.Log("dernier nom sauvegardé : " + playerNameRunners.ToString());
+        //Debug.Log("dernier nom sauvegardé : " + playerNameRunners.ToString());
 
         NetworkParameter.SavePlayerInfo(playerNameRunners.ToString());
     }
@@ -510,32 +510,32 @@ public class TeamSelection : NetworkBehaviour
         switch (LM.maxPlayers)
         {
             case 8:
-                Debug.Log("Il y a 2 Cops | 6 Runners");
+                //Debug.Log("Il y a 2 Cops | 6 Runners");
                 CopsLimitValueServerRpc(2);
                 RunnersLimitValueServerRpc(6);
                 break;
             case 7:
-                Debug.Log("Il y a 2 Cops | 5 Runners");
+                //Debug.Log("Il y a 2 Cops | 5 Runners");
                 CopsLimitValueServerRpc(2);
                 RunnersLimitValueServerRpc(5);
                 break;
             case 6:
-                Debug.Log("Il y a 2 Cops | 4 Runners");
+                //Debug.Log("Il y a 2 Cops | 4 Runners");
                 CopsLimitValueServerRpc(2);
                 RunnersLimitValueServerRpc(4);
                 break;
             case 5:
-                Debug.Log("Il y a 1 Cops | 4 Runners");
+                //Debug.Log("Il y a 1 Cops | 4 Runners");
                 CopsLimitValueServerRpc(1);
                 RunnersLimitValueServerRpc(4);
                 break;
             case 4:
-                Debug.Log("Il y a 1 Cops | 3 Runners");
+                //Debug.Log("Il y a 1 Cops | 3 Runners");
                 CopsLimitValueServerRpc(1);
                 RunnersLimitValueServerRpc(3);
                 break;
             case 2:
-                Debug.Log("Test 1 joueur de chaque");
+                //Debug.Log("Test 1 joueur de chaque");
                 CopsLimitValueServerRpc(1);
                 RunnersLimitValueServerRpc(1);
                 break;
@@ -611,7 +611,7 @@ public class TeamSelection : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     public void SendClientIDServerRpc(ulong clientId)
     {
-        Debug.Log("Client ayant cliqué a l'ID : " + clientId);
+        //Debug.Log("Client ayant cliqué a l'ID : " + clientId);
     }
 
     public void SendClientIDFunction()

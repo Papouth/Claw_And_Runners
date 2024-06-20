@@ -53,6 +53,7 @@ public class PlayerInfo : NetworkBehaviour
 
     private CharacterController CCPlayer;
     private PlayerInventory playerInventory;
+    private NetworkParameter NP;
     #endregion
 
 
@@ -82,6 +83,10 @@ public class PlayerInfo : NetworkBehaviour
         CCPlayer = GetComponent<CharacterController>();
 
         playerInventory = GetComponent<PlayerInventory>();
+
+        NP = NetworkManager.GetComponent<NetworkParameter>();
+
+        NP.clientCount++;
     }
 
     private void Update()

@@ -60,7 +60,7 @@ public class TriggerActivity : MonoBehaviour
                 return;
             }
 
-            Debug.Log("Trigger enter activity");
+            //Debug.Log("Trigger enter activity");
 
             playerActivity = other.GetComponent<PlayerActivity>();
 
@@ -95,7 +95,7 @@ public class TriggerActivity : MonoBehaviour
                 return;
             }
 
-            Debug.Log("Trigger exit activity");
+            //Debug.Log("Trigger exit activity");
 
             playerActivity.inTrigger = false;
 

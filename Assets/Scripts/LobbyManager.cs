@@ -353,7 +353,7 @@ public class LobbyManager : MonoBehaviour
     public void SpecialTestPlayer()
     {
         maxPlayers = 2;
-        Debug.Log(maxPlayers + " est le nombre de joueurs maximum");
+        //Debug.Log(maxPlayers + " est le nombre de joueurs maximum");
     }
     #endregion
 
@@ -414,7 +414,7 @@ public class LobbyManager : MonoBehaviour
 
             joinedLobby = await LobbyService.Instance.CreateLobbyAsync(lobbyName, maxPlayers, createLobbyOptions);
 
-            Debug.Log("changement du nombre max de joueur lors de la création du lobby");
+            //Debug.Log("changement du nombre max de joueur lors de la création du lobby");
 
             hostLobby = joinedLobby;
 
@@ -537,7 +537,7 @@ public class LobbyManager : MonoBehaviour
 
             Lobby joinedLobby = await Lobbies.Instance.JoinLobbyByCodeAsync(inputCode, joinLobbyByCodeOptions);
 
-            Debug.Log("Joined Lobby with code " + inputCode);
+            //Debug.Log("Joined Lobby with code " + inputCode);
 
             PanelInsideLobby();
 
@@ -667,7 +667,7 @@ public class LobbyManager : MonoBehaviour
         {
             try
             {
-                Debug.Log("StartGame");
+                //Debug.Log("StartGame");
 
                 string relayCode = await RelayManager.Instance.CreateRelay();
 

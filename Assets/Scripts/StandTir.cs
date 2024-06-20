@@ -67,7 +67,7 @@ public class StandTir : MonoBehaviour
         {
             victory = true;
             // Musique ou truc dans le genre comme des confettis
-            Debug.Log("Bien joué mon boeuf");
+            //Debug.Log("Bien joué mon boeuf");
         }
     }
     #endregion
