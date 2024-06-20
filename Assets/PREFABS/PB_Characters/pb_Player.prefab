@@ -276,7 +276,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3560986031654225528}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1585,6 +1585,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.09574897
       objectReference: {fileID: 0}
+    - target: {fileID: 1231658853495893675, guid: 79736a204726d794fa1aca39f87165a3, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 2080379ce141fc74784d648c7bcf570b, type: 3}
     - target: {fileID: 1302707772241825994, guid: 79736a204726d794fa1aca39f87165a3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.00000005215409
@@ -3981,6 +3985,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: -0.0114928335
       objectReference: {fileID: 0}
+    - target: {fileID: 9098108608091042195, guid: 79736a204726d794fa1aca39f87165a3, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 2080379ce141fc74784d648c7bcf570b, type: 3}
     - target: {fileID: 9148670539925350784, guid: 79736a204726d794fa1aca39f87165a3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.000000019658412
@@ -4061,6 +4069,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1925714024633064803}
     m_Modifications:
+    - target: {fileID: 2448003887201850806, guid: efd55a5f2661a544c9db37b0b0c77d71, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 72d37baf9b6ecc543a24293e2493ab1a, type: 3}
+    - target: {fileID: 4727067957530212326, guid: efd55a5f2661a544c9db37b0b0c77d71, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 72d37baf9b6ecc543a24293e2493ab1a, type: 3}
+    - target: {fileID: 5193111890305239260, guid: efd55a5f2661a544c9db37b0b0c77d71, type: 3}
+      propertyPath: m_Name
+      value: root
+      objectReference: {fileID: 0}
     - target: {fileID: 8581928241391783884, guid: efd55a5f2661a544c9db37b0b0c77d71, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4177,6 +4197,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8310440464255886832, guid: b260ec28f58ade0498fe613bc7f7bbbc, type: 3}
+      propertyPath: m_Name
+      value: root
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4248,6 +4272,10 @@ PrefabInstance:
     - target: {fileID: 1769481324492732984, guid: 1f8b50d695440504985f470dec5b8a93, type: 3}
       propertyPath: m_Name
       value: Michael_BrasDetaches Skin 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228276867386533778, guid: 1f8b50d695440504985f470dec5b8a93, type: 3}
+      propertyPath: m_Name
+      value: root
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5910,6 +5938,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7619922130358986997, guid: bfe217d140bbbea43bf0d7fe31a7fa53, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 4b3c0a2fee872184798ff95e551f39da, type: 3}
+    - target: {fileID: 8505368801480677361, guid: bfe217d140bbbea43bf0d7fe31a7fa53, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 4b3c0a2fee872184798ff95e551f39da, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -11935,6 +11971,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 3409250215996417806, guid: c4c9ccda1a27f694fbb14088c687d949, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 0190fe8a3b4c57b4aa51413d371e6689, type: 3}
+    - target: {fileID: 3696299963929455264, guid: c4c9ccda1a27f694fbb14088c687d949, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 0190fe8a3b4c57b4aa51413d371e6689, type: 3}
     - target: {fileID: 8606107977802783459, guid: c4c9ccda1a27f694fbb14088c687d949, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -12015,11 +12059,15 @@ PrefabInstance:
     - target: {fileID: 2179653933240278525, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 48b78d15352171446ae37a209921e2aa, type: 3}
+      objectReference: {fileID: 9000000, guid: 037abbebf0e0ab94ea69dd023032e57a, type: 3}
+    - target: {fileID: 2242571965542500327, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
+      propertyPath: m_Name
+      value: root
+      objectReference: {fileID: 0}
     - target: {fileID: 3223560473102802203, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 48b78d15352171446ae37a209921e2aa, type: 3}
+      objectReference: {fileID: 9000000, guid: 037abbebf0e0ab94ea69dd023032e57a, type: 3}
     - target: {fileID: 8541725912342373990, guid: 123b428ccfc1c8f4d8b960517e43093e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -12095,11 +12143,11 @@ PrefabInstance:
     - target: {fileID: 915026081412818274, guid: ed26de830dbd26b4493bb1a9aff39ae2, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 48b78d15352171446ae37a209921e2aa, type: 3}
+      objectReference: {fileID: 9000000, guid: 037abbebf0e0ab94ea69dd023032e57a, type: 3}
     - target: {fileID: 1700979197975787866, guid: ed26de830dbd26b4493bb1a9aff39ae2, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 48b78d15352171446ae37a209921e2aa, type: 3}
+      objectReference: {fileID: 9000000, guid: 037abbebf0e0ab94ea69dd023032e57a, type: 3}
     - target: {fileID: 5893549858367930682, guid: ed26de830dbd26b4493bb1a9aff39ae2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -12143,6 +12191,10 @@ PrefabInstance:
     - target: {fileID: 6521714679073692544, guid: ed26de830dbd26b4493bb1a9aff39ae2, type: 3}
       propertyPath: m_Name
       value: Michelle_BrasDetaches Skin 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7981110424384800298, guid: ed26de830dbd26b4493bb1a9aff39ae2, type: 3}
+      propertyPath: m_Name
+      value: root
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12219,15 +12271,15 @@ PrefabInstance:
     - target: {fileID: 2653885204018571888, guid: 7485ee31c2fdf264aa522d3899df41e1, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 48b78d15352171446ae37a209921e2aa, type: 3}
+      objectReference: {fileID: 9000000, guid: 037abbebf0e0ab94ea69dd023032e57a, type: 3}
     - target: {fileID: 3708725039648602840, guid: 7485ee31c2fdf264aa522d3899df41e1, type: 3}
       propertyPath: m_Name
-      value: Michelle_root
+      value: root
       objectReference: {fileID: 0}
     - target: {fileID: 6185863998174001808, guid: 7485ee31c2fdf264aa522d3899df41e1, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 48b78d15352171446ae37a209921e2aa, type: 3}
+      objectReference: {fileID: 9000000, guid: 037abbebf0e0ab94ea69dd023032e57a, type: 3}
     - target: {fileID: 7953338256502729796, guid: 7485ee31c2fdf264aa522d3899df41e1, type: 3}
       propertyPath: m_Name
       value: Michelle_root
