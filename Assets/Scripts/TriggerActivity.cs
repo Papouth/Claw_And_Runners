@@ -30,6 +30,8 @@ public class TriggerActivity : MonoBehaviour
         if (pianoActivity) piano = activityPrefab.GetComponent<Piano>();
 
         if (porteOption) porteAnimator = activityPrefab.GetComponent<Animator>();
+
+        if (porteOption) audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
